@@ -14,6 +14,7 @@ import (
 const SecretKeyAdmin = "secret"
 
 func RegisterAdmin(c *fiber.Ctx) error {
+<<<<<<< HEAD
 	data := new(map[string]string)
 
 	if err := c.BodyParser(data); err != nil {
@@ -24,23 +25,46 @@ func RegisterAdmin(c *fiber.Ctx) error {
 
 	admin := models.Admin{
 		Username: (*data)["username"],
+=======
+	var data map[string]string
+
+	if err := c.BodyParser(&data); err != nil {
+		return err
+	}
+
+	password, _ := bcrypt.GenerateFromPassword([]byte(data["password"]), 14)
+
+	admin := models.Admin{
+		Username: data["username"],
+>>>>>>> dadfa54d8df01e586933f0bcb5ea5f6c7fa2e608
 		Password: password,
 	}
 	database.DB.Create(&admin)
 
 	return c.JSON(admin)
 }
+<<<<<<< HEAD
 
 func LoginAdmin(c *fiber.Ctx) error {
 	data := new(map[string]string)
 
 	if err := c.BodyParser(data); err != nil {
+=======
+func LoginAdmin(c *fiber.Ctx) error {
+	var data map[string]string
+
+	if err := c.BodyParser(&data); err != nil {
+>>>>>>> dadfa54d8df01e586933f0bcb5ea5f6c7fa2e608
 		return err
 	}
 
 	var admin models.Admin
 
+<<<<<<< HEAD
 	database.DB.Where("username = ?", (*data)["username"]).First(&admin)
+=======
+	database.DB.Where("username = ?", data["username"]).First(&admin)
+>>>>>>> dadfa54d8df01e586933f0bcb5ea5f6c7fa2e608
 
 	if admin.ID == 0 { //gakbisa nemukan admin
 		c.Status(fiber.StatusNotFound)
@@ -48,7 +72,11 @@ func LoginAdmin(c *fiber.Ctx) error {
 			"message": "User not found",
 		})
 	}
+<<<<<<< HEAD
 	if err := bcrypt.CompareHashAndPassword(admin.Password, []byte((*data)["password"])); err != nil {
+=======
+	if err := bcrypt.CompareHashAndPassword(admin.Password, []byte(data["password"])); err != nil {
+>>>>>>> dadfa54d8df01e586933f0bcb5ea5f6c7fa2e608
 		c.Status(fiber.StatusBadRequest)
 		return c.JSON(fiber.Map{
 			"message": "Incorrect password",
@@ -77,6 +105,10 @@ func LoginAdmin(c *fiber.Ctx) error {
 		"message": "Login Success",
 		"jwt":     token,
 	})
+<<<<<<< HEAD
+=======
+
+>>>>>>> dadfa54d8df01e586933f0bcb5ea5f6c7fa2e608
 }
 
 func Admin(c *fiber.Ctx) error {

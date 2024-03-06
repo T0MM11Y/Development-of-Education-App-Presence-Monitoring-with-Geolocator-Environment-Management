@@ -13,6 +13,35 @@ import (
 
 const SecretKey = "secret"
 
+<<<<<<< HEAD
+=======
+func Register(c *fiber.Ctx) error {
+	var data map[string]string
+
+	if err := c.BodyParser(&data); err != nil {
+		return err
+	}
+
+	password, _ := bcrypt.GenerateFromPassword([]byte(data["password"]), 14)
+
+	nisn, _ := strconv.ParseUint(data["nisn"], 10, 32)
+
+	user := models.User{
+		NISN:      uint(nisn),
+		FirstName: data["first_name"],
+		LastName:  data["last_name"],
+		Email:     data["email"],
+		Class:     data["class"],
+		Age:       data["age"],
+		Gender:    data["gender"],
+		Password:  password,
+	}
+	database.DB.Create(&user)
+
+	return c.JSON(user)
+}
+
+>>>>>>> dadfa54d8df01e586933f0bcb5ea5f6c7fa2e608
 func Login(c *fiber.Ctx) error {
 	var data map[string]string
 
