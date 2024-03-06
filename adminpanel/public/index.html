@@ -1,0 +1,171 @@
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/images/favicon.ico" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="%PUBLIC_URL%/libs/toastr/build/toastr.min.css"
+    />
+    <style>
+      .action-column {
+        width: 100px; /* adjust this value as needed */
+    }
+     
+      .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      .pagination li {
+        display: inline-block;
+        margin-right: 5px;
+        cursor: pointer;
+      }
+
+      .pagination li a {
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        color: #333;
+        text-decoration: none;
+      }
+
+      .pagination li.active a {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+      }
+
+      .pagination li a:hover {
+        background-color: #f0f0f0;
+      }
+    </style>
+    <!-- DataTables -->
+    <!-- DataTables -->
+    <script src="%PUBLIC_URL%/libs/jquery/jquery.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/jszip/jszip.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+    <!-- Responsive datatable examples -->
+    <link
+      href="%PUBLIC_URL%/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <!-- Fonts -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    />
+
+    <!-- Bootstrap Css -->
+    <link
+      href="%PUBLIC_URL%/css/bootstrap.min.css"
+      id="bootstrap-style"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <!-- Icons Css -->
+    <link
+      href="%PUBLIC_URL%/css/icons.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <!-- App Css-->
+    <link
+      href="%PUBLIC_URL%/css/app.min.css"
+      id="app-style"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <!-- DataTables -->
+    <link
+      href="%PUBLIC_URL%/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="%PUBLIC_URL%/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <!-- jquery.vectormap css -->
+    <link
+      href="%PUBLIC_URL%/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+
+    <!-- JAVASCRIPT -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="%PUBLIC_URL%/libs/jquery/jquery.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/metismenu/metisMenu.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/simplebar/simplebar.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/node-waves/waves.min.js"></script>
+
+    <!-- toastr plugin -->
+    <script src="%PUBLIC_URL%/libs/toastr/build/toastr.min.js"></script>
+
+    <!-- toastr init -->
+    <script src="%PUBLIC_URL%/js/pages/toastr.init.js"></script>
+
+    <!-- App js -->
+    <script src="%PUBLIC_URL%/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- JAVASCRIPT -->
+    <script src="%PUBLIC_URL%/libs/jquery/jquery.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/metismenu/metisMenu.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/simplebar/simplebar.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/node-waves/waves.min.js"></script>
+
+    <!-- Required datatable js -->
+    <script src="%PUBLIC_URL%/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="%PUBLIC_URL%/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/jszip/jszip.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/pdfmake/build/pdfmake.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="%PUBLIC_URL%/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+
+    <script src="%PUBLIC_URL%/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+
+    <!-- Responsive examples -->
+    <script src="%PUBLIC_URL%/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="%PUBLIC_URL%/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+
+    <!-- Datatable init js -->
+    <script src="%PUBLIC_URL%/js/pages/datatables.init.js"></script>
+
+    <script src="%PUBLIC_URL%/js/app.js"></script>
+  </body>
