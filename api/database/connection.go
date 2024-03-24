@@ -18,4 +18,7 @@ func Connect() {
 	DB = connection
 	connection.AutoMigrate(&models.User{})
 	connection.AutoMigrate(&models.Admin{})
+
+	connection.AutoMigrate(&models.Pengumuman{})
+	connection.AutoMigrate(&models.Kelas{})
 }

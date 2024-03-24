@@ -2,20 +2,16 @@ package routes
 
 import (
 	"API/controllers"
-<<<<<<< HEAD
+	"API/controllers/pengumumanController"
 	"API/controllers/siswaController"
-=======
->>>>>>> dadfa54d8df01e586933f0bcb5ea5f6c7fa2e608
+
+	"API/controllers/kelasController"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 // UserRoutes ...
 func Setup(app *fiber.App) {
-<<<<<<< HEAD
-=======
-	app.Post("/api/register", controllers.Register)
->>>>>>> dadfa54d8df01e586933f0bcb5ea5f6c7fa2e608
 	app.Post("/api/login", controllers.Login)
 	app.Get("/api/user", controllers.User)
 	app.Post("/api/logout", controllers.Logout)
@@ -28,16 +24,27 @@ func SetupAdmin(app *fiber.App) {
 	app.Get("/api/admin", controllers.Admin)
 	app.Post("/api/logoutAdmin", controllers.LogoutAdmin)
 }
-<<<<<<< HEAD
 
 // SiswaRoutes ...
 func SetupSiswa(app *fiber.App) {
 	app.Get("/api/siswa", siswaController.GetAllSiswa)
 	app.Post("/api/register", siswaController.RegisterSiswa)
-	app.Get("/api/siswa/:id", siswaController.GetSiswaById)
+	app.Get("/api/siswa/:id", siswaController.GetSiswaById)	
 	app.Put("/api/siswa/:id", siswaController.UpdateSiswa)
 	app.Delete("/api/siswa/:id", siswaController.DeleteSiswa)
 
 }
-=======
->>>>>>> dadfa54d8df01e586933f0bcb5ea5f6c7fa2e608
+func SetupPengumuman(app *fiber.App) {
+	app.Get("/api/pengumuman", pengumumanController.GetAllPengumuman)
+	app.Post("/api/pengumuman", pengumumanController.CreatePengumuman)
+	app.Get("/api/pengumuman/:id", pengumumanController.GetPengumumanById)
+	app.Put("/api/pengumuman/:id", pengumumanController.UpdatePengumuman)
+	app.Delete("/api/pengumuman/:id", pengumumanController.DeletePengumuman)
+}
+func SetupKelas(app *fiber.App) {
+	app.Get("/api/kelas", kelasController.GetAllKelas)
+	app.Post("/api/kelas", kelasController.CreateKelas)
+	app.Get("/api/kelas/:id", kelasController.GetKelasById)
+	app.Put("/api/kelas/:id", kelasController.UpdateKelas)
+	app.Delete("/api/kelas/:id", kelasController.DeleteKelas)
+}

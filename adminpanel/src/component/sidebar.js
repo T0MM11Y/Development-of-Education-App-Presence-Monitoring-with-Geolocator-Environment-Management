@@ -13,7 +13,7 @@ function Sidebar() {
     });
     const toggleDropdown = (name) => {
         setIsOpen({ ...isOpen, [name]: !isOpen[name] });
-        
+
     };
     return (
         <div className="vertical-menu">
@@ -36,44 +36,45 @@ function Sidebar() {
 
                         <li>
                             <Link to="/dashboard">
-                                <i className="ri-dashboard-line"></i><span className="badge rounded-pill bg-success float-end">3</span>
+                                <i className="fas fa-tachometer-alt"></i><span className="badge rounded-pill bg-success float-end">3</span>
                                 <span>Dashboard</span>
                             </Link>
                         </li>
 
                         <li>
                             <a href="calendar.html" className=" waves-effect">
-                                <i className="ri-calendar-2-line"></i>
+                                <i className="far fa-calendar-alt"></i>
                                 <span>Absensi</span>
                             </a>
                         </li>
 
                         <li>
                             <a href="javascript: void(0);" className="has-arrow waves-effect" onClick={() => toggleDropdown('Siswa')}>
-                                <i className="ri-mail-send-line"></i>
+                                <i className="fas fa-users"></i> {/* Replace this with the Font Awesome class names */}
                                 <span>Siswa</span>
                             </a>
                             {isOpen.Siswa && (
                                 <ul className="sub-menu" aria-expanded="false">
                                     <li><Link to="/all-siswa">All Siswa</Link></li>
-                                    <li><Link to="/add-siswa">Add Siswa</Link></li>                                
-                                    </ul>
+                                    <li><Link to="/add-siswa">Add Siswa</Link></li>
+                                </ul>
                             )}
                         </li>
 
                         <li>
                             <a href="javascript: void(0);" className="has-arrow waves-effect" onClick={() => toggleDropdown('Pengumuman')}>
-                                <i className="ri-layout-3-line"></i>
+                                <i className="fas fa-bullhorn"></i>
                                 <span>Pengumuman</span>
                             </a>
+
                             {isOpen.Pengumuman && (
                                 <ul className="sub-menu" aria-expanded="true">
 
 
                                     <li>
-                                        <a href="javascript: void(0);" >All Pengumuman</a>
+                                        <Link to="/all-pengumuman">All Pengumuman</Link>
 
-                                        <a href="javascript: void(0);" >Add Pengumuman</a>
+                                        <Link to="/add-pengumuman">Add Pengumuman</Link>
 
 
                                     </li>
@@ -81,27 +82,22 @@ function Sidebar() {
                             )}
                         </li>
                         <li>
-                            <a href="javascript: void(0);" className="has-arrow waves-effect" onClick={() => toggleDropdown('Matapelajaran')}>
-                                <i className="ri-layout-3-line"></i>
-                                <span>Matapelajaran</span>
-                            </a>
-                            {isOpen.Matapelajaran && (
-                                <ul className="sub-menu" aria-expanded="true">
+                            <Link to="/all-kelas" >
+                                <i className="fas fa-chalkboard-teacher"></i>
+                                <span>Daftar Kelas</span>
+                            </Link>
 
+                        </li>
+                        <li>
+                            <Link to="/all-kelas" >
+                                <i className="fas fa-chalkboard-teacher"></i>
+                                <span>Roster </span>
+                            </Link>
 
-                                    <li>
-                                        <a href="javascript: void(0);" >All Matapelajaran</a>
-
-                                        <a href="javascript: void(0);" >Add Matapelajaran</a>
-
-
-                                    </li>
-                                </ul>
-                            )}
                         </li>
                         <li>
                             <a href="javascript: void(0);" className="has-arrow waves-effect" onClick={() => toggleDropdown('TanyaJawab')}>
-                                <i className="ri-layout-3-line"></i>
+                                <i className="fas fa-question-circle"></i>
                                 <span>TanyaJawab</span>
                             </a>
                             {isOpen.TanyaJawab && (

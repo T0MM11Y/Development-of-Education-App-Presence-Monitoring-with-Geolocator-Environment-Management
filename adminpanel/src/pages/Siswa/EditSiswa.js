@@ -8,6 +8,7 @@ import swal from 'sweetalert2';
 
 function EditSiswa() {
     const navigate = useNavigate();
+    const [kelas, setKelas] = useState([]);
     const { id } = useParams();
 
     const [formData, setFormData] = useState({
@@ -102,7 +103,7 @@ function EditSiswa() {
                         'success'
                     );
                     navigate('/all-siswa')
-                }  else if (responseData.message) {
+                } else if (responseData.message) {
                     // Jika ada pesan kesalahan dari server, tampilkan dengan SweetAlert
                     swal.fire({
                         icon: 'error',
@@ -116,6 +117,14 @@ function EditSiswa() {
 
 
     useEffect(() => {
+        const fetchKelas = async () => {
+            const { BASE_URL } = require('../../configapi');
+            const response = await fetch(`${BASE_URL}api/kelas`);
+            const data = await response.json();
+            setKelas(data);
+        };
+
+        fetchKelas();
         const { BASE_URL } = require('../../configapi');
         fetch(`${BASE_URL}api/siswa/${id}`)
             .then(response => response.json())
@@ -125,7 +134,7 @@ function EditSiswa() {
                     NISN: data.NISN,
                     Nama_Depan: data.Nama_Depan,
                     Nama_Belakang: data.Nama_Belakang,
-                    Kelas: data.Kelas,
+                    Kelas: data.id_kelas, // Set the Kelas field to the student's class id
                     Agama: data.Agama,
                     Email: data.Email,
                     Alamat: data.Alamat,
@@ -175,14 +184,11 @@ function EditSiswa() {
                                                 <div className="col-md-4">
                                                     <div className="mb-3">
                                                         <label htmlFor="validationCustom03" className="form-label">Kelas</label>
-                                                        <select className="form-select" id="validationCustom03" name="Kelas" value={formData.Kelas} onChange={handleChange} required>
+                                                        <select className="form-select" id="validationCustom03" name="KelasID" value={formData.KelasID} onChange={handleChange} required>
                                                             <option defaultValue disabled value="">Choose...</option>
-                                                            <option>X IPA 1</option>
-                                                            <option>X IPA 2</option>
-                                                            <option>X IPA 3</option>
-                                                            <option>XI IPA 1</option>
-                                                            <option>XI IPA 2</option>
-                                                            <option>XI IPA 3</option>
+                                                            {kelas.map((kelasItem, index) => (
+                                                                <option key={index} value={kelasItem.id}>{kelasItem.nama_kelas}</option>
+                                                            ))}
                                                         </select>
                                                         <div className="invalid-feedback">
                                                             Please select a valid state.
@@ -244,7 +250,7 @@ function EditSiswa() {
                                                 </div>                                      </div>
                                             <br></br>
                                             <div className="col-xl-3">
-                                                <img src={imageURL} alt="Uploaded" style={{ width: '20em', height: 'auto', 'marginBottom': '20px' }} />                                            </div>
+                                                <img src={imageURL} alt="Uploaded" style={{ width: '20em', height: 'auto', 'marginBottom': '20px' }} />                                       </div>
 
 
                                             <button className="btn btn-primary" type="submit">Update Form</button>

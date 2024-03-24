@@ -13,10 +13,8 @@ func main() {
 
 	app := fiber.New()
 
-<<<<<<< HEAD
-	app.Static("/api/siswa/uploads", "./uploads")
-=======
->>>>>>> dadfa54d8df01e586933f0bcb5ea5f6c7fa2e608
+	app.Static("/api/siswa/uploads/siswa", "./uploads/siswa")
+	app.Static("/api/pengumuman/uploads/pengumuman", "./uploads/pengumuman") // Add this line
 	app.Use(cors.New(cors.Config{
 		AllowCredentials: true,
 	}))
@@ -27,11 +25,14 @@ func main() {
 	// Setup admin routes
 	routes.SetupAdmin(app)
 
-<<<<<<< HEAD
+	// Setup pengumuman routes
+	routes.SetupPengumuman(app)
+
+	// Setup kelas routes
+	routes.SetupKelas(app)
+
 	// Setup siswa routes
 	routes.SetupSiswa(app)
 
-=======
->>>>>>> dadfa54d8df01e586933f0bcb5ea5f6c7fa2e608
 	app.Listen(":5000")
 }

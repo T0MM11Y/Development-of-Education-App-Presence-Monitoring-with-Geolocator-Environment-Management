@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../../component/header';
 import Sidebar from '../../component/sidebar';
 import { useNavigate } from 'react-router-dom';
@@ -7,13 +7,21 @@ import swal from 'sweetalert2';
 import 'react-toastify/dist/ReactToastify.css';
 
 function AddSiswa() {
-    const navigate = useNavigate(); // Move this line here
+    const [kelas, setKelas] = useState([]);
+
+    useEffect(() => {
+        fetch(`${BASE_URL}api/kelas`)
+            .then(response => response.json())
+            .then(data => setKelas(data));
+    }, []);
+
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         NISN: '',
         Nama_Depan: '',
         Nama_Belakang: '',
-        Kelas: '',
+        KelasID: '',
         Agama: '',
         Email: '',
         Alamat: '',
@@ -29,8 +37,6 @@ function AddSiswa() {
         setFormData({
             ...formData,
             [name]: value,
-
-
         });
     };
     const handleFileChange = (e) => {
@@ -44,15 +50,11 @@ function AddSiswa() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Create a new FormData instance
         const data = new FormData();
-
-        // Append all form fields to the FormData instance
         Object.keys(formData).forEach((key) => {
             data.append(key, formData[key].toString());
         });
 
-        // Append the file to the FormData instance
         const fileField = document.querySelector('input[type="file"]');
         data.append('file', fileField.files[0]);
         const response = await fetch(`${BASE_URL}api/register`, {
@@ -68,7 +70,7 @@ function AddSiswa() {
                 NISN: '',
                 Nama_Depan: '',
                 Nama_Belakang: '',
-                Kelas: '',
+                KelasID: '',
                 Agama: '',
                 Email: '',
                 Alamat: '',
@@ -81,7 +83,6 @@ function AddSiswa() {
             navigate('/all-siswa')
         }
         else if (responseData.message) {
-            // Jika ada pesan kesalahan dari server, tampilkan dengan SweetAlert
             swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -105,7 +106,7 @@ function AddSiswa() {
                                         <h4 className="card-title">Tambahkan Siswa</h4>
                                         <p className="card-title-desc">Formulir ini digunakan untuk menambahkan siswa baru ke dalam sistem. Harap isi semua bidang yang diperlukan dan pastikan informasinya akurat.</p>
                                         <form className="needs-validation" onSubmit={handleSubmit} noValidate>
-                                        <input type="text" name="NISN" className="form-control" placeholder="NISN" value={formData.NISN} onChange={handleChange} required />
+                                            <input type="text" name="NISN" className="form-control" placeholder="NISN" value={formData.NISN} onChange={handleChange} required />
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <div className="mb-3">
@@ -126,14 +127,11 @@ function AddSiswa() {
                                                 <div className="col-md-4">
                                                     <div className="mb-3">
                                                         <label htmlFor="validationCustom03" className="form-label">Kelas</label>
-                                                        <select className="form-select" id="validationCustom03" name="Kelas" value={formData.Kelas} onChange={handleChange} required>
+                                                        <select className="form-select" id="validationCustom03" name="KelasID" value={formData.KelasID} onChange={handleChange} required>
                                                             <option defaultValue disabled value="">Choose...</option>
-                                                            <option>X IPA 1</option>
-                                                            <option>X IPA 2</option>
-                                                            <option>X IPA 3</option>
-                                                            <option>XI IPA 1</option>
-                                                            <option>XI IPA 2</option>
-                                                            <option>XI IPA 3</option>
+                                                            {kelas.map((kelasItem, index) => (
+                                                                <option key={index} value={kelasItem.id}>{kelasItem.nama_kelas}</option>
+                                                            ))}
                                                         </select>
                                                         <div className="invalid-feedback">
                                                             Please select a valid state.
@@ -183,19 +181,19 @@ function AddSiswa() {
                                                 <label>Tanggal Lahir</label>
                                             </div>
                                             <div className="row mb-3">
-                                                <div className="col-sm-10">
+                                                <div className="col-sm-12">
                                                     <input className="form-control" required type="date" name="Tanggal_Lahir" value={formData.Tanggal_Lahir} onChange={handleChange} id="example-date-input" />
                                                 </div>
                                             </div>
 
                                             <div className="input-group">
-                                                <div className="col-sm-10">
+                                                <div className="col-sm-12">
 
                                                     <input type="file" className="form-control" id="customFile" onChange={handleFileChange} />
                                                 </div>                                      </div>
                                             <br></br>
                                             <div className="col-xl-3">
-                                                <img src={imageURL} alt="Uploaded" style={{ width: '20em', height: 'auto', 'marginBottom': '20px' }} />                                            </div>
+                                                <img src={imageURL} alt="Uploaded" style={{ width: '10em', height: 'auto', 'marginBottom': '20px' }} />                                            </div>
 
 
                                             <button className="btn btn-primary" type="submit">Submit form</button>

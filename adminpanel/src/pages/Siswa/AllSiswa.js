@@ -18,11 +18,18 @@ function AllSiswa() {
     const [search, setSearch] = useState('');
     const [currentPage, setCurrentPage] = useState(0);
     const [perPage] = useState(10); // Jumlah data per halaman
+    const [kelas, setKelas] = useState([]);
 
+
+    // Fetch data kelas dalam useEffect
     useEffect(() => {
-        fetchData();
-    }, [currentPage]); // Memanggil fetchData saat currentPage berubah
+        fetch(`${BASE_URL}api/kelas`)
+            .then(response => response.json())
+            .then(data => setKelas(data))
+            .catch(error => console.error(error));
 
+        fetchData();
+    }, [currentPage]);
     const fetchData = () => {
         const offset = currentPage * perPage;
         fetch(`${BASE_URL}api/siswa?_start=${offset}&_limit=${perPage}`)
@@ -41,7 +48,7 @@ function AllSiswa() {
 
     const handleSearchChange = (e) => {
         setSearch(e.target.value);
-    };const deleteSiswa = (id) => {
+    }; const deleteSiswa = (id) => {
         swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -55,17 +62,17 @@ function AllSiswa() {
                 fetch(`${BASE_URL}api/siswa/${id}`, {
                     method: 'DELETE',
                 })
-                .then(response => response.json())
-                .then(data => {
-                    // Refresh the data
-                    fetchData();
-                    swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                    )
-                })
-                .catch(error => console.error(error));
+                    .then(response => response.json())
+                    .then(data => {
+                        // Refresh the data
+                        fetchData();
+                        swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                    })
+                    .catch(error => console.error(error));
             }
         })
     };
@@ -183,8 +190,8 @@ function AllSiswa() {
                                                             <td>{siswa.NISN}</td>
                                                             <td>{siswa.Nama_Depan}</td>
                                                             <td>{siswa.Nama_Belakang}</td>
-                                                            <td>{siswa.Kelas}</td>
-                                                            <td>{siswa.Email}</td>
+                                                            {/**ambil nama kelas berdasrkan foreign key */}
+                                                            <td>{kelas.find(kelasItem => kelasItem.id === siswa.kelas_id)?.nama_kelas || 'Kelas tidak ditemukan'}</td>                                                            <td>{siswa.Email}</td>
                                                             <td>
                                                                 <Link to={`/edit-siswa/${siswa.ID}`} className="btn btn-info" style={{ marginRight: '10px' }}>Detail</Link>
                                                                 <button className="btn btn-danger waves-effect waves-light" onClick={() => deleteSiswa(siswa.ID)}>Hapus</button>                                                            </td>
