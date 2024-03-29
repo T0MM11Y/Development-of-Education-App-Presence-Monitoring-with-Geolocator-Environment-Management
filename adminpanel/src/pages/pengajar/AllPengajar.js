@@ -7,40 +7,30 @@ import autoTable from 'jspdf-autotable'; // Untuk tabel PDF
 import * as XLSX from 'xlsx'; // Untuk Excel
 import ReactPaginate from 'react-paginate'; // Import ReactPaginate
 import { Link } from 'react-router-dom';
-
 import swal from 'sweetalert2';
 
-function AllSiswa() {
-
-    const [siswas, setSiswa] = useState([]);
+function AllPengajar() {
+    const [pengajars, setPengajar] = useState([]);
     const [loading, setLoading] = useState(true);
     const { BASE_URL } = require('../../configapi');
     const [search, setSearch] = useState('');
     const [currentPage, setCurrentPage] = useState(0);
-    const [perPage] = useState(10); // Jumlah data per halaman
-    const [kelas, setKelas] = useState([]);
+    const [perPage] = useState(8); // Jumlah data per halaman
 
-
-    // Fetch data kelas dalam useEffect
     useEffect(() => {
-        fetch(`${BASE_URL}api/kelas`)
-            .then(response => response.json())
-            .then(data => setKelas(data))
-            .catch(error => console.error(error));
-
         fetchData();
     }, [currentPage]);
+
     const fetchData = () => {
         const offset = currentPage * perPage;
-        fetch(`${BASE_URL}api/siswa?_start=${offset}&_limit=${perPage}`)
+        fetch(`${BASE_URL}api/pengajar?_start=${offset}&_limit=${perPage}`)
             .then(response => response.json())
             .then(data => {
-                setSiswa(data);
+                setPengajar(data);
                 setLoading(false);
             })
             .catch(error => console.error(error));
     };
-
 
     const handlePageClick = ({ selected }) => {
         setCurrentPage(selected);
@@ -48,7 +38,9 @@ function AllSiswa() {
 
     const handleSearchChange = (e) => {
         setSearch(e.target.value);
-    }; const deleteSiswa = (id) => {
+    };
+
+    const deletePengajar = (id) => {
         swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -59,7 +51,7 @@ function AllSiswa() {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`${BASE_URL}api/siswa/${id}`, {
+                fetch(`${BASE_URL}api/pengajar/${id}`, {
                     method: 'DELETE',
                 })
                     .then(response => response.json())
@@ -77,51 +69,51 @@ function AllSiswa() {
         })
     };
 
-    const filteredSiswas = Array.isArray(siswas) ? siswas.filter(siswa =>
-        siswa.Nama_Depan.toLowerCase().includes(search.toLowerCase()) ||
-        siswa.Nama_Belakang.toLowerCase().includes(search.toLowerCase())
+    const filteredPengajars = Array.isArray(pengajars) ? pengajars.filter(pengajar =>
+        pengajar.Nama_Depan.toLowerCase().includes(search.toLowerCase()) ||
+        pengajar.Nama_Belakang.toLowerCase().includes(search.toLowerCase())
     ) : [];
-    const pageCount = Math.ceil(siswas.length / perPage);
+    const pageCount = Math.ceil(pengajars.length / perPage);
 
-    const paginatedData = filteredSiswas.slice(currentPage * perPage, (currentPage + 1) * perPage);
+    const paginatedData = filteredPengajars.slice(currentPage * perPage, (currentPage + 1) * perPage);
 
     const copyData = () => {
-        const dataToCopy = siswas.map(siswa => ({
-            NISN: siswa.NISN,
-            Nama_Depan: siswa.Nama_Depan,
-            Nama_Belakang: siswa.Nama_Belakang,
-            Kelas: siswa.Kelas
+        const dataToCopy = pengajars.map(pengajar => ({
+            NIP: pengajar.NIP,
+            Nama_Depan: pengajar.Nama_Depan,
+            Nama_Belakang: pengajar.Nama_Belakang,
+            Bidang: pengajar.Bidang
         }));
         navigator.clipboard.writeText(JSON.stringify(dataToCopy));
     };
 
     const downloadExcel = () => {
-        const modifiedData = siswas.map(siswa => ({
-            NISN: siswa.NISN,
-            Nama: `${siswa.Nama_Depan} ${siswa.Nama_Belakang}`,
-            Kelas: siswa.Kelas
+        const modifiedData = pengajars.map(pengajar => ({
+            NIP: pengajar.NIP,
+            Nama: `${pengajar.Nama_Depan} ${pengajar.Nama_Belakang}`,
+            Bidang: pengajar.Bidang
         }));
-        modifiedData.unshift({ NISN: '', Nama: '', Kelas: '' });
+        modifiedData.unshift({ NIP: '', Nama: '', Bidang: '' });
         const ws = XLSX.utils.json_to_sheet(modifiedData);
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Siswa");
-        XLSX.writeFile(wb, "siswa.xlsx");
+        XLSX.utils.book_append_sheet(wb, ws, "Pengajar");
+        XLSX.writeFile(wb, "pengajar.xlsx");
     };
 
     const downloadPDF = () => {
         const doc = new jsPDF();
-        doc.text('Daftar Siswa SMA N 1 PARMAKSIAN', 10, 10);
-        const modifiedData = siswas.map(siswa => [
-            siswa.NISN,
-            `${siswa.Nama_Depan} ${siswa.Nama_Belakang}`,
-            siswa.Kelas
+        doc.text('Daftar Pengajar SMA N 1 PARMAKSIAN', 10, 10);
+        const modifiedData = pengajars.map(pengajar => [
+            pengajar.NIP,
+            `${pengajar.Nama_Depan} ${pengajar.Nama_Belakang}`,
+            pengajar.Bidang
         ]);
         autoTable(doc, {
             startY: 20,
-            head: [['NISN', 'Nama', 'Kelas']],
+            head: [['NIP', 'Nama', 'Bidang']],
             body: modifiedData
         });
-        doc.save('siswa.pdf');
+        doc.save('pengajar.pdf');
     };
 
     if (loading) {
@@ -140,12 +132,11 @@ function AllSiswa() {
                                 <div className="card">
                                     <div className="card-body">
                                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                            <h4 className="card-title">Semua Siswa</h4>
-
+                                            <h4 className="card-title">Semua Pengajar</h4>
                                         </div>
                                         <br></br>
                                         <p className="card-title-desc" >
-                                            This page displays all students in a searchable and paginated table. You can interact with the table to copy the data, download it as Excel or PDF. The data is fetched from an external API and updates dynamically.
+                                            This page displays all teachers in a searchable and paginated table. You can interact with the table to copy the data, download it as Excel or PDF. The data is fetched from an external API and updates dynamically.
                                         </p>
                                         <div id="datatable-buttons_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
                                             <div className="row">
@@ -161,10 +152,9 @@ function AllSiswa() {
                                                             <span>PDF</span>
                                                         </button>
                                                         <div style={{ display: 'flex', justifyContent: 'space-between', marginLeft: '16px' }}>
-                                                            <Link to="/add-siswa" className="btn btn-primary waves-effect waves-light">
-                                                            Add Siswa <i class=" fas fa-user-plus align-middle ms-2"></i></Link>
+                                                            <Link to="/add-pengajar" className="btn btn-primary waves-effect waves-light">
+                                                                Add Guru <i class=" fas fa-user-plus align-middle ms-2"></i></Link>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                                 <div className="col-sm-12 col-md-6">
@@ -178,39 +168,38 @@ function AllSiswa() {
                                         <table id="datatable-buttons" className="table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline">
                                             <thead>
                                                 <tr role="row">
-                                                    <th>NISN</th>
+                                                    <th>NIP</th>
                                                     <th>Nama Depan</th>
                                                     <th>Nama Belakang</th>
-                                                    <th>Kelas</th>
-                                                    <th>Email</th>
+                                                    <th>Bidang</th>
                                                     <th className="action-column">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {paginatedData.length > 0 ? (
-                                                    paginatedData.map(siswa => (
-                                                        console.log(siswa),
-                                                        <tr key={siswa.ID}>
-                                                            <td>{siswa.NISN}</td>
-                                                            <td>{siswa.Nama_Depan}</td>
-                                                            <td>{siswa.Nama_Belakang}</td>
-                                                            {/**ambil nama kelas berdasrkan foreign key */}
-                                                            <td>{kelas.find(kelasItem => kelasItem.id === siswa.kelas_id)?.nama_kelas || 'Kelas tidak ditemukan'}</td>                                                            <td>{siswa.Email}</td>
+                                                    paginatedData.map(pengajar => (
+                                                        <tr key={pengajar.ID}>
+                                                            <td>{pengajar.NIP}</td>
+                                                            <td>{pengajar.Nama_Depan}</td>
+                                                            <td>{pengajar.Nama_Belakang}</td>
+                                                            <td>{pengajar.Bidang}</td>
                                                             <td>
-                                                                <Link to={`/edit-siswa/${siswa.ID}`} className="btn btn-warning" style={{ marginRight: '10px' }}><i class="far fa-edit align-middle "></i></Link>
-                                                                <button className="btn btn-danger waves-effect waves-light" onClick={() => deleteSiswa(siswa.ID)}><i class=" fas fa-trash-alt align-middle "></i></button>                                                            </td>
+                                                                <Link to={`/edit-pengajar/${pengajar.ID}`} className="btn btn-warning" style={{ marginRight: '5px' }}>  <i class="far fa-edit align-middle "></i></Link>
+                                                                <button className="btn btn-danger waves-effect waves-light" onClick={() => deletePengajar(pengajar.ID)}><i class=" fas fa-trash-alt align-middle "></i>
+                                                                </button>
+                                                            </td>
                                                         </tr>
                                                     ))
                                                 ) : (
                                                     <tr>
-                                                        <td colSpan="6">No data available</td>
+                                                        <td colSpan="5">No data available</td>
                                                     </tr>
                                                 )}
                                             </tbody>
                                         </table>
                                         <div className="row">
                                             <div className="col-sm-12 col-md-5">
-                                                <div className="dataTables_info" id="datatable-buttons_info" role="status" aria-live="polite">Showing {currentPage * perPage + 1} to {Math.min((currentPage + 1) * perPage, siswas.length)} of {siswas.length} entries</div>
+                                                <div className="dataTables_info" id="datatable-buttons_info" role="status" aria-live="polite">Showing {currentPage * perPage + 1} to {Math.min((currentPage + 1) * perPage, pengajars.length)} of {pengajars.length} entries</div>
                                             </div>
                                             <div className="col-sm-12 col-md-7">
                                                 <div className="dataTables_paginate paging_simple_numbers" id="datatable-buttons_paginate">
@@ -221,7 +210,7 @@ function AllSiswa() {
                                                         breakClassName={'break-me'}
                                                         pageCount={pageCount}
                                                         marginPagesDisplayed={2}
-                                                        pageRangeDisplayed={5}
+                                                        pageRangeDisplayed={8}
                                                         onPageChange={handlePageClick}
                                                         containerClassName={'pagination'}
                                                         subContainerClassName={'pages pagination'}
@@ -242,4 +231,4 @@ function AllSiswa() {
     );
 }
 
-export default AllSiswa;
+export default AllPengajar;

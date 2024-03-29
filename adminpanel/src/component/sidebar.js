@@ -22,7 +22,7 @@ function Sidebar() {
 
                 <div className="user-profile text-center mt-5">
                     <div className="">
-                        <img src="../robotprofilewhite.jpg" alt="" width={120} />
+                        <img src="../robotprofilewhite.jpg" alt="" width={90} />
                     </div>
                     <div className="mt-3">
                         <h4 className="font-size-16 mb-1">Admin</h4>
@@ -43,14 +43,13 @@ function Sidebar() {
 
                         <li>
                             <a href="calendar.html" className=" waves-effect">
-                                <i className="far fa-calendar-alt"></i>
+                                <i className="fas fa-calendar-check"></i>
                                 <span>Absensi</span>
                             </a>
                         </li>
-
                         <li>
                             <a href="javascript: void(0);" className="has-arrow waves-effect" onClick={() => toggleDropdown('Siswa')}>
-                                <i className="fas fa-users"></i> {/* Replace this with the Font Awesome class names */}
+                                <i className="fas fa-user-graduate"></i>
                                 <span>Siswa</span>
                             </a>
                             {isOpen.Siswa && (
@@ -62,11 +61,22 @@ function Sidebar() {
                         </li>
 
                         <li>
+                            <a href="javascript: void(0);" className="has-arrow waves-effect" onClick={() => toggleDropdown('Guru')}>
+                                <i className="fas fa-chalkboard-teacher"></i>
+                                <span>Guru</span>
+                            </a>
+                            {isOpen.Guru && (
+                                <ul className="sub-menu" aria-expanded="false">
+                                    <li><Link to="/all-pengajar">All Guru</Link></li>
+                                    <li><Link to="/add-pengajar">Add Guru</Link></li>
+                                </ul>
+                            )}
+                        </li>
+                        <li>
                             <a href="javascript: void(0);" className="has-arrow waves-effect" onClick={() => toggleDropdown('Pengumuman')}>
                                 <i className="fas fa-bullhorn"></i>
                                 <span>Pengumuman</span>
                             </a>
-
                             {isOpen.Pengumuman && (
                                 <ul className="sub-menu" aria-expanded="true">
 
@@ -83,17 +93,15 @@ function Sidebar() {
                         </li>
                         <li>
                             <Link to="/all-kelas" >
-                                <i className="fas fa-chalkboard-teacher"></i>
+                                <i className="fas fa-chalkboard"></i>
                                 <span>Daftar Kelas</span>
                             </Link>
-
                         </li>
                         <li>
-                            <Link to="/all-kelas" >
-                                <i className="fas fa-chalkboard-teacher"></i>
+                            <Link to="/all-roster" >
+                                <i className="fas fa-list-alt"></i>
                                 <span>Roster </span>
                             </Link>
-
                         </li>
                         <li>
                             <a href="javascript: void(0);" className="has-arrow waves-effect" onClick={() => toggleDropdown('TanyaJawab')}>

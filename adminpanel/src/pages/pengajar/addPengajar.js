@@ -2,12 +2,27 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../component/header';
 import Sidebar from '../../component/sidebar';
 import { useNavigate } from 'react-router-dom';
-
 import swal from 'sweetalert2';
 import 'react-toastify/dist/ReactToastify.css';
 
-function AddSiswa() {
+function AddPengajar() {
     const [kelas, setKelas] = useState([]);
+    const { BASE_URL } = require('../../configapi');
+    const [formData, setFormData] = useState({
+        NIP: '',
+        Nama_Depan: '',
+        Nama_Belakang: '',
+        Agama: '',
+        Email: '',
+        Bidang: '',
+        Alamat: '',
+        Jenis_Kelamin: '',
+        Tanggal_Lahir: '',
+        Urlphoto: '',
+        KelasID: '', // Added KelasID field to formData state
+    });
+    const [imageURL, setImageURL] = useState("/no-image-available.png");
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch(`${BASE_URL}api/kelas`)
@@ -15,23 +30,6 @@ function AddSiswa() {
             .then(data => setKelas(data));
     }, []);
 
-    const navigate = useNavigate();
-
-    const [formData, setFormData] = useState({
-        NISN: '',
-        Nama_Depan: '',
-        Nama_Belakang: '',
-        KelasID: '',
-        Agama: '',
-        Email: '',
-        Alamat: '',
-        Jenis_Kelamin: '',
-        Tanggal_Lahir: '',
-        Password: '',
-        Urlphoto: '',
-    });
-
-    const [imageURL, setImageURL] = useState("/no-image-available.png");
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -39,6 +37,7 @@ function AddSiswa() {
             [name]: value,
         });
     };
+
     const handleFileChange = (e) => {
         setFormData({
             ...formData,
@@ -49,7 +48,7 @@ function AddSiswa() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const requiredFields = ['NISN', 'Nama_Depan', 'Nama_Belakang', 'KelasID', 'Agama', 'Email', 'Alamat', 'Jenis_Kelamin', 'Tanggal_Lahir',];
+        const requiredFields = ['NIP', 'Nama_Depan', 'Nama_Belakang', 'Agama', 'Email', 'Bidang', 'Alamat', 'Jenis_Kelamin', 'Tanggal_Lahir'];
         for (let field of requiredFields) {
             if (!formData[field]) {
                 swal.fire({
@@ -67,32 +66,33 @@ function AddSiswa() {
 
         const fileField = document.querySelector('input[type="file"]');
         data.append('file', fileField.files[0]);
-        const response = await fetch(`${BASE_URL}api/register`, {
+
+        const response = await fetch(`${BASE_URL}api/pengajar`, {
             method: 'POST',
             body: data,
         });
 
         const responseData = await response.json();
         console.log(responseData);
+
         if (responseData.user_id) {
             setImageURL("/no-image-available.png");
             setFormData({
-                NISN: '',
+                NIP: '',
                 Nama_Depan: '',
                 Nama_Belakang: '',
-                KelasID: '',
                 Agama: '',
                 Email: '',
+                Bidang: '',
                 Alamat: '',
                 Jenis_Kelamin: '',
                 Tanggal_Lahir: '',
-                Password: '',
                 Urlphoto: '',
+                KelasID: '', // Reset KelasID field
             });
-            window.toastr.success('Siswa berhasil ditambahkan!');
-            navigate('/all-siswa')
-        }
-        else if (responseData.message) {
+            window.toastr.success('Pengajar berhasil ditambahkan!');
+            navigate('/all-pengajar')
+        } else if (responseData.message) {
             swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -100,8 +100,6 @@ function AddSiswa() {
             });
         }
     };
-    const { BASE_URL } = require('../../configapi');
-
     return (
         <div id="layout-wrapper">
             <Header />
@@ -113,97 +111,85 @@ function AddSiswa() {
                             <div className="col-xl-12">
                                 <div className="card">
                                     <div className="card-body">
-                                        <h4 className="card-title">Tambahkan Siswa</h4>
-                                        <p className="card-title-desc">Formulir ini digunakan untuk menambahkan siswa baru ke dalam sistem. Harap isi semua bidang yang diperlukan dan pastikan informasinya akurat.</p>
+                                        <h4 className="card-title">Edit Pengajar</h4>
+                                        <p className="card-title-desc">This form is used to update the details of a pengajar in the system. Please fill out all necessary fields and ensure the information is accurate and up-to-date.</p>
                                         <form className="needs-validation" onSubmit={handleSubmit} noValidate>
-                                            <input type="text" name="NISN" className="form-control" placeholder="NISN" value={formData.NISN} onChange={handleChange} required />
+                                            <label htmlFor="NIP" className="form-label">NIP</label>
+                                            <input type="text" name="NIP" className="form-control" placeholder="NIP" value={formData.NIP} onChange={handleChange} required />
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <div className="mb-3">
                                                         <label htmlFor="Nama_Depan" className="form-label">Nama Depan</label>
                                                         <input type="text" className="form-control" id="Nama_Depan" name="Nama_Depan" placeholder="First name" value={formData.Nama_Depan} onChange={handleChange} required />
-                                                        <div className="valid-feedback"></div>
                                                     </div>
                                                 </div>
                                                 <div className="col-md-6">
                                                     <div className="mb-3">
                                                         <label htmlFor="Nama_Belakang" className="form-label">Nama Belakang</label>
                                                         <input type="text" className="form-control" id="Nama_Belakang" name="Nama_Belakang" placeholder="Last name" value={formData.Nama_Belakang} onChange={handleChange} required />
-                                                        <div className="valid-feedback">Looks good!</div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="row">
-                                                <div className="col-md-4">
+                                                <div className="col-md-6">
                                                     <div className="mb-3">
-                                                        <label htmlFor="validationCustom03" className="form-label">Kelas</label>
-                                                        <select className="form-select" id="validationCustom03" name="KelasID" value={formData.KelasID} onChange={handleChange} required>
-                                                            <option defaultValue disabled value="">Choose...</option>
-                                                            {kelas.map((kelasItem, index) => (
-                                                                <option key={index} value={kelasItem.id}>{kelasItem.nama_kelas}</option>
-                                                            ))}
-                                                        </select>
-                                                        <div className="invalid-feedback">
-                                                            Please select a valid state.
-                                                        </div>
+                                                        <label htmlFor="Bidang" className="form-label">Bidang</label>
+                                                        <input type="text" className="form-control" id="Bidang" name="Bidang" placeholder="Bidang" value={formData.Bidang} onChange={handleChange} required />
                                                     </div>
                                                 </div>
-
-                                                <div className="col-md-4">
+                                                <div className="col-md-6">
                                                     <div className="mb-3">
-                                                        <label htmlFor="validationCustom04" className="form-label">Agama</label>
-                                                        <input type="text" className="form-control" name="Agama" required placeholder="Agama" value={formData.Agama} onChange={handleChange} />
-                                                        <div className="invalid-feedback">
-                                                            Please provide a valid Religion
-                                                        </div>
+                                                        <label htmlFor="Agama" className="form-label">Agama</label>
+                                                        <input type="text" className="form-control" id="Agama" name="Agama" placeholder="Agama" value={formData.Agama} onChange={handleChange} required />
                                                     </div>
                                                 </div>
-                                                <div className="col-md-4">
-                                                    <div className="mb-2">
-                                                        <label htmlFor="validationCustom05" className="form-label">Email</label>
-                                                        <input type="email" className="form-control" id="validationCustom05" name="Email" placeholder="Email" value={formData.Email} onChange={handleChange} required />
-                                                        <div className="invalid-feedback">
-                                                            Please provide a valid email.
-                                                        </div>
-                                                    </div>
-                                                </div>
-
                                             </div>
                                             <div className="row">
-                                                <div className="col-md-7">
-                                                    <div className="mb-2">
-                                                        <label>Alamat</label>
-                                                        <input type="text" className="form-control" name="Alamat" required placeholder="Alamat" value={formData.Alamat} onChange={handleChange} />                                                    </div>
-                                                </div>
-                                                <div className="col-md-5">
+                                                <div className="col-md-6">
                                                     <div className="mb-3">
-                                                        <label>Jenis Kelamin</label>
-                                                        <select className="form-select" name="Jenis_Kelamin" aria-label="Default select example" value={formData.Jenis_Kelamin} onChange={handleChange}>
-                                                            <option selected="">Pilih...</option>
+                                                        <label htmlFor="Email" className="form-label">Email</label>
+                                                        <input type="email" className="form-control" id="Email" name="Email" placeholder="Email" value={formData.Email} onChange={handleChange} required />
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <div className="mb-3">
+                                                        <label htmlFor="Alamat" className="form-label">Alamat</label>
+                                                        <input type="text" className="form-control" id="Alamat" name="Alamat" placeholder="Alamat" value={formData.Alamat} onChange={handleChange} required />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <div className="mb-3">
+                                                        <label htmlFor="Jenis_Kelamin" className="form-label">Jenis Kelamin</label>
+                                                        <select className="form-select" id="Jenis_Kelamin" name="Jenis_Kelamin" value={formData.Jenis_Kelamin} onChange={handleChange} required>
+                                                            <option value="">Pilih...</option>
                                                             <option value="Laki-Laki">Laki-laki</option>
                                                             <option value="Perempuan">Perempuan</option>
                                                             <option value="Lainnya">Lainnya</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className="mb-2">
-                                                <label>Tanggal Lahir</label>
-                                            </div>
-                                            <div className="row mb-3">
-                                                <div className="col-sm-12">
-                                                    <input className="form-control" required type="date" name="Tanggal_Lahir" value={formData.Tanggal_Lahir} onChange={handleChange} id="example-date-input" />
+                                                <div className="col-md-6">
+                                                    <div className="mb-3">
+                                                        <label htmlFor="Tanggal_Lahir" className="form-label">Tanggal Lahir</label>
+                                                        <input type="date" className="form-control" id="Tanggal_Lahir" name="Tanggal_Lahir" value={formData.Tanggal_Lahir} onChange={handleChange} required />
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <div className="row">
 
-                                            <div className="input-group">
-                                                <div className="col-sm-12">
-
-                                                    <input type="file" className="form-control" id="customFile" onChange={handleFileChange} />
-                                                </div>                                      </div>
-                                            <br></br>
-                                            <div className="col-xl-3">
-                                            <img
+                                                <div className="col-md-12">
+                                                    <div className="mb-3">
+                                                        <label htmlFor="customFile" className="form-label">Upload Photo</label>
+                                                        <input type="file" className="form-control" id="customFile" onChange={handleFileChange} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <div className="col-xl-3">
+                                                    <img
                                                         src={imageURL}
                                                         alt="Uploaded"
                                                         style={{
@@ -211,25 +197,24 @@ function AddSiswa() {
                                                             height: imageURL === "/no-image-available.png" ? '112px' : '112px',
                                                             margin: '30px',
                                                         }}
-                                                    />                                           </div>
-
-
-                                            <button className="btn btn-primary" type="submit">Submit Form <i class="  fas fa-arrow-circle-right align-middle ms-2"></i></button>
+                                                    />                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="mt-3">
+                                                <button className="btn btn-primary" type="submit">Submit Form <i class="  fas fa-arrow-circle-right align-middle ms-2"></i></button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
-
-
                             </div>
-
-
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     );
+
+
 }
 
-export default AddSiswa;
+export default AddPengajar;

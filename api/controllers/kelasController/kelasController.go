@@ -24,7 +24,9 @@ func GetKelasById(c *fiber.Ctx) error {
 	var kelas models.Kelas
 	id := c.Params("id")
 
+	db.Preload("Rosters").Find(&kelas, id)
 	db.Preload("Users").Find(&kelas, id)
+	db.Preload("Pengajar").Find(&kelas, id)
 	if kelas.ID == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"message": "No class found with given ID",

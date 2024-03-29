@@ -14,7 +14,8 @@ func main() {
 	app := fiber.New()
 
 	app.Static("/api/siswa/uploads/siswa", "./uploads/siswa")
-	app.Static("/api/pengumuman/uploads/pengumuman", "./uploads/pengumuman") // Add this line
+	app.Static("/api/pengumuman/uploads/pengumuman", "./uploads/pengumuman")
+	app.Static("/api/pengajar/uploads/pengajar", "./uploads/pengajar")
 	app.Use(cors.New(cors.Config{
 		AllowCredentials: true,
 	}))
@@ -33,6 +34,15 @@ func main() {
 
 	// Setup siswa routes
 	routes.SetupSiswa(app)
+
+	// Setup roster routes
+	routes.SetupRoster(app)
+
+	// Setup pengajar routes
+	routes.SetupPengajar(app)
+
+	// Setup tanyajawab routes
+	routes.SetupTanyaJawab(app)
 
 	app.Listen(":5000")
 }

@@ -12,7 +12,7 @@ function AllPengumuman() {
     const { BASE_URL } = require('../../configapi');
     const [search, setSearch] = useState('');
     const [currentPage, setCurrentPage] = useState(0);
-    const [perPage] = useState(10); // Jumlah data per halaman
+    const [perPage] = useState(4); // Jumlah data per halaman
     const filteredPengumumans = Array.isArray(pengumumans) ? pengumumans.filter(pengumuman =>
         pengumuman.judul.toLowerCase().includes(search.toLowerCase())
     ) : [];
@@ -98,7 +98,12 @@ function AllPengumuman() {
                                                 <div className="col-sm-12 col-md-6">
                                                     <div className="dt-buttons btn-group flex-wrap">
                                                     </div>
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginLeft: '16px',marginBottom:'5px' }}>
+                                                        <Link to="/add-pengumuman" className="btn btn-primary waves-effect waves-light">
+                                                            Add Pengumuman <i class="  ri-newspaper-line align-middle ms-2 "></i></Link>
+                                                    </div>
                                                 </div>
+
                                                 <div className="col-sm-12 col-md-6">
                                                     <div id="datatable-buttons_filter" className="dataTables_filter">
                                                         <label>Search:
@@ -123,10 +128,10 @@ function AllPengumuman() {
                                                         <tr key={pengumuman.id}>
                                                             <td>{currentPage * perPage + index + 1}</td>
                                                             <td>{pengumuman.judul}</td>
-                                                            <td><img src={pengumuman.urlphoto} alt={pengumuman.judul} style={{ width: '80px', height: '80px' }} /></td>
+                                                            <td><img src={pengumuman.urlphoto} alt={pengumuman.judul} style={{ width: '60px', height: '60px' }} /></td>
                                                             <td>
-                                                                <Link to={`/edit-pengumuman/${pengumuman.id}`} className="btn btn-info" style={{ marginRight: '10px' }}>Detail</Link>
-                                                                <button className="btn btn-danger waves-effect waves-light" onClick={() => deletePengumuman(pengumuman.id)}>Hapus</button>
+                                                                <Link to={`/edit-pengumuman/${pengumuman.id}`} className="btn btn-warning" style={{ marginRight: '10px' }}> <i class="far fa-edit align-middle "></i></Link>
+                                                                <button className="btn btn-danger waves-effect waves-light" onClick={() => deletePengumuman(pengumuman.id)}><i class=" fas fa-trash-alt align-middle "></i></button>
                                                             </td>
                                                         </tr>
                                                     ))
@@ -150,7 +155,7 @@ function AllPengumuman() {
                                                         breakClassName={'break-me'}
                                                         pageCount={pageCount}
                                                         marginPagesDisplayed={2}
-                                                        pageRangeDisplayed={5}
+                                                        pageRangeDisplayed={4}
                                                         onPageChange={handlePageClick}
                                                         containerClassName={'pagination'}
                                                         subContainerClassName={'pages pagination'}

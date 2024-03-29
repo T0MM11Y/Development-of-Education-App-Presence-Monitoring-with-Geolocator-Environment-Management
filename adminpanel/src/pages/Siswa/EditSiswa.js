@@ -144,7 +144,7 @@ function EditSiswa() {
                     Urlphoto: data.Urlphoto,
                 };
                 setFormData(studentData);
-                setImageURL(data.Urlphoto);
+                setImageURL(data.Urlphoto || "/no-image-available.png");
             })
             .catch(error => console.error(error));
     }, [id]);
@@ -163,7 +163,9 @@ function EditSiswa() {
                                         <h4 className="card-title">Edit Siswa</h4>
                                         <p className="card-title-desc">This form is used to update the details of a student in the system. Please fill out all necessary fields and ensure the information is accurate and up-to-date.</p>
                                         <form className="needs-validation" onSubmit={handleSubmit} noValidate>
-                                            <input type="text" name="NISN" className="form-control" placeholder="NISN" value={formData.NISN} onChange={handleChange} required />
+                                            <label htmlFor="Nama_Depan" className="form-label">Nisn</label>
+
+                                            <input type="text" name="NISN" className="form-control" placeholder="NISN" value={formData.NISN} onChange={handleChange} disabled />
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <div className="mb-3">
@@ -250,10 +252,16 @@ function EditSiswa() {
                                                 </div>                                      </div>
                                             <br></br>
                                             <div className="col-xl-3">
-                                                <img src={imageURL} alt="Uploaded" style={{ width: '20em', height: 'auto', 'marginBottom': '20px' }} />                                       </div>
-
-
-                                            <button className="btn btn-primary" type="submit">Update Form</button>
+                                                <img
+                                                    src={imageURL}
+                                                    alt="Uploaded"
+                                                    style={{
+                                                        width: imageURL === "/no-image-available.png" ? '112px' : '112px',
+                                                        height: imageURL === "/no-image-available.png" ? '112px' : '112px',
+                                                        margin: '30px',
+                                                    }}
+                                                />                                                           </div>
+                                            <button className="btn btn-primary" type="submit">Update Form <i class="fas fa-edit align-middle ms-2"></i></button>
                                         </form>
                                     </div>
                                 </div>

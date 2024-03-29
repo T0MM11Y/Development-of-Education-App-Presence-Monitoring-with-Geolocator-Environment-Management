@@ -9,6 +9,10 @@ import AddPengumuman from './pages/pengumuman/AddPengumuman';
 import AllPengumuman from './pages/pengumuman/AllPengumuman';
 import EditPengumuman from './pages/pengumuman/EditPengumuman';
 import AllKelas from './pages/kelas/allKelas';
+import Roster from './pages/roster/AllRoster';
+import AllPengajar from './pages/pengajar/AllPengajar';
+import AddPengajar from './pages/pengajar/addPengajar';
+import EditPengajar from './pages/pengajar/EditPengajar';
 
 function App() {
     const [token, setToken] = useState(localStorage.getItem('accessToken'));
@@ -32,17 +36,25 @@ function App() {
                 <Route path="/dashboard" element={token ? <Dashboard /> : <Navigate to="/login" />} />
 
                 {/* Route Siswa */}
-                <Route path="/add-siswa" element={<AddSiswa/>}  />
+                <Route path="/add-siswa" element={<AddSiswa />} />
                 <Route path="/all-siswa" element={<AllSiswa />} />
-                <Route path='/edit-siswa/:id' element={<EditSiswa/>} />
+                <Route path='/edit-siswa/:id' element={<EditSiswa />} />
 
                 {/* Route Pengumuman */}
-                <Route path="/add-pengumuman" element={<AddPengumuman/>}  />
+                <Route path="/add-pengumuman" element={<AddPengumuman />} />
                 <Route path="/all-pengumuman" element={<AllPengumuman />} />
-                <Route path='/edit-pengumuman/:id' element={<EditPengumuman/>} />
+                <Route path='/edit-pengumuman/:id' element={<EditPengumuman />} />
 
                 {/* Route Kelas */}
-                <Route path="/all-kelas" element={<AllKelas/>}  />
+                <Route path="/all-kelas" element={<AllKelas />} />
+
+                {/* Route Roster*/}
+                <Route path="/all-roster" element={<Roster />} />
+
+                {/*Route Pengajar */}
+                <Route path="/add-pengajar" element={<AddPengajar />} />
+                <Route path="/all-pengajar" element={<AllPengajar />} />
+                <Route path='/edit-pengajar/:id' element={<EditPengajar />} />
 
 
 

@@ -16,9 +16,12 @@ func Connect() {
 
 	}
 	DB = connection
-	connection.AutoMigrate(&models.User{})
 	connection.AutoMigrate(&models.Admin{})
-
-	connection.AutoMigrate(&models.Pengumuman{})
 	connection.AutoMigrate(&models.Kelas{})
+	connection.AutoMigrate(&models.User{})
+	connection.AutoMigrate(&models.Pengajar{})
+	connection.AutoMigrate(&models.Roster{})
+	connection.AutoMigrate(&models.Pengumuman{})
+	connection.AutoMigrate(&models.TanyaJawab{})
+
 }
