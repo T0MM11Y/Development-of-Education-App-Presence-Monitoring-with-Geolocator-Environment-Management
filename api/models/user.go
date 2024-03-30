@@ -14,5 +14,5 @@ type User struct {
 	Jenis_Kelamin string       `json:"Jenis_Kelamin"`
 	Urlphoto      string       `json:"Urlphoto"`
 	Password      []byte       `json:"-"`
-	TanyaJawab    []TanyaJawab `json:"tanya_jawab" gorm:"foreignKey:UserID"`
+	TanyaJawabs   []TanyaJawab `json:"tanya_jawab" gorm:"foreignKey:UserID"`
 }

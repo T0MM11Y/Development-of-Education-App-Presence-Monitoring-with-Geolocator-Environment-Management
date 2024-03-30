@@ -15,6 +15,7 @@ func GetSiswaById(c *fiber.Ctx) error {
 	db := database.DB
 	var siswa models.User
 	id := c.Params("id")
+	db.Preload("Kelas").Find(&siswa, id)
 
 	db.Find(&siswa, id)
 	if siswa.NISN == 0 {

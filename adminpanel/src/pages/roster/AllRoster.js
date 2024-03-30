@@ -329,7 +329,7 @@ function AllRoster() {
 
                                         )}
                                         <div class="row">
-                                            <div class="col-sm-12 col-md-10">
+                                            <div class="col-sm-12 col-md-9">
                                                 <div class="dataTables_length" id="complex-header-datatable_length" style={{ marginLeft: '2em' }} // Add this line
                                                 >
                                                     <label>
@@ -356,7 +356,7 @@ function AllRoster() {
                                             <div class="col-sm-12 col-md-2">
                                                 <div id="complex-header-datatable_filter" class="dataTables_filter">
                                                     <label>Search:
-                                                        <input type="search" class="form-control form-control-sm" placeholder="" aria-controls="complex-header-datatable" onChange={handleSearchChange} />
+                                                        <input type="search" style={{width:'140'}} class="form-control form-control-sm" placeholder="Cari disini " aria-controls="complex-header-datatable" onChange={handleSearchChange} />
                                                     </label>
                                                 </div>
                                             </div>

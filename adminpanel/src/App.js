@@ -13,6 +13,7 @@ import Roster from './pages/roster/AllRoster';
 import AllPengajar from './pages/pengajar/AllPengajar';
 import AddPengajar from './pages/pengajar/addPengajar';
 import EditPengajar from './pages/pengajar/EditPengajar';
+import TanyaJawab from './pages/tanya_jawab/TanyaJawab';
 
 function App() {
     const [token, setToken] = useState(localStorage.getItem('accessToken'));
@@ -55,6 +56,10 @@ function App() {
                 <Route path="/add-pengajar" element={<AddPengajar />} />
                 <Route path="/all-pengajar" element={<AllPengajar />} />
                 <Route path='/edit-pengajar/:id' element={<EditPengajar />} />
+
+                {/*Route Tanya Jawab */}
+                <Route path="/tanya-jawab" element={<TanyaJawab />} />
+
 
 
 

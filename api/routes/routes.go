@@ -67,7 +67,11 @@ func SetupPengajar(app *fiber.App) {
 	app.Delete("/api/pengajar/:id", pengajarController.DeletePengajar)
 }
 
+// Setup tANYAJAWAB routes
 func SetupTanyaJawab(app *fiber.App) {
+	app.Get("/api/tanyajawab", tanyajawabController.GetAllQuestions)
+	app.Get("/api/tanyajawab/:id", tanyajawabController.GetQuestionById)
+	app.Delete("/api/tanyajawab/:id", tanyajawabController.DeleteQuestion)
 	app.Post("/api/tanyajawab", tanyajawabController.AskQuestion)
-	app.Post("/api/tanyajawab/:id", tanyajawabController.AnswerQuestion)
+	app.Put("/api/tanyajawab/:id", tanyajawabController.AnswerQuestion)
 }

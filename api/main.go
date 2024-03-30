@@ -41,7 +41,7 @@ func main() {
 	// Setup pengajar routes
 	routes.SetupPengajar(app)
 
-	// Setup tanyajawab routes
+	// Setup tanya jawab routes
 	routes.SetupTanyaJawab(app)
 
 	app.Listen(":5000")

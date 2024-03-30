@@ -7,6 +7,15 @@
   pointer-events: none;
 }
 
+.sub-menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.9s ease-out;
+}
+
+.sub-menu.open {
+  max-height: 500px; /* you can adjust this value */
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

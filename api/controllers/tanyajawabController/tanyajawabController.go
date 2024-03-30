@@ -3,7 +3,7 @@ package tanyajawabController
 import (
 	"API/database"
 	"API/models"
-	"strconv"
+	"fmt"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -11,56 +11,110 @@ import (
 
 func AskQuestion(c *fiber.Ctx) error {
 	db := database.DB
-	tanyaJawab := new(models.TanyaJawab)
-	if err := c.BodyParser(tanyaJawab); err != nil {
+	question := new(models.TanyaJawab)
+	question.AdminID = nil
+
+	if err := c.BodyParser(question); err != nil {
+		fmt.Println(err)
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Cannot parse JSON",
-			"error":   err,
 		})
 	}
 
-	tanyaJawab.TanggalTanya = time.Now() // Set TanggalTanya to current time
+	question.TanggalTanya = time.Now().Format(time.RFC3339)
 
-	db.Create(tanyaJawab)
-
-	if db.Error != nil {
+	result := db.Create(&question)
+	if result.Error != nil {
+		fmt.Println(result.Error)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Error when saving to database",
-			"error":   db.Error,
+			"message": "Failed to ask question",
 		})
 	}
 
-	return c.JSON(fiber.Map{
-		"message":       "Question asked successfully",
-		"tanyaJawab_id": tanyaJawab.ID,
-	})
+	return c.JSON(question)
 }
 
 func AnswerQuestion(c *fiber.Ctx) error {
 	db := database.DB
-	var tanyaJawab models.TanyaJawab
 	id := c.Params("id")
+	var question models.TanyaJawab
 
-	db.Find(&tanyaJawab, id)
-	if tanyaJawab.ID == 0 {
+	if err := db.First(&question, id).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": "Question not found",
+		})
+	}
+
+	if err := c.BodyParser(&question); err != nil {
+		fmt.Println(err)
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Cannot parse JSON",
+		})
+	}
+
+	question.TanggalJawab = time.Now().Format(time.RFC3339)
+	adminID := uint(1)
+	question.AdminID = &adminID
+
+	result := db.Save(&question)
+	if result.Error != nil {
+		fmt.Println(result.Error)
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Failed to answer question",
+		})
+	}
+
+	return c.JSON(question)
+}
+func GetAllQuestions(c *fiber.Ctx) error {
+	db := database.DB
+	var questions []models.TanyaJawab
+
+	db.Find(&questions)
+	db.Preload("User").Preload("Admin").Find(&questions)
+
+	if len(questions) == 0 {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": "No questions found",
+		})
+	}
+
+	return c.JSON(questions)
+}
+
+func GetQuestionById(c *fiber.Ctx) error {
+	db := database.DB
+	id := c.Params("id")
+	var question models.TanyaJawab
+
+	db.Find(&question, id)
+	db.Preload("User").Preload("Admin").Find(&question)
+
+	if question.ID == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"message": "No question found with given ID",
 		})
 	}
 
-	tanyaJawab.Jawaban = c.FormValue("Jawaban")
-	tanyaJawab.TanggalJawab = time.Now() // Set TanggalJawab to current time
+	return c.JSON(question)
+}
 
-	adminID, _ := strconv.ParseUint(c.FormValue("AdminID"), 10, 32)
-	tanyaJawab.AdminID = uint(adminID)
+func DeleteQuestion(c *fiber.Ctx) error {
+	db := database.DB
+	id := c.Params("id")
+	var question models.TanyaJawab
 
-	result := db.Save(&tanyaJawab)
-	if result.Error != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Error when saving to database",
-			"error":   result.Error,
+	db.Find(&question, id)
+
+	if question.ID == 0 {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": "No question found with given ID",
 		})
 	}
 
-	return c.JSON(tanyaJawab)
+	db.Delete(&question)
+
+	return c.JSON(fiber.Map{
+		"message": "Question deleted successfully",
+	})
 }

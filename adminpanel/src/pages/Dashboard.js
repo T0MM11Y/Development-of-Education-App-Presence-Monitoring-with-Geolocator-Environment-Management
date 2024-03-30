@@ -34,79 +34,79 @@ function App() {
                         </div>
 
                         <div className="row">
-            <div className="col-xl-3 col-md-6">
-                <div className="card">
-                    <div className="card-body">
-                        <div className="d-flex">
-                            <div className="flex-grow-1">
-                                <p className="text-truncate font-size-14 mb-2">Siswa</p>
-                                <h4 className="mb-2">10</h4>
-                                <p className="text-muted mb-0"><span className="text-success fw-bold font-size-12 me-2"><i className="ri-arrow-right-up-line me-1 align-middle"></i>9.23%</span>from previous period</p>
+                            <div className="col-xl-3 col-md-6">
+                                <div className="card">
+                                    <div className="card-body">
+                                        <div className="d-flex">
+                                            <div className="flex-grow-1">
+                                                <p className="text-truncate font-size-14 mb-2">Siswa</p>
+                                                <h4 className="mb-2">10</h4>
+                                                <p className="text-muted mb-0"><span className="text-success fw-bold font-size-12 me-2"><i className="ri-arrow-right-up-line me-1 align-middle"></i>9.23%</span>from previous period</p>
+                                            </div>
+                                            <div className="avatar-sm">
+                                                <span className="avatar-title bg-light text-primary rounded-3">
+                                                    <i className="ri-user-line font-size-24"></i> {/* Replaced with a user icon */}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="avatar-sm">
-                                <span className="avatar-title bg-light text-primary rounded-3">
-                                    <i className="ri-user-line font-size-24"></i> {/* Replaced with a user icon */}
-                                </span>
+                            <div className="col-xl-3 col-md-6">
+                                <div className="card">
+                                    <div className="card-body">
+                                        <div className="d-flex">
+                                            <div className="flex-grow-1">
+                                                <p className="text-truncate font-size-14 mb-2">Pengumuman</p>
+                                                <h4 className="mb-2">21</h4>
+                                                <p className="text-muted mb-0"><span className="text-danger fw-bold font-size-12 me-2"><i className="ri-arrow-right-down-line me-1 align-middle"></i>1.09%</span>from previous period</p>
+                                            </div>
+                                            <div className="avatar-sm">
+                                                <span className="avatar-title bg-light text-success rounded-3">
+                                                    <i className="ri-notification-line font-size-24"></i> {/* Replaced with a notification icon */}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-xl-3 col-md-6">
+                                <div className="card">
+                                    <div className="card-body">
+                                        <div className="d-flex">
+                                            <div className="flex-grow-1">
+                                                <p className="text-truncate font-size-14 mb-2">Mata pelajaran</p>
+                                                <h4 className="mb-2">13</h4>
+                                                <p className="text-muted mb-0"><span className="text-success fw-bold font-size-12 me-2"><i className="ri-arrow-right-up-line me-1 align-middle"></i>16.2%</span>from previous period</p>
+                                            </div>
+                                            <div className="avatar-sm">
+                                                <span className="avatar-title bg-light text-primary rounded-3">
+                                                    <i className="ri-book-line font-size-24"></i> {/* Replaced with a book icon */}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-xl-3 col-md-6">
+                                <div className="card">
+                                    <div className="card-body">
+                                        <div className="d-flex">
+                                            <div className="flex-grow-1">
+                                                <p className="text-truncate font-size-14 mb-2">Tanya Jawab</p>
+                                                <h4 className="mb-2">13</h4>
+                                                <p className="text-muted mb-0"><span className="text-success fw-bold font-size-12 me-2"><i className="ri-arrow-right-up-line me-1 align-middle"></i>11.7%</span>from previous period</p>
+                                            </div>
+                                            <div className="avatar-sm">
+                                                <span className="avatar-title bg-light text-success rounded-3">
+                                                    <i className="ri-question-answer-line font-size-24"></i> {/* Replaced with a question-answer icon */}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div className="col-xl-3 col-md-6">
-                <div className="card">
-                    <div className="card-body">
-                        <div className="d-flex">
-                            <div className="flex-grow-1">
-                                <p className="text-truncate font-size-14 mb-2">Pengumuman</p>
-                                <h4 className="mb-2">21</h4>
-                                <p className="text-muted mb-0"><span className="text-danger fw-bold font-size-12 me-2"><i className="ri-arrow-right-down-line me-1 align-middle"></i>1.09%</span>from previous period</p>
-                            </div>
-                            <div className="avatar-sm">
-                                <span className="avatar-title bg-light text-success rounded-3">
-                                    <i className="ri-notification-line font-size-24"></i> {/* Replaced with a notification icon */}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="col-xl-3 col-md-6">
-                <div className="card">
-                    <div className="card-body">
-                        <div className="d-flex">
-                            <div className="flex-grow-1">
-                                <p className="text-truncate font-size-14 mb-2">Mata pelajaran</p>
-                                <h4 className="mb-2">13</h4>
-                                <p className="text-muted mb-0"><span className="text-success fw-bold font-size-12 me-2"><i className="ri-arrow-right-up-line me-1 align-middle"></i>16.2%</span>from previous period</p>
-                            </div>
-                            <div className="avatar-sm">
-                                <span className="avatar-title bg-light text-primary rounded-3">
-                                    <i className="ri-book-line font-size-24"></i> {/* Replaced with a book icon */}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="col-xl-3 col-md-6">
-                <div className="card">
-                    <div className="card-body">
-                        <div className="d-flex">
-                            <div className="flex-grow-1">
-                                <p className="text-truncate font-size-14 mb-2">Tanya Jawab</p>
-                                <h4 className="mb-2">13</h4>
-                                <p className="text-muted mb-0"><span className="text-success fw-bold font-size-12 me-2"><i className="ri-arrow-right-up-line me-1 align-middle"></i>11.7%</span>from previous period</p>
-                            </div>
-                            <div className="avatar-sm">
-                                <span className="avatar-title bg-light text-success rounded-3">
-                                    <i className="ri-question-answer-line font-size-24"></i> {/* Replaced with a question-answer icon */}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
                         <div className="row">
                             <div className="col-xl-12">
@@ -134,7 +134,7 @@ function App() {
 
                                 </div>
                             </div>
-                        
+
                         </div>
                     </div>
 
