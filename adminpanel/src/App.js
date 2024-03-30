@@ -14,6 +14,7 @@ import AllPengajar from './pages/pengajar/AllPengajar';
 import AddPengajar from './pages/pengajar/addPengajar';
 import EditPengajar from './pages/pengajar/EditPengajar';
 import TanyaJawab from './pages/tanya_jawab/TanyaJawab';
+import Absensi from './pages/absensi/absensi';
 
 function App() {
     const [token, setToken] = useState(localStorage.getItem('accessToken'));
@@ -59,6 +60,9 @@ function App() {
 
                 {/*Route Tanya Jawab */}
                 <Route path="/tanya-jawab" element={<TanyaJawab />} />
+
+                {/*Route Absensi */}
+                <Route path="/absensi" element={<Absensi />} />
 
 
 

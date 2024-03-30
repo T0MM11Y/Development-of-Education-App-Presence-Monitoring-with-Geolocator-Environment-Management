@@ -3,7 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 
 const menuItems = [
     { name: 'Dashboard', to: '/dashboard', icon: 'fas fa-tachometer-alt' },
-    { name: 'Absensi', to: '/calendar', icon: 'fas fa-calendar-check' },
+    { name: 'Absensi', to: '/absensi', icon: 'fas fa-calendar-check' },
     {
         name: 'Siswa',
         to: '/all-siswa',
@@ -45,6 +45,8 @@ const menuItems = [
         ],
     },
     { name: 'Tanya Jawab', to: '/tanya-jawab', icon: 'fas fa-question-circle' },
+
+    
 ];
 
 function Sidebar() {

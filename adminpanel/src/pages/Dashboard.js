@@ -1,16 +1,68 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-
+import React, { useEffect, useState } from 'react';
+import { Bar } from 'react-chartjs-2';
+import { useNavigate } from 'react-router-dom';
 
 import Header from '../component/header';
+import Footer from '../component/footer';
 import Sidebar from '../component/sidebar';
 
 function App() {
-    const token = localStorage.getItem('accessToken');
-    const [isDropdownOpen, setDropdownOpen] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const navigate = useNavigate();
 
-    const toggleDropdown = () => {
-        setDropdownOpen(!isDropdownOpen);
+    useEffect(() => {
+        const checkAuthentication = async () => {
+            try {
+                const token = localStorage.getItem('jwt');
+                const response = await fetch('/api/check-auth', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (response.status === 200) {
+                    setIsAuthenticated(true);
+                }
+            } catch (error) {
+                navigate('/login');
+            }
+        };
+
+        checkAuthentication();
+    }, [navigate]);
+
+    if (!isAuthenticated) {
+        return null;
+    }
+    const data = {
+        labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+        datasets: [
+            {
+                label: '# of absensi',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1,
+            },
+        ],
+    };
+
+    const options = {
+        responsive: true,
+        maintainAspectRatio: false,
     };
     return (
         <div id="layout-wrapper">
@@ -21,17 +73,10 @@ function App() {
                     <div className="container-fluid">
                         <div className="row">
                             <div className="col-12">
-                                <div className="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 className="mb-sm-0">Dashboard</h4>
-                                    <div className="page-title-right">
-                                        <ol className="breadcrumb m-0">
-                                            <li className="breadcrumb-item"><a href="javascript: void(0);">Upcube</a></li>
-                                            <li className="breadcrumb-item active">Dashboard</li>
-                                        </ol>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
+
 
                         <div className="row">
                             <div className="col-xl-3 col-md-6">
@@ -109,25 +154,17 @@ function App() {
                         </div>
 
                         <div className="row">
-                            <div className="col-xl-12">
+                            <div className="col-xl-6">
                                 <div className="card">
                                     <div className="card-body">
-                                        <h4 className="card-title mb-12">Latest Transactions</h4>
+                                        <h4 className="card-title mb-12">Based Location</h4>
                                         <div className="table-responsive">
-                                            <div style={{ textDecoration: 'none', overflow: 'hidden', maxWidth: '100%', width: '100%', height: '500px' }}>
+                                            <div style={{ textDecoration: 'none', overflow: 'hidden', maxWidth: '100%', width: '100%', height: '300px' }}>
                                                 <div id="embed-ded-map-canvas" style={{ height: '100%', width: '100%', maxWidth: '100%' }}>
-                                                    <iframe style={{ height: '100%', width: '100%', border: '0' }} frameborder="0" src="https://www.google.com/maps/embed/v1/place?q=SMA+N+1+PARMAKSIAN,+JL.TANJUNGAN+DESA,+Jonggi+Manulus,+Toba,+Sumatera+Utara,+Indonesia&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"></iframe>
+                                                    <iframe title="Google Map" style={{ height: '100%', width: '100%', border: '0' }} frameborder="0" src="https://www.google.com/maps/embed/v1/place?q=SMA+N+1+PARMAKSIAN,+JL.TANJUNGAN+DESA,+Jonggi+Manulus,+Toba,+Sumatera+Utara,+Indonesia&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"></iframe>
                                                 </div>
                                                 <a className="google-map-html" rel="nofollow" href="https://www.bootstrapskins.com/themes" id="grab-map-data">premium bootstrap themes</a>
-                                                <style>{`
-                #embed-ded-map-canvas img.text-marker {
-                    max-width: none!important;
-                    background: none!important;
-                }
-                img {
-                    max-width: none;
-                }
-            `}</style>
+                                                <style>{`#embed-ded-map-canvas img.text-marker {max-width: none!important;background: none!important;}img {max-width: none;}`}</style>
                                             </div>
                                         </div>
                                     </div>
@@ -135,27 +172,30 @@ function App() {
                                 </div>
                             </div>
 
+                            <div className="col-xl-6">
+                                <div className="card">
+                                    <div className="card-body">
+                                        <h4 className="card-title mb-12">Latest Absensi</h4>
+                                        <div className="table-responsive" style={{ height: '300px' }}>
+                                            {/**chart */}
+                                            <Bar data={data} options={options} />
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
 
                 </div>
 
-                <footer className="footer">
-                    <div className="container-fluid">
-                        <div className="row">
-                            <div className="col-sm-6">
-                                <script>document.write(new Date().getFullYear())</script> © Upcube.
-                            </div>
-                            <div className="col-sm-6">
-                                <div className="text-sm-end d-none d-sm-block">
-                                    Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesdesign
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+                <Footer />
             </div>
         </div>
+
     );
 }
 

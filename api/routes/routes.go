@@ -9,6 +9,8 @@ import (
 	"API/controllers/siswaController"
 	"API/controllers/tanyajawabController"
 
+	"API/controllers/absensiController"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -74,4 +76,12 @@ func SetupTanyaJawab(app *fiber.App) {
 	app.Delete("/api/tanyajawab/:id", tanyajawabController.DeleteQuestion)
 	app.Post("/api/tanyajawab", tanyajawabController.AskQuestion)
 	app.Put("/api/tanyajawab/:id", tanyajawabController.AnswerQuestion)
+}
+
+func SetupAbsensi(app *fiber.App) {
+	app.Get("/api/absensi", absensiController.GetAllAbsensi)
+	app.Post("/api/absensi", absensiController.NewAbsensi)
+	app.Get("/api/absensi/:id", absensiController.GetAbsensi)
+	app.Put("/api/absensi/:id", absensiController.UpdateAbsensi)
+	app.Delete("/api/absensi/:id", absensiController.DeleteAbsensi)
 }

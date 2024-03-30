@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
 
 
@@ -51,24 +51,25 @@ function Header() {
     };
     return (
         <header id="page-topbar" style={{ boxShadow: '0px 7px 6px #00000029' }}>
-        <div className="navbar-header">
+            <div className="navbar-header">
                 <div className="d-flex">
+                
                     <div className="navbar-brand-box">
                         <a href="index.html" className="logo logo-dark">
                             <span className="logo-sm">
-                                <img src="../images/logo-sm.png" alt="logo-sm" height="22" />
+                                <img src="../images/real.png" alt="logo-sm" width="50% " style={{marginRight:'10em'}} />
                             </span>
                             <span className="logo-lg">
-                                <img src="../images/logo-dark.png" alt="logo-dark" height="20" />
+                                <img src="../images/real.png" alt="logo-dark" width="79%" />{/*real logo*/}
                             </span>
                         </a>
 
                         <a href="index.html" className="logo logo-light">
                             <span className="logo-sm">
-                                <img src="../images/logo-sm.png" alt="logo-sm-light" height="22" />
+                                <img src="../images/real.png" alt="logo-sm-light" width="50%"  style={{marginRight:'10em'}}/>
                             </span>
                             <span className="logo-lg">
-                                <img src="../images/logo-light.png" alt="logo-light" height="20" />
+                                <img src="../images/real.png" alt="logo-light" width="50%" style={{marginRight:'10em'}} />
                             </span>
                         </a>
                     </div>

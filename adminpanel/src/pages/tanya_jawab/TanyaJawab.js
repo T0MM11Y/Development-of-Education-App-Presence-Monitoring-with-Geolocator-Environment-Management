@@ -42,6 +42,7 @@ function MyQuillComponent({ content, setContent }) {
 }
 
 function TanyaJawab() {
+  const [searchTerm, setSearchTerm] = useState('');
   const [isReplied, setIsReplied] = useState(false);
   const [content, setContent] = useState('');
   const [questions, setQuestions] = useState([]);
@@ -59,7 +60,9 @@ function TanyaJawab() {
       fetchQuestions();
     }
   };
-
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
   const handleFilterResponsChange = (newFilter) => {
     setFilterRespons(newFilter);
     if (newFilter) {
@@ -109,13 +112,16 @@ function TanyaJawab() {
           break;
       }
     }
-
+    data = data.filter(item => 
+      (item.pertanyaan ? item.pertanyaan.toLowerCase().includes(searchTerm.toLowerCase()) : false) || 
+      (item.user && item.user.Nama_Depan ? item.user.Nama_Depan.toLowerCase().includes(searchTerm.toLowerCase()) : false)
+    );
     setQuestions(data);
   };
 
   useEffect(() => {
     fetchQuestions();
-  }, [filterHari, filterRespons]);
+  }, [filterHari, filterRespons, searchTerm]);
 
   const pageCount = Math.ceil(questions.length / perPage); // Calculate total pages
 
@@ -183,6 +189,7 @@ function TanyaJawab() {
                     <p className="card-title-desc" >
                       This page displays all students in a searchable and paginated table. You can interact with the table to copy the data, download it as Excel or PDF. The data is fetched from an external API and updates dynamically.
                     </p>
+
                     <div class="btn-group me-2 mb-2 mb-sm-0">
                       <button type="button" class="btn btn-light waves-light waves-effect dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style={{ marginRight: '13px' }}>
                         <i class="ri-history-line"></i> {filterHari || 'Filter Hari'}<i class="mdi mdi-chevron-down ms-1"></i>
@@ -201,12 +208,27 @@ function TanyaJawab() {
                         <i class="ri-find-replace-line"></i> {filterRespons || 'Filter Respons'}<i class="mdi mdi-chevron-down ms-1"></i>
                       </button>
                       <div class="dropdown-menu">
-                      <a class="dropdown-item" href="#" onClick={() => handleFilterResponsChange('')}>Semua</a>
+                        <a class="dropdown-item" href="#" onClick={() => handleFilterResponsChange('')}>Semua</a>
                         <a class="dropdown-item" href="#" onClick={() => handleFilterResponsChange('Belum Dijawab')}>Belum Dijawab</a>
                         <a class="dropdown-item" href="#" onClick={() => handleFilterResponsChange('Sudah Dijawab')}>Sudah Dijawab</a>
                       </div>
                     </div>
+                    {/**biar kekanan  */}
+                    <div class="btn-group " style={{ marginLeft: 'auto' }}>
+                      <div id="datatable-buttons_filter" className="dataTables_filter">
+                        <div className="input-group">
+                        <input type="search" className="form-control form-control-sm" placeholder="Cari disini" aria-controls="datatable-buttons" value={searchTerm} onChange={handleSearchChange} />                          
+                        <div className="input-group-append">
+                            <span className="input-group-text">
+                              <i className="fas fa-search"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+
+
                   <table className="table" minWidth="100%" style={{ width: '100%' }}>
                     <thead>
                       <tr>

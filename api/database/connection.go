@@ -23,5 +23,6 @@ func Connect() {
 	connection.AutoMigrate(&models.Roster{})
 	connection.AutoMigrate(&models.Pengumuman{})
 	connection.AutoMigrate(&models.TanyaJawab{})
+	connection.AutoMigrate(&models.Absensi{})
 
 }

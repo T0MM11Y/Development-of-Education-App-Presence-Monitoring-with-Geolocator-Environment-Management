@@ -15,4 +15,5 @@ type User struct {
 	Urlphoto      string       `json:"Urlphoto"`
 	Password      []byte       `json:"-"`
 	TanyaJawabs   []TanyaJawab `json:"tanya_jawab" gorm:"foreignKey:UserID"`
+	Absensis      []Absensi    `json:"absensis" gorm:"foreignKey:UserID"` // relasi baru ke model Absensi
 }

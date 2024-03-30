@@ -44,5 +44,8 @@ func main() {
 	// Setup tanya jawab routes
 	routes.SetupTanyaJawab(app)
 
+	// Setup absensi routes
+	routes.SetupAbsensi(app)
+
 	app.Listen(":5000")
 }

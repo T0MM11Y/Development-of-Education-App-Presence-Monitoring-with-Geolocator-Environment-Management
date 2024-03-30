@@ -94,11 +94,9 @@ export default function SignIn() {
             <div className={classes.root}>
                 <Paper className={classes.outerPaper}>
                     <div className={classes.paper}>
-                        <img src="/logoSMA.png" alt="Logo" className={classes.logo} width={140} />
+                        <img src="/images/ll.png" alt="Logo" className={classes.logo} style={{width:'15em'}} />
 
-                        <Typography component="h1" variant="h5">
-                            Sign in
-                        </Typography>
+                       
                         <form className={classes.form} noValidate onSubmit={handleSubmit}>
                             <TextField
                                 variant="outlined"
@@ -112,7 +110,7 @@ export default function SignIn() {
                                 value={username}
                                 onChange={e => setUserName(e.target.value)}
                                 inputProps={{
-                                    style: { height: '2px' }, // Ubah tinggi sesuai kebutuhan
+                                    style: { height: '1px' }, // Ubah tinggi sesuai kebutuhan
                                 }}
                             />
                             <TextField
@@ -128,7 +126,7 @@ export default function SignIn() {
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
                                 inputProps={{
-                                    style: { height: '2px' }, // Ubah tinggi sesuai kebutuhan
+                                    style: { height: '1px' }, // Ubah tinggi sesuai kebutuhan
                                 }}
                             />
 

@@ -13,6 +13,21 @@
   transition: max-height 0.9s ease-out;
 }
 
+
+.sidebar {
+  /* Other styles */
+  display: none;
+}
+
+.sidebar.open {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+      display: block;
+  }
+}
 .sub-menu.open {
   max-height: 500px; /* you can adjust this value */
 }

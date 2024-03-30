@@ -16,7 +16,7 @@ function AllPengajar() {
     const [search, setSearch] = useState('');
     const [currentPage, setCurrentPage] = useState(0);
     const [perPage] = useState(8); // Jumlah data per halaman
-
+    
     useEffect(() => {
         fetchData();
     }, [currentPage]);
@@ -135,8 +135,8 @@ function AllPengajar() {
                                             <h4 className="card-title">Semua Pengajar</h4>
                                         </div>
                                         <br></br>
-                                        <p className="card-title-desc" >
-                                            This page displays all teachers in a searchable and paginated table. You can interact with the table to copy the data, download it as Excel or PDF. The data is fetched from an external API and updates dynamically.
+                                        <p className="card-title-desc">
+                                            This page displays all teachers in a searchable and paginated table. You can interact with the table to copy the data, download it as Excel or PDF, and add or delete teachers. The data is fetched from an external API and updates dynamically.
                                         </p>
                                         <div id="datatable-buttons_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
                                             <div className="row">
