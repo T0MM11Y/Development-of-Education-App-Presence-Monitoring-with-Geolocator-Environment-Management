@@ -24,12 +24,22 @@ function AddPengumuman() {
     const [imageURL, setImageURL] = useState('/no-image-available.png'); // Default image URL
     const handleSubmit = async (event) => {
         event.preventDefault();
-    
+
+        if (judul.trim() === '' || content.trim() === '') {
+            swal.fire({
+                title: 'Error!',
+                text: 'Judul dan Isi tidak boleh kosong!',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return; // Return to prevent the form from being submitted
+        }
+
         const formData = new FormData();
         formData.append('judul', judul);
         formData.append('file', file);
         formData.append('content', content); // Append content
-    
+
         console.log(content); // Add this line just before the fetch request
         const response = await fetch(`${BASE_URL}api/pengumuman`, {
             method: 'POST',
@@ -79,10 +89,10 @@ function AddPengumuman() {
                                                 <div className="col-sm-10">
                                                     <input type="file" className="form-control" id="customFile" onChange={handleFileChange} />
                                                 </div>
-                                            </div>  
+                                            </div>
                                             <div className="row mb-3">
                                                 <div className="col-sm-10 offset-sm-2">
-                                                    <img src={imageURL} alt="Uploaded" style={{ width: '10em', height: 'auto', marginBottom: '20px' }} />
+                                                    <img src={imageURL} alt="Uploaded" style={{ width: '10em', height: 'auto', marginTop: '30px' }} />
                                                 </div>
                                             </div>
                                             <div className="col-sm-10 offset">

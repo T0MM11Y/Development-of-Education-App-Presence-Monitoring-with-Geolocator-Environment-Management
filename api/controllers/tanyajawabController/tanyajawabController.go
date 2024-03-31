@@ -21,6 +21,14 @@ func AskQuestion(c *fiber.Ctx) error {
 		})
 	}
 
+	// Cek apakah user_id ada di tabel users
+	var user models.User
+	if err := db.First(&user, question.UserID).Error; err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "User not found",
+		})
+	}
+
 	question.TanggalTanya = time.Now().Format(time.RFC3339)
 
 	result := db.Create(&question)
@@ -33,7 +41,6 @@ func AskQuestion(c *fiber.Ctx) error {
 
 	return c.JSON(question)
 }
-
 func AnswerQuestion(c *fiber.Ctx) error {
 	db := database.DB
 	id := c.Params("id")

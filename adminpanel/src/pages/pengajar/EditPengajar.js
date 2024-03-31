@@ -74,52 +74,63 @@ function EditPengajar() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const data = new FormData();
-        Object.keys(formData).forEach((key) => {
-            const value = formData[key];
-            data.append(key, value !== undefined ? value.toString() : '');
+        swal.fire({
+            title: 'Are you sure?',
+            text: "You are about to update the pengajar's information.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const data = new FormData();
+                Object.keys(formData).forEach((key) => {
+                    const value = formData[key];
+                    data.append(key, value !== undefined ? value.toString() : '');
+                });
+
+                const fileField = document.querySelector('input[type="file"]');
+                data.append('file', fileField.files[0]);
+
+                const response = await fetch(`${BASE_URL}api/pengajar/${id}`, {
+                    method: 'PUT',
+                    body: data,
+                });
+
+                const responseData = await response.json();
+                console.log(responseData);
+
+                if (responseData.ID) {
+                    setImageURL("/no-image-available.png");
+                    setFormData({
+                        NIP: '',
+                        Nama_Depan: '',
+                        Nama_Belakang: '',
+                        Agama: '',
+                        Email: '',
+                        Bidang: '',
+                        Alamat: '',
+                        Jenis_Kelamin: '',
+                        Tanggal_Lahir: '',
+                        Urlphoto: '',
+                        KelasID: '', // Reset KelasID field
+                    });
+                    swal.fire(
+                        'Updated!',
+                        'Your file has been updated.',
+                        'success'
+                    );
+                    navigate('/all-pengajar')
+                } else if (responseData.message) {
+                    swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: responseData.message,
+                    });
+                }
+            }
         });
-
-
-        const fileField = document.querySelector('input[type="file"]');
-        data.append('file', fileField.files[0]);
-
-        const response = await fetch(`${BASE_URL}api/pengajar/${id}`, {
-            method: 'PUT',
-            body: data,
-        });
-
-        const responseData = await response.json();
-        console.log(responseData);
-
-        if (responseData.ID) {
-            setImageURL("/no-image-available.png");
-            setFormData({
-                NIP: '',
-                Nama_Depan: '',
-                Nama_Belakang: '',
-                Agama: '',
-                Email: '',
-                Bidang: '',
-                Alamat: '',
-                Jenis_Kelamin: '',
-                Tanggal_Lahir: '',
-                Urlphoto: '',
-                KelasID: '', // Reset KelasID field
-            });
-            swal.fire(
-                'Updated!',
-                'Your file has been updated.',
-                'success'
-            );
-            navigate('/all-pengajar')
-        } else if (responseData.message) {
-            swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: responseData.message,
-            });
-        }
     };
 
     return (
@@ -223,7 +234,7 @@ function EditPengajar() {
                                                 </div>
                                             </div>
                                             <div className="mt-3">
-                                            <button className="btn btn-primary" type="submit">Update Form <i class="fas fa-edit align-middle ms-2"></i></button>
+                                                <button className="btn btn-primary" type="submit">Update Form <i class="fas fa-edit align-middle ms-2"></i></button>
                                             </div>
                                         </form>
                                     </div>

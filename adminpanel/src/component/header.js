@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 
 const { BASE_URL } = require('../configapi');
@@ -29,23 +29,38 @@ function Header() {
             }
         })
     };
-
     const logoutOperation = async () => {
         try {
             const response = await fetch(`${BASE_URL}api/logoutAdmin`, { method: 'POST' });
             if (response.ok) {
                 const data = await response.json();
                 if (data.message === 'Success') {
-                    // Remove the access token from local storage
                     localStorage.removeItem('accessToken');
                     localStorage.removeItem('user');
-                    // Redirect the user to the login page
-                    navigate('/login');
+                    localStorage.removeItem('jwt');
+
+                    Swal.fire(
+                        'Success',
+                        'Logout successful',
+                        'success'
+                    );
+
+                    navigate('/');
                 }
             } else {
+                Swal.fire(
+                    'Failed',
+                    'Failed to logout',
+                    'error'
+                );
                 console.error('Failed to logout');
             }
         } catch (error) {
+            Swal.fire(
+                'Error',
+                'Error logging out',
+                'error'
+            );
             console.error('Error logging out', error);
         }
     };
@@ -53,11 +68,11 @@ function Header() {
         <header id="page-topbar" style={{ boxShadow: '0px 7px 6px #00000029' }}>
             <div className="navbar-header">
                 <div className="d-flex">
-                
+
                     <div className="navbar-brand-box">
                         <a href="index.html" className="logo logo-dark">
                             <span className="logo-sm">
-                                <img src="../images/real.png" alt="logo-sm" width="50% " style={{marginRight:'10em'}} />
+                                <img src="../images/real.png" alt="logo-sm" width="50% " style={{ marginRight: '10em' }} />
                             </span>
                             <span className="logo-lg">
                                 <img src="../images/real.png" alt="logo-dark" width="79%" />{/*real logo*/}
@@ -66,10 +81,10 @@ function Header() {
 
                         <a href="index.html" className="logo logo-light">
                             <span className="logo-sm">
-                                <img src="../images/real.png" alt="logo-sm-light" width="50%"  style={{marginRight:'10em'}}/>
+                                <img src="../images/real.png" alt="logo-sm-light" width="50%" style={{ marginRight: '10em' }} />
                             </span>
                             <span className="logo-lg">
-                                <img src="../images/real.png" alt="logo-light" width="50%" style={{marginRight:'10em'}} />
+                                <img src="../images/real.png" alt="logo-light" width="50%" style={{ marginRight: '10em' }} />
                             </span>
                         </a>
                     </div>

@@ -98,7 +98,7 @@ function AllPengumuman() {
                                                 <div className="col-sm-12 col-md-6">
                                                     <div className="dt-buttons btn-group flex-wrap">
                                                     </div>
-                                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginLeft: '16px',marginBottom:'5px' }}>
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginLeft: '16px', marginBottom: '5px' }}>
                                                         <Link to="/add-pengumuman" className="btn btn-primary waves-effect waves-light">
                                                             Add Pengumuman <i class="  ri-newspaper-line align-middle ms-2 "></i></Link>
                                                     </div>

@@ -46,7 +46,7 @@ const menuItems = [
     },
     { name: 'Tanya Jawab', to: '/tanya-jawab', icon: 'fas fa-question-circle' },
 
-    
+
 ];
 
 function Sidebar() {
@@ -97,7 +97,7 @@ const MenuItem = ({ menuItem, activeMenu, toggleDropdown }) => {
         <li className={isActive ? "mm-active" : ""}>
             {subMenuItems ? (
                 <a href="javascript:void(0);" className={`has-arrow waves-effect ${isActive ? 'active' : ''}`} onClick={() => toggleDropdown(to.substr(1))}>
-                    <i className={icon} style={{marginRight:'5px'}}></i> 
+                    <i className={icon} style={{ marginRight: '5px' }}></i>
                     <span>{name}</span>
                 </a>
             ) : (

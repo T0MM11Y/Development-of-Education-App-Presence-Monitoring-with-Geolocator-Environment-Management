@@ -40,9 +40,9 @@ function EditPengumuman() {
                 console.error('Error fetching pengumuman:', error);
             }
         };
-    
+
         fetchPengumuman(); // Call fetchPengumuman here
-    
+
     }, [id]); // Add id to the dependency array 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -50,7 +50,7 @@ function EditPengumuman() {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -67,13 +67,13 @@ function EditPengumuman() {
                 if (file) {
                     formData.append('file', file);
                 }
-    
+
                 try {
                     const response = await fetch(`${BASE_URL}api/pengumuman/${id}`, {
                         method: 'PUT',
                         body: formData
                     });
-    
+
                     if (response.ok) {
                         navigate('/all-pengumuman');
                     } else {
@@ -99,17 +99,17 @@ function EditPengumuman() {
                                     <div className="card-body">
                                         <h4 className="card-title">Edit Pengumuman</h4>
                                         {judul !== '' && content !== '' ? ( // Check if judul and content are not empty
-                                        <form onSubmit={handleSubmit}>
+                                            <form onSubmit={handleSubmit}>
                                                 <div className="row mb-3">
                                                     <label htmlFor="example-text-input" className="col-sm-2 col-form-label">Judul</label>
                                                     <div className="col-sm-10">
-                                                    <input className="form-control" type="text" placeholder="Masukkan Judul" id="example-text-input" value={judul} onChange={(e) => setJudul(e.target.value)} />
+                                                        <input className="form-control" type="text" placeholder="Masukkan Judul" id="example-text-input" value={judul} onChange={(e) => setJudul(e.target.value)} />
                                                     </div>
                                                 </div>
                                                 <div className="row mb-3">
                                                     <label htmlFor="example-date-input" className="col-sm-2 col-form-label">Isi</label>
                                                     <div className="col-sm-10">
-                                                    <MyQuillComponent content={content} setContent={setContent} />                                                        </div>
+                                                        <MyQuillComponent content={content} setContent={setContent} />                                                        </div>
                                                 </div>
                                                 <div className="row mb-3">
                                                     <label htmlFor="customFile" className="col-sm-2 col-form-label">Upload File</label>
@@ -119,11 +119,14 @@ function EditPengumuman() {
                                                 </div>
                                                 <div className="row mb-3">
                                                     <div className="col-sm-10 offset-sm-2">
-                                                        <img src={imageURL} alt="Uploaded" style={{ width: '20em', height: 'auto', marginBottom: '20px' }} />
-                                                    </div>
+                                                        <img
+                                                            src={imageURL || '/no-image-available.png'}
+                                                            alt="Uploaded"
+                                                            style={{ width: '10em', height: 'auto', marginTop: '20px' }}
+                                                        />                                                    </div>
                                                 </div>
                                                 <div className="col-sm-10 offset">
-                                                <button type="submit" className="btn btn-primary">Submit</button>
+                                                    <button type="submit" className="btn btn-primary">Submit</button>
                                                 </div>
                                             </form>
                                         ) : (

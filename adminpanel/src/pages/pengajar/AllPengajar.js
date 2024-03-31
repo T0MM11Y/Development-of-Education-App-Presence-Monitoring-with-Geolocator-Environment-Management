@@ -16,7 +16,7 @@ function AllPengajar() {
     const [search, setSearch] = useState('');
     const [currentPage, setCurrentPage] = useState(0);
     const [perPage] = useState(8); // Jumlah data per halaman
-    
+
     useEffect(() => {
         fetchData();
     }, [currentPage]);
@@ -86,14 +86,15 @@ function AllPengajar() {
         }));
         navigator.clipboard.writeText(JSON.stringify(dataToCopy));
     };
-
     const downloadExcel = () => {
-        const modifiedData = pengajars.map(pengajar => ({
+        const modifiedData = pengajars.map((pengajar, index) => ({
+            ID: index + 1,
             NIP: pengajar.NIP,
             Nama: `${pengajar.Nama_Depan} ${pengajar.Nama_Belakang}`,
             Bidang: pengajar.Bidang
         }));
-        modifiedData.unshift({ NIP: '', Nama: '', Bidang: '' });
+        modifiedData.unshift({ ID: 'ID', NIP: 'NIP', Nama: 'Nama', Bidang: 'Bidang' });
+        modifiedData.push({ ID: '', NIP: '', Nama: `Total Pengajar: ${pengajars.length}`, Bidang: '' });
         const ws = XLSX.utils.json_to_sheet(modifiedData);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Pengajar");
@@ -103,14 +104,16 @@ function AllPengajar() {
     const downloadPDF = () => {
         const doc = new jsPDF();
         doc.text('Daftar Pengajar SMA N 1 PARMAKSIAN', 10, 10);
-        const modifiedData = pengajars.map(pengajar => [
+        const modifiedData = pengajars.map((pengajar, index) => [
+            index + 1,
             pengajar.NIP,
             `${pengajar.Nama_Depan} ${pengajar.Nama_Belakang}`,
             pengajar.Bidang
         ]);
+        modifiedData.push(['', '', `Total Pengajar: ${pengajars.length}`, '']);
         autoTable(doc, {
             startY: 20,
-            head: [['NIP', 'Nama', 'Bidang']],
+            head: [['ID', 'NIP', 'Nama', 'Bidang']],
             body: modifiedData
         });
         doc.save('pengajar.pdf');

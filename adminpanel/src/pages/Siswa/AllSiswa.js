@@ -84,24 +84,24 @@ function AllSiswa() {
     const pageCount = Math.ceil(siswas.length / perPage);
 
     const paginatedData = filteredSiswas.slice(currentPage * perPage, (currentPage + 1) * perPage);
-
     const copyData = () => {
         const dataToCopy = siswas.map(siswa => ({
             NISN: siswa.NISN,
             Nama_Depan: siswa.Nama_Depan,
             Nama_Belakang: siswa.Nama_Belakang,
-            Kelas: siswa.Kelas
+            Kelas: kelas.find(kelasItem => kelasItem.id === siswa.kelas_id)?.nama_kelas || 'Kelas tidak ditemukan'
         }));
         navigator.clipboard.writeText(JSON.stringify(dataToCopy));
     };
-
     const downloadExcel = () => {
-        const modifiedData = siswas.map(siswa => ({
+        const modifiedData = siswas.map((siswa, index) => ({
+            ID: index + 1,
             NISN: siswa.NISN,
             Nama: `${siswa.Nama_Depan} ${siswa.Nama_Belakang}`,
-            Kelas: siswa.Kelas
+            Kelas: kelas.find(kelasItem => kelasItem.id === siswa.kelas_id)?.nama_kelas || 'Kelas tidak ditemukan'
         }));
-        modifiedData.unshift({ NISN: '', Nama: '', Kelas: '' });
+        modifiedData.unshift({ ID: 'ID', NISN: 'NISN', Nama: 'Nama', Kelas: 'Kelas' });
+        modifiedData.push({ ID: '', NISN: '', Nama: `Total Siswa: ${siswas.length}`, Kelas: '' });
         const ws = XLSX.utils.json_to_sheet(modifiedData);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Siswa");
@@ -111,14 +111,16 @@ function AllSiswa() {
     const downloadPDF = () => {
         const doc = new jsPDF();
         doc.text('Daftar Siswa SMA N 1 PARMAKSIAN', 10, 10);
-        const modifiedData = siswas.map(siswa => [
+        const modifiedData = siswas.map((siswa, index) => [
+            index + 1,
             siswa.NISN,
             `${siswa.Nama_Depan} ${siswa.Nama_Belakang}`,
-            siswa.Kelas
+            kelas.find(kelasItem => kelasItem.id === siswa.kelas_id)?.nama_kelas || 'Kelas tidak ditemukan'
         ]);
+        modifiedData.push(['', '', `Total Siswa: ${siswas.length}`, '']);
         autoTable(doc, {
             startY: 20,
-            head: [['NISN', 'Nama', 'Kelas']],
+            head: [['ID', 'NISN', 'Nama', 'Kelas']],
             body: modifiedData
         });
         doc.save('siswa.pdf');
@@ -141,7 +143,6 @@ function AllSiswa() {
                                     <div className="card-body">
                                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                             <h4 className="card-title">Semua Siswa</h4>
-
                                         </div>
                                         <br></br>
                                         <p className="card-title-desc" >
@@ -162,7 +163,7 @@ function AllSiswa() {
                                                         </button>
                                                         <div style={{ display: 'flex', justifyContent: 'space-between', marginLeft: '16px' }}>
                                                             <Link to="/add-siswa" className="btn btn-primary waves-effect waves-light">
-                                                            Add Siswa <i class=" fas fa-user-plus align-middle ms-2"></i></Link>
+                                                                Add Siswa <i class=" fas fa-user-plus align-middle ms-2"></i></Link>
                                                         </div>
 
                                                     </div>

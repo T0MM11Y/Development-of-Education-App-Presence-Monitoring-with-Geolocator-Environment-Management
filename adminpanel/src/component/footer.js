@@ -8,7 +8,7 @@ function Footer() {
                     </div>
                     <div className="col-sm-6">
                         <div className="text-sm-end d-none d-sm-block">
-                            Crafted with <i className="mdi mdi-heart text-danger"></i> by T0MM11Y
+                            My Github is  <i className=" ri-github-fill"></i> T0MM11Y
                         </div>
                     </div>
                 </div>

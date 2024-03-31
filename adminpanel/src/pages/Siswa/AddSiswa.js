@@ -55,7 +55,7 @@ function AddSiswa() {
                 swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `Field ${field} is required`,
+                    text: `Gabole ada yang kosong ya!`,
                 });
                 return; // Prevent the form from being submitted
             }
@@ -203,15 +203,15 @@ function AddSiswa() {
                                                 </div>                                      </div>
                                             <br></br>
                                             <div className="col-xl-3">
-                                            <img
-                                                        src={imageURL}
-                                                        alt="Uploaded"
-                                                        style={{
-                                                            width: imageURL === "/no-image-available.png" ? '112px' : '112px',
-                                                            height: imageURL === "/no-image-available.png" ? '112px' : '112px',
-                                                            margin: '30px',
-                                                        }}
-                                                    />                                           </div>
+                                                <img
+                                                    src={imageURL}
+                                                    alt="Uploaded"
+                                                    style={{
+                                                        width: imageURL === "/no-image-available.png" ? '112px' : '112px',
+                                                        height: imageURL === "/no-image-available.png" ? '112px' : '112px',
+                                                        margin: '30px',
+                                                    }}
+                                                />                                           </div>
 
 
                                             <button className="btn btn-primary" type="submit">Submit Form <i class="  fas fa-arrow-circle-right align-middle ms-2"></i></button>

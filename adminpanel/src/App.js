@@ -17,25 +17,13 @@ import TanyaJawab from './pages/tanya_jawab/TanyaJawab';
 import Absensi from './pages/absensi/absensi';
 
 function App() {
-    const [token, setToken] = useState(localStorage.getItem('accessToken'));
-
-    useEffect(() => {
-        const tokenWatcher = setInterval(() => {
-            setToken(localStorage.getItem('accessToken'));
-        }, 1000);
-
-        return () => {
-            clearInterval(tokenWatcher);
-        };
-    }, []);
 
     return (
         <Router>
             <Routes>
                 {/* Route Auth */}
-                <Route path="/" element={token ? <Dashboard /> : <Navigate to="/login" />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/dashboard" element={token ? <Dashboard /> : <Navigate to="/login" />} />
+                <Route path="/" element={<Login />} />
+                <Route path="/dashboard" element={<Dashboard />} />
 
                 {/* Route Siswa */}
                 <Route path="/add-siswa" element={<AddSiswa />} />

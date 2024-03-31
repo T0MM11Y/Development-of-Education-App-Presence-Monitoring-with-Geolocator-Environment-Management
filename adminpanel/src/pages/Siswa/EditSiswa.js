@@ -10,6 +10,8 @@ function EditSiswa() {
     const navigate = useNavigate();
     const [kelas, setKelas] = useState([]);
     const { id } = useParams();
+    const { BASE_URL } = require('../../configapi');
+
 
     const [formData, setFormData] = useState({
         NISN: '',
@@ -75,7 +77,8 @@ function EditSiswa() {
                     });
                 }
 
-                const { BASE_URL } = require('../../configapi');
+                console.log(data);
+
                 const response = await fetch(`${BASE_URL}api/siswa/${id}`, {
                     method: 'PUT',
                     body: data,
@@ -134,7 +137,7 @@ function EditSiswa() {
                     NISN: data.NISN,
                     Nama_Depan: data.Nama_Depan,
                     Nama_Belakang: data.Nama_Belakang,
-                    Kelas: data.id_kelas, // Set the Kelas field to the student's class id
+                    KelasID: data.kelas_id, // Set the KelasID field to the student's class id
                     Agama: data.Agama,
                     Email: data.Email,
                     Alamat: data.Alamat,

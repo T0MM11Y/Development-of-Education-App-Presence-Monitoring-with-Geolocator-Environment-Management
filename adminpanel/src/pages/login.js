@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import swal from 'sweetalert';
-
-
+import swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+
 const { BASE_URL } = require('../configapi');
 
 const useStyles = makeStyles((theme) => ({
@@ -18,10 +16,11 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         alignItems: 'center',
     },
+
     paper: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center', // Center the content vertically
+        justifyContent: 'center',
         alignItems: 'center',
         padding: theme.spacing(2),
     },
@@ -46,58 +45,52 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-async function loginUser(credentials) {
-    const response = await fetch(`${BASE_URL}api/loginAdmin`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
-    });
-
-    if (response.status === 200) {
-        return response.json();
-    } else {
-        throw new Error('Failed to login');
-    }
-}
-
 export default function SignIn() {
     const classes = useStyles();
-    const [username, setUserName] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const handleSubmit = async e => {
-        e.preventDefault();
-        try {
-            const response = await loginUser({
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        const response = await fetch(`${BASE_URL}api/loginAdmin`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
                 username,
-                password
-            });
-            swal("Success", response.message, "success", {
-                buttons: false,
-                timer: 2000,
-            })
-            .then((value) => {
-                localStorage.setItem('accessToken', response['accessToken']);
-                localStorage.setItem('user', JSON.stringify(response['user']));
-                setTimeout(() => {
-                    navigate('/dashboard');
-                }, 500); // Delay for 100ms
-            });
-        } catch (error) {
-            swal("Failed", "Failed to login", "error");
+                password,
+            }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            swal.fire(
+                'Success',
+                'Login success',
+                'success'
+            );
+            navigate('/dashboard');
+        } else {
+            swal.fire(
+                'Failed',
+                data.message,
+                'error'
+            );
         }
-    }
+    };
+
     return (
         <Container component="main" maxWidth="xs">
             <div className={classes.root}>
                 <Paper className={classes.outerPaper}>
                     <div className={classes.paper}>
-                        <img src="/images/ll.png" alt="Logo" className={classes.logo} style={{width:'15em'}} />
+                        <img src="/images/ll.png" alt="Logo" className={classes.logo} style={{ width: '15em' }} />
 
-                       
-                        <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                        <form className={classes.form} onSubmit={handleSubmit}>
                             <TextField
                                 variant="outlined"
                                 margin="normal"
@@ -108,10 +101,8 @@ export default function SignIn() {
                                 name="username"
                                 autoComplete="username"
                                 value={username}
-                                onChange={e => setUserName(e.target.value)}
-                                inputProps={{
-                                    style: { height: '1px' }, // Ubah tinggi sesuai kebutuhan
-                                }}
+                                onChange={e => setUsername(e.target.value)}
+                                size="small" // Add this
                             />
                             <TextField
                                 variant="outlined"
@@ -125,9 +116,7 @@ export default function SignIn() {
                                 autoComplete="current-password"
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
-                                inputProps={{
-                                    style: { height: '1px' }, // Ubah tinggi sesuai kebutuhan
-                                }}
+                                size="small"
                             />
 
                             <Button
@@ -135,10 +124,9 @@ export default function SignIn() {
                                 fullWidth
                                 variant="contained"
                                 color="primary"
-
                                 className={classes.submit}
                             >
-                                Sign In
+                                Masuk
                             </Button>
                         </form>
                     </div>

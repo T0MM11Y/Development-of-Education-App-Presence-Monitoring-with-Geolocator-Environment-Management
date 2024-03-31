@@ -3,13 +3,17 @@ import Header from '../../component/header';
 import Sidebar from '../../component/sidebar';
 import Footer from '../../component/footer';
 import Swal from 'sweetalert2';
+import ReactPaginate from 'react-paginate';
 
 function AllKelas() {
     const [kelas, setKelas] = useState([]);
+    const [currentStudentPage, setCurrentStudentPage] = useState(0);
+    const STUDENTS_PER_PAGE = 5;
     const [namaKelas, setNamaKelas] = useState('');
     const [selectedKelas, setSelectedKelas] = useState(null);
-    const { BASE_URL } = require('../../configapi');
     const [editingKelas, setEditingKelas] = useState(null);
+    const { BASE_URL } = require('../../configapi');
+
     useEffect(() => {
         fetch(`${BASE_URL}api/kelas`)
             .then(response => response.json())
@@ -123,8 +127,22 @@ function AllKelas() {
                 );
             });
     };
+
+
+    const studentPageCount = selectedKelas && selectedKelas.users ? Math.ceil(selectedKelas.users.length / STUDENTS_PER_PAGE) : 0;
+    const studentOffset = currentStudentPage * STUDENTS_PER_PAGE;
+    const currentStudentPageData = selectedKelas && selectedKelas.users ? selectedKelas.users.slice(studentOffset, studentOffset + STUDENTS_PER_PAGE) : [];
+
     const handleFormSubmit = (event) => {
         event.preventDefault();
+        if (!namaKelas) {
+            Swal.fire(
+                'Gagal!',
+                'Field tidak boleh kosong!',
+                'error'
+            );
+            return;
+        }
         const existingClass = kelas.find(kelasItem => kelasItem.nama_kelas === namaKelas);
         if (existingClass) {
             Swal.fire(
@@ -177,6 +195,7 @@ function AllKelas() {
             });
     };
 
+
     const colors = ['bg-success', 'bg-primary']; // Add more colors if needed
 
     return (
@@ -193,8 +212,8 @@ function AllKelas() {
 
                                     <div className="page-title-right">
                                         <ol className="breadcrumb m-0">
-                                            <li className="breadcrumb-item"><a href="javascript: void(0);">Upcube</a></li>
-                                            <li className="breadcrumb-item active">Calendar</li>
+                                            <li className="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
+                                            <li className="breadcrumb-item active">Semua Kelas</li>
                                         </ol>
                                     </div>
 
@@ -222,7 +241,8 @@ function AllKelas() {
                                                         onClick={() => handleButtonClick(kelasItem.id)}
                                                         style={{ flex: 1 }} // This will make the button take up the remaining space
                                                     >
-                                                        <i className="mdi font-size-11 me-2"></i>{kelasItem.nama_kelas}
+                                                        <label style={{ fontFamily: 'cursive', fontSize: '8px', fontWeight: 'lighter' }}>{kelasItem.nama_kelas}
+                                                        </label>
                                                     </button>
                                                     <button
                                                         id="btn-new-edit"
@@ -272,21 +292,47 @@ function AllKelas() {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {selectedKelas ? selectedKelas.users.map((user, index) => (
-                                                        <tr key={index}>
-                                                            <th scope="row">{index + 1}</th>
-                                                            <td>{user.NISN}</td>
-                                                            <td>{user.Nama_Depan}</td>
-                                                            <td>{user.Email}</td>
-                                                            <td>{user.Jenis_Kelamin}</td>
-                                                        </tr>
-                                                    )) : (
-                                                        <tr><td colSpan="5"><center>Pilih salah satu kelas untuk menampilkan daftar siswa</center></td>
+                                                    {selectedKelas ? (
+                                                        currentStudentPageData.length > 0 ? (
+                                                            currentStudentPageData.map((user, index) => (
+                                                                <tr key={index}>
+                                                                    <th scope="row">{index + 1}</th>
+                                                                    <td>{user.NISN}</td>
+                                                                    <td>{user.Nama_Depan}</td>
+                                                                    <td>{user.Email}</td>
+                                                                    <td>{user.Jenis_Kelamin}</td>
+                                                                </tr>
+                                                            ))
+                                                        ) : (
+                                                            <tr>
+                                                                <td colSpan="5">
+                                                                    <center>Belum ada siswa terdaftar di kelas ini</center>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    ) : (
+                                                        <tr>
+                                                            <td colSpan="5">
+                                                                <center>Pilih salah satu kelas untuk menampilkan daftar siswa</center>
+                                                            </td>
                                                         </tr>
                                                     )}
                                                 </tbody>
                                             </table>
                                         </div>
+                                        <ReactPaginate
+                                            previousLabel={'previous'}
+                                            nextLabel={'next'}
+                                            breakLabel={'...'}
+                                            breakClassName={'break-me'}
+                                            pageCount={studentPageCount}
+                                            marginPagesDisplayed={2}
+                                            pageRangeDisplayed={5}
+                                            onPageChange={({ selected: selectedPage }) => setCurrentStudentPage(selectedPage)}
+                                            containerClassName={'pagination'}
+                                            subContainerClassName={'pages pagination'}
+                                            activeClassName={'active'}
+                                        />
 
                                     </div>
                                 </div>

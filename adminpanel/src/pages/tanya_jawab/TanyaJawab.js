@@ -75,6 +75,7 @@ function TanyaJawab() {
     const response = await fetch(url);
     let data = await response.json();
 
+    data.sort((a, b) => new Date(b.tanggal_tanya) - new Date(a.tanggal_tanya));
     // Filter by date
     if (filterHari) {
       const today = new Date();
@@ -112,9 +113,10 @@ function TanyaJawab() {
           break;
       }
     }
-    data = data.filter(item => 
-      (item.pertanyaan ? item.pertanyaan.toLowerCase().includes(searchTerm.toLowerCase()) : false) || 
-      (item.user && item.user.Nama_Depan ? item.user.Nama_Depan.toLowerCase().includes(searchTerm.toLowerCase()) : false)
+    data = data.filter(item =>
+      (item.pertanyaan ? item.pertanyaan.toLowerCase().includes(searchTerm.toLowerCase()) : false) ||
+      (item.user && item.user.Nama_Depan ? item.user.Nama_Depan.toLowerCase().includes(searchTerm.toLowerCase()) : false) ||
+      (item.user && item.user.Nama_Belakang ? item.user.Nama_Belakang.toLowerCase().includes(searchTerm.toLowerCase()) : false)
     );
     setQuestions(data);
   };
@@ -128,6 +130,15 @@ function TanyaJawab() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (!content.trim()) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Balasan tidak boleh kosong',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+      return; // Return early from the function
+    }
     const response = await fetch(`${BASE_URL}api/tanyajawab/${currentQuestionId}`, {
       method: 'PUT',
       headers: {
@@ -142,7 +153,7 @@ function TanyaJawab() {
       setCurrentPage(0);
       Swal.fire({
         title: 'Success!',
-        text: 'Reply submitted successfully',
+        text: 'Balasan berhasil dikirim',
         icon: 'success',
         confirmButtonText: 'OK'
       }).then(() => {
@@ -217,8 +228,8 @@ function TanyaJawab() {
                     <div class="btn-group " style={{ marginLeft: 'auto' }}>
                       <div id="datatable-buttons_filter" className="dataTables_filter">
                         <div className="input-group">
-                        <input type="search" className="form-control form-control-sm" placeholder="Cari disini" aria-controls="datatable-buttons" value={searchTerm} onChange={handleSearchChange} />                          
-                        <div className="input-group-append">
+                          <input type="search" className="form-control form-control-sm" placeholder="Cari disini" aria-controls="datatable-buttons" value={searchTerm} onChange={handleSearchChange} />
+                          <div className="input-group-append">
                             <span className="input-group-text">
                               <i className="fas fa-search"></i>
                             </span>
@@ -226,65 +237,66 @@ function TanyaJawab() {
                         </div>
                       </div>
                     </div>
+
+
+                    <table id="datatable-buttons" className="table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline">
+                      <thead>
+                        <tr>
+                          <th style={{ width: '10%' }}>#</th>
+                          <th style={{ width: '30%' }}>Nama</th>
+                          <th style={{ width: '50%' }}>Pertanyaan</th>
+                          <th style={{ width: '20%' }}>Dikirim</th>
+                          <th style={{ width: '10%' }}>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody >
+                        {questions.length > 0 ? (
+                          currentData.map((question, index) => (
+                            <tr key={index} style={{ backgroundColor: (index % 2 === 0) ? '#f8f9fa' : '#F0F4FA', margin: '2px' }}>                        <td>
+                              <div style={{ display: "flex", alignItems: "center" }}>
+                                <span
+                                  style={{ fontSize: '14px', marginRight: '3px', fontFamily: 'cursive' }}
+                                >
+                                  {index + 1 + currentPage * perPage}
+                                </span>
+                                <i
+                                  class={question.jawaban ? "ri-mail-check-fill" : "ri-mail-unread-fill"}
+                                  style={{
+                                    fontSize: '13px',
+                                    marginBottom: '14px',
+                                    color: question.jawaban ? '#008000' : '#ED7F7F'
+                                  }}
+                                ></i>
+                              </div>
+                            </td>
+                              <td>{question.user.Nama_Depan}</td>
+                              <td>{question.pertanyaan}</td>
+                              <td>{timeSince(new Date(question.tanggal_tanya))}</td>
+                              <td>
+                                <button
+                                  type="button"
+                                  data-bs-toggle="modal" data-bs-target="#event-modal"
+                                  className={question.jawaban ? "btn btn-success waves-effect waves-light" : "btn btn-warning waves-effect waves-light"}
+                                  style={{ marginRight: "1em", width: "70px", height: "30px", fontSize: "11px" }}
+                                  onClick={() => handleReplyClick(question.id, question.jawaban)}
+                                >
+                                  {question.jawaban ? <i className=" fas fa-eye" style={{ marginRight: "3 px" }}></i> : <i className="fa fa-reply" style={{ marginRight: "3px" }}></i>}
+                                  <span style={{ fontSize: "10px" }}>
+                                    {question.jawaban ? "Dijawab" : "Balas"}
+                                  </span>
+                                </button>
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan="5">Belum ada pertanyaan untuk hari ini</td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
                   </div>
 
-
-                  <table className="table" minWidth="100%" style={{ width: '100%' }}>
-                    <thead>
-                      <tr>
-                        <th style={{ width: '10%' }}>#</th>
-                        <th style={{ width: '30%' }}>Nama</th>
-                        <th style={{ width: '50%' }}>Pertanyaan</th>
-                        <th style={{ width: '20%' }}>Tanggal</th>
-                        <th style={{ width: '10%' }}>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody >
-                      {questions.length > 0 ? (
-                        currentData.map((question, index) => (
-                          <tr key={index} style={{ backgroundColor: (index % 2 === 0) ? '#f8f9fa' : '#F0F4FA', margin: '2px' }}>                        <td>
-                            <div style={{ display: "flex", alignItems: "center" }}>
-                              <span
-                                style={{ fontSize: '14px', marginRight: '3px', fontFamily: 'cursive' }}
-                              >
-                                {index + 1 + currentPage * perPage}
-                              </span>
-                              <i
-                                class={question.jawaban ? "ri-mail-check-fill" : "ri-mail-unread-fill"}
-                                style={{
-                                  fontSize: '13px',
-                                  marginBottom: '14px',
-                                  color: question.jawaban ? '#008000' : '#ED7F7F'
-                                }}
-                              ></i>
-                            </div>
-                          </td>
-                            <td>{question.user.Nama_Depan}</td>
-                            <td>{question.pertanyaan}</td>
-                            <td>{timeSince(new Date(question.tanggal_tanya))}</td>
-                            <td>
-                              <button
-                                type="button"
-                                data-bs-toggle="modal" data-bs-target="#event-modal"
-                                className={question.jawaban ? "btn btn-success waves-effect waves-light" : "btn btn-warning waves-effect waves-light"}
-                                style={{ marginRight: "1em", width: "70px", height: "30px", fontSize: "11px" }}
-                                onClick={() => handleReplyClick(question.id, question.jawaban)}
-                              >
-                                <i className="fa fa-reply" style={{ marginRight: "5px" }}></i>
-                                <span style={{ fontSize: "10px" }}>
-                                  {question.jawaban ? "Replied" : "Reply"}
-                                </span>
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td colSpan="5">Belum ada pertanyaan untuk hari ini</td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
                   <div className="row">
                     <div className="col-sm-12 col-md-5">
                       <div className="dataTables_info" id="datatable-buttons_info" role="status" aria-live="polite" style={{ marginLeft: '16px', marginTop: '10px ' }}>Showing {currentPage * perPage + 1} to {Math.min((currentPage + 1) * perPage, questions.length)} of {questions.length} entries</div>
