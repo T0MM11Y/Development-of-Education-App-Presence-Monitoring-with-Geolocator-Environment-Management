@@ -1,0 +1,41 @@
+name: user_interface
+version: 1.0.0+1
+publish_to: none
+description: A new Flutter project.
+environment: 
+  sdk: '>=3.2.3 <4.0.0'
+
+dependencies: 
+  cupertino_icons: ^1.0.2
+  get_storage: ^2.0.3
+  convex_bottom_bar: ^3.2.0
+  get: 4.6.6
+  http: ^0.13.3
+  intl: ^0.17.0
+  geolocator: ^7.6.2
+  flutter: 
+    sdk: flutter
+  image_picker: ^1.0.7
+  flutter_image_compress: ^1.1.0
+  
+dev_dependencies: 
+  flutter_lints: 3.0.2
+  flutter_test: 
+    sdk: flutter
+
+flutter: 
+  assets:
+    - assets/images/LoginLogo.png
+    - assets/images/AppBar.png
+    - assets/images/absensi.png
+    - assets/images/class.png
+    - assets/images/roster.png
+    - assets/images/pengumuman.png
+    - assets/images/guru.png
+    - assets/images/tanyajawab.png
+
+  uses-material-design: true
+  fonts:
+    - family: Inconsolata
+      fonts:
+        - asset: assets/fonts/Inconsolata-VariableFont_wdth,wght.ttf

@@ -84,4 +84,5 @@ func SetupAbsensi(app *fiber.App) {
 	app.Get("/api/absensi/:id", absensiController.GetAbsensi)
 	app.Put("/api/absensi/:id", absensiController.UpdateAbsensi)
 	app.Delete("/api/absensi/:id", absensiController.DeleteAbsensi)
+	app.Get("/api/absensi/user/:id", absensiController.GetAbsensiByUser)
 }

@@ -205,7 +205,7 @@ function AllKelas() {
             <div className="main-content">
                 <div className="page-content">
                     <div className="container-fluid">
-                        <div className="row">
+                        <di v className="row">
                             <div className="col-12">
                                 <div className="page-title-box d-sm-flex a  lign-items-center justify-content-between">
                                     <h4 className="mb-sm-0">Daftar Kelas</h4>
@@ -219,7 +219,7 @@ function AllKelas() {
 
                                 </div>
                             </div>
-                        </div>
+                        </di>
 
                         <div className="row mb-5">
                             <div className="col-xl-3">

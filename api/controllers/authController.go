@@ -21,6 +21,7 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	var user models.User
+	database.DB.Preload("Kelas").Where("nisn = ?", data["nisn"]).First(&user)
 
 	database.DB.Where("nisn = ?", data["nisn"]).First(&user)
 
@@ -57,6 +58,9 @@ func Login(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{
 		"message": "Success",
+		"token":   token,
+		"user":    user,
+		"kelas":   user.Kelas,
 	})
 
 }

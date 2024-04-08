@@ -109,7 +109,6 @@ function Absensi() {
                                                             <th>#</th>
                                                             <th data-priority="1">User</th>
                                                             <th data-priority="3">Waktu</th>
-                                                            <th data-priority="1">Lokasi</th>
                                                             <th data-priority="3">Status</th>
                                                         </tr>
                                                     </thead>
@@ -119,7 +118,6 @@ function Absensi() {
                                                                 <td>{index + 1}</td>
                                                                 <td>{absen.user.Nama_Depan} {absen.user.Nama_Belakang}</td>
                                                                 <td>{new Date(absen.tanggal).toLocaleDateString('id-ID') + ' ' + new Date(absen.tanggal).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: true })}</td>
-                                                                <td>{absen.lokasi}</td>
                                                                 <td>{absen.status}</td>
                                                             </tr>
                                                         ))}
