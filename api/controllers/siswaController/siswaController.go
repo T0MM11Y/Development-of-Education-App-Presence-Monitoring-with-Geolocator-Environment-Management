@@ -107,7 +107,68 @@ func DeleteSiswa(c *fiber.Ctx) error {
 		"message": "Student deleted successfully",
 	})
 }
+func ChangePassword(c *fiber.Ctx) error {
+	db := database.DB
+	var siswa models.User
+	id := c.Params("id")
 
+	db.Find(&siswa, id)
+	if siswa.ID == 0 {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": "Tidak ada siswa dengan ID yang diberikan",
+		})
+	}
+
+	// Get the old password, new password, and confirmation from the form data
+	oldPassword := c.FormValue("old_password")
+	newPassword := c.FormValue("new_password")
+	confirmPassword := c.FormValue("confirm_password")
+
+	// Check if any of the fields are empty
+	if oldPassword == "" || newPassword == "" || confirmPassword == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Semua field harus diisi",
+		})
+	}
+
+	// Check if the old password is correct
+	err := bcrypt.CompareHashAndPassword(siswa.Password, []byte(oldPassword))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Password lama salah",
+		})
+	}
+
+	// Check if the new password and confirmation match
+	if newPassword != confirmPassword {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Password baru dan konfirmasi password tidak cocok",
+		})
+	}
+
+	// Hash the new password
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), 14)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Terjadi kesalahan saat melakukan hashing password",
+			"error":   err,
+		})
+	}
+
+	// Update the student's password
+	siswa.Password = hashedPassword
+	result := db.Save(&siswa)
+	if result.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Terjadi kesalahan saat menyimpan ke database",
+			"error":   result.Error,
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"message": "Password berhasil diubah",
+	})
+}
 func RegisterSiswa(c *fiber.Ctx) error {
 	// Initialize the URL to an empty string
 	url := ""

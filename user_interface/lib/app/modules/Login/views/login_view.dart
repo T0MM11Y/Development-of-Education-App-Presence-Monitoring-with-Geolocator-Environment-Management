@@ -97,20 +97,7 @@ class _LoginViewState extends State<LoginView> {
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16.0, top: 6.0),
-                      child: Text(
-                        "Change Password?",
-                        style: TextStyle(
-                          color: Colors.blue[800],
-                          fontSize: 14,
-                          fontFamily: 'Roboto',
-                        ),
-                      ),
-                    ),
-                  ),
+                 
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Container(

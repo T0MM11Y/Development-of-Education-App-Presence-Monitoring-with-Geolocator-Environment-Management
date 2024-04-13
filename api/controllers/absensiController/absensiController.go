@@ -43,7 +43,18 @@ func GetAbsensiByUser(c *fiber.Ctx) error {
 	}
 	return c.JSON(fiber.Map{"status": "success", "message": "Absensi retrieved", "data": absensi})
 }
-
+func GetAbsensiHistoryByUser(c *fiber.Ctx) error {
+	userID, err := strconv.Atoi(c.Params("id"))
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Invalid user ID", "data": err})
+	}
+	var absensis []models.Absensi
+	database.DB.Where("user_id = ?", userID).Find(&absensis)
+	if len(absensis) == 0 {
+		return c.Status(404).JSON(fiber.Map{"status": "error", "message": "Tidak ditemukan history absensi untuk user ini", "data": nil})
+	}
+	return c.JSON(fiber.Map{"status": "success", "message": "History absensi berhasil diambil", "data": absensis})
+}
 func GetAbsensi(c *fiber.Ctx) error {
 	id, _ := strconv.Atoi(c.Params("id"))
 	absensi := models.Absensi{}
@@ -54,6 +65,11 @@ func GetAbsensi(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"status": "success", "message": "Absensi retrieved", "data": absensi})
 }
 func NewAbsensi(c *fiber.Ctx) error {
+	// Cek apakah hari ini adalah hari Minggu
+	if time.Now().Weekday() == time.Sunday {
+		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Absensi tidak bisa dilakukan pada hari Minggu"})
+	}
+
 	absensi := new(models.Absensi)
 	if err := c.BodyParser(absensi); err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't parse JSON", "data": err})
@@ -109,4 +125,54 @@ func UpdateAbsensi(c *fiber.Ctx) error {
 	}
 	database.DB.Save(&absensi)
 	return c.JSON(fiber.Map{"status": "success", "message": "Absensi successfully updated", "data": absensi})
+}
+
+// RecordAutomaticAbsensi mencatat absensi secara otomatis jika tidak ada absensi yang dilakukan
+func RecordAutomaticAbsensi() {
+	var users []models.User
+	database.DB.Find(&users) // Mengambil semua pengguna
+
+	today := time.Now().Format("2006-01-02")
+
+	// Cek apakah hari ini adalah hari Minggu
+	if time.Now().Weekday() == time.Sunday {
+		fmt.Println("Hari ini adalah hari Minggu, tidak mencatat absensi.")
+		return // Jangan lanjutkan jika hari ini adalah hari Minggu
+	}
+
+	// Mendefinisikan daftar hari libur
+	var hariLibur = map[string]bool{
+		"2023-01-01": true, // Tahun Baru Masehi
+		"2023-04-22": true, // Hari Raya Idul Fitri 1444 Hijriyah
+		"2023-04-23": true, // Hari Raya Idul Fitri 1444 Hijriyah
+		"2023-05-01": true, // Hari Buruh Internasional
+		"2023-05-18": true, // Kenaikan Isa Almasih
+		"2023-06-01": true, // Hari Lahir Pancasila
+		"2023-06-29": true, // Hari Raya Idul Adha 1444 Hijriyah
+		"2023-07-19": true, // Tahun Baru Islam 1445 Hijriyah
+		"2023-08-17": true, // Hari Kemerdekaan RI
+		"2023-09-28": true, // Maulid Nabi Muhammad SAW
+		"2023-12-25": true, // Hari Raya Natal
+	}
+
+	// Periksa apakah hari ini adalah hari libur
+	if _, adalahLibur := hariLibur[today]; adalahLibur {
+		fmt.Println("Hari ini adalah hari libur, tidak mencatat absensi.")
+		return // Jangan lanjutkan jika hari ini adalah hari libur
+	}
+
+	for _, user := range users {
+		var absensiCount int64
+		database.DB.Model(&models.Absensi{}).Where("user_id = ? AND DATE(tanggal) = ?", user.ID, today).Count(&absensiCount)
+
+		if absensiCount == 0 {
+			// Tidak ada absensi untuk pengguna ini hari ini, mencatat sebagai "Tidak Hadir"
+			newAbsensi := models.Absensi{
+				UserID:  user.ID,
+				Tanggal: time.Now().Format(time.RFC3339),
+				Status:  "Absen",
+			}
+			database.DB.Create(&newAbsensi)
+		}
+	}
 }

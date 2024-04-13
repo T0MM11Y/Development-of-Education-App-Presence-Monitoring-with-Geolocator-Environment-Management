@@ -55,41 +55,7 @@ class ProfileController extends GetxController {
   void updateProfilePicture(String imagePath) {
     profilePictureFile.value = imagePath;
     imageUrl.value = imagePath;
-  }
-
-  Future<void> logout() async {
-    try {
-      var response =
-          await getConnect.post('${ConfigAPI.baseUrl}api/logout', {});
-      if (response.statusCode != null &&
-          response.statusCode! >= 200 &&
-          response.statusCode! < 300) {
-        final storage = GetStorage();
-        storage.erase();
-        storage.remove('jwt');
-        storage.remove('user');
-        Get.snackbar(
-          'Success',
-          'Logout successful',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
-        Get.offAllNamed('/login');
-
-      } else {
-        print('Status code: ${response.statusCode}');
-        print('Response body: ${response.body}');
-        throw Exception('Failed to logout.');
-      }
-    } catch (e) {
-      print('Error: $e');
-      Get.snackbar(
-        'Error',
-        'Failed to logout',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-    }
+  
   }
 
   void updateProfile() async {
@@ -139,6 +105,7 @@ class ProfileController extends GetxController {
           user =
               responseData; // Assuming responseData contains the updated user data
 
+        
           // Manually update the 'kelas' field in the user object
           user['kelas'] = storage.read('user')['kelas'];
           storage.write('user', user);

@@ -1,11 +1,14 @@
 package main
 
 import (
+	"API/controllers/absensiController"
 	"API/database"
 	"API/routes"
+	"log"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/robfig/cron/v3"
 )
 
 func main() {
@@ -46,6 +49,15 @@ func main() {
 
 	// Setup absensi routes
 	routes.SetupAbsensi(app)
+
+	c := cron.New()
+	_, err := c.AddFunc("59 23 * * *", func() {
+		absensiController.RecordAutomaticAbsensi()
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	c.Start()
 
 	app.Listen(":5000")
 }

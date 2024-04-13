@@ -20,26 +20,34 @@ func Login(c *fiber.Ctx) error {
 		return err
 	}
 
+	// Check if nisn and password fields are not empty
+	if data["nisn"] == "" || data["password"] == "" {
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"message": "NISN and password must be provided",
+		})
+	}
+
 	var user models.User
 	database.DB.Preload("Kelas").Where("nisn = ?", data["nisn"]).First(&user)
 
-	database.DB.Where("nisn = ?", data["nisn"]).First(&user)
-
-	if user.NISN == 0 { //gakbisa nemukan user
+	if user.NISN == 0 {
 		c.Status(fiber.StatusNotFound)
 		return c.JSON(fiber.Map{
 			"message": "User not found",
 		})
 	}
-	if err := bcrypt.CompareHashAndPassword(user.Password, []byte(data["password"])); err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(data["password"])); err != nil {
 		c.Status(fiber.StatusBadRequest)
 		return c.JSON(fiber.Map{
 			"message": "Incorrect password",
 		})
 	}
+
+	// Generate JWT token
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
 		Issuer:    strconv.Itoa(int(user.NISN)),
-		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), //1 hari
+		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), // 1 day
 	})
 	token, err := claims.SignedString([]byte(SecretKey))
 	if err != nil {
@@ -48,6 +56,8 @@ func Login(c *fiber.Ctx) error {
 			"message": "Could not login",
 		})
 	}
+
+	// Set JWT token in cookie
 	cookie := fiber.Cookie{
 		Name:     "jwt",
 		Value:    token,
@@ -62,9 +72,7 @@ func Login(c *fiber.Ctx) error {
 		"user":    user,
 		"kelas":   user.Kelas,
 	})
-
 }
-
 func User(c *fiber.Ctx) error {
 	cookie := c.Cookies("jwt")
 	token, err := jwt.ParseWithClaims(cookie, &jwt.StandardClaims{}, func(t *jwt.Token) (interface{}, error) {

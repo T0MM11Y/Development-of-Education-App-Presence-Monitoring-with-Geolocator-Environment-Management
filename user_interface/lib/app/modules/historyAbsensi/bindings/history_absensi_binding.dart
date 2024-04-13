@@ -8,5 +8,6 @@ class HistoryAbsensiBinding extends Bindings {
     Get.lazyPut<HistoryAbsensiController>(
       () => HistoryAbsensiController(),
     );
+
   }
 }

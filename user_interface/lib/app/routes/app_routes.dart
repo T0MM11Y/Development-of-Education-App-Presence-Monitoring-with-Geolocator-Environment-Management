@@ -8,6 +8,8 @@ abstract class Routes {
   static const DASHBOARD = _Paths.DASHBOARD;
   static const PROFILE = _Paths.PROFILE;
   static const HISTORY_ABSENSI = _Paths.HISTORY_ABSENSI;
+  static const MENU_PROFILE = _Paths.MENU_PROFILE;
+  static const GANTI_PASSWORD = _Paths.GANTI_PASSWORD;
 }
 
 abstract class _Paths {
@@ -17,4 +19,6 @@ abstract class _Paths {
   static const DASHBOARD = '/dashboard';
   static const PROFILE = '/profile';
   static const HISTORY_ABSENSI = '/history-absensi';
+  static const MENU_PROFILE = '/menu-profile';
+  static const GANTI_PASSWORD = '/ganti-password';
 }

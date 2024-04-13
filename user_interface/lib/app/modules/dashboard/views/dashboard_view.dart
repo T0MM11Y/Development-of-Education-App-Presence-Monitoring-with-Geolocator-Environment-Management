@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:user_interface/app/material/bottomnav.dart';
+import 'package:user_interface/app/modules/historyAbsensi/views/history_absensi_view.dart';
 import 'package:user_interface/app/routes/app_pages.dart';
 import '../controllers/dashboard_controller.dart';
 
@@ -60,6 +61,8 @@ class DashboardView extends StatelessWidget {
                 child: Column(
                   children: [
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment
+                          .center, // Menjaga semuanya sejajar di tengah secara vertikal
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(
@@ -67,59 +70,30 @@ class DashboardView extends StatelessWidget {
                             top: 60.0,
                           ),
                           child: Image.asset('assets/images/AppBar.png',
-                              width: 185),
+                              width: 165),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            right: 13.0,
-                            top: 60.0,
-                            left: 65.0,
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 50, // 2x radius
-                                height: 60, // 2x radius
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors
-                                        .blue, // Change this color to the one you want
-                                    width:
-                                        3.0, // Change this width to the one you want
+                        Expanded(
+                          // Memastikan elemen berikutnya menggunakan ruang yang tersedia
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              right: 13.0,
+                              top: 60.0,
+                              left: 65.0,
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 50, // 2x radius
+                                  height: 60, // 2x radius
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors
+                                          .blue, // Change this color to the one you want
+                                      width:
+                                          2.0, // Change this width to the one you want
+                                    ),
                                   ),
-                                ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return Dialog(
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.8,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.8,
-                                            child: Image(
-                                              image: controller
-                                                      .imageUrl.value.isNotEmpty
-                                                  ? NetworkImage(
-                                                      controller.imageUrl.value)
-                                                  : AssetImage(
-                                                          'assets/images/default_profile.png')
-                                                      as ImageProvider<
-                                                          Object>, // replace with your default image
-                                              fit: BoxFit.contain,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
                                   child: CircleAvatar(
                                     backgroundImage:
                                         controller.imageUrl.value.isNotEmpty
@@ -130,39 +104,45 @@ class DashboardView extends StatelessWidget {
                                     child: controller.imageUrl.value.isEmpty
                                         ? Text(
                                             '${user['Nama_Depan'][0]}${user['Nama_Belakang'][0]}',
-                                            style: TextStyle(fontSize: 24),
+                                            style: TextStyle(fontSize: 20),
                                           )
                                         : null,
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 10.0,
-                              ), // Add some space between the avatar and the text
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    user['Nama_Depan'],
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
+                                SizedBox(
+                                  width: 8.0,
+                                ), // Add some space between the avatar and the text
+                                Flexible(
+                                  // Memungkinkan teks untuk menyesuaikan dalam ruang yang tersedia
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize
+                                        .min, // Menggunakan ukuran minimum
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        user['Nama_Depan'],
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      Text(
+                                        user['NISN'].toString(),
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      Text(
+                                        user['kelas']['nama_kelas'],
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    user['NISN'].toString(),
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    user['kelas']['nama_kelas'],
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -196,69 +176,75 @@ class DashboardView extends StatelessWidget {
                                   top: 25.0,
                                   right: 2.0,
                                   left: 6.0), // Reduce the top padding
-                              child: Container(
-                                width: 350, // Set the width as needed
-                                height: 43, // Set the height as needed
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 0.9,
-                                  ),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(9.0),
-                                  ),
-                                ),
-                                padding: EdgeInsets.only(
-                                    left: 0.3, right: 22), // Add padding
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(Icons
-                                            .check_circle_outline), // Add your icon here
-                                        SizedBox(
-                                            width:
-                                                10.0), // Add some space between the icon and the text
-                                        Obx(() => Text(
-                                              'Status: ${controller.status.value}',
-                                              style: TextStyle(
-                                                color: controller
-                                                            .status.value ==
-                                                        'Terlambat'
-                                                    ? Colors.red
-                                                    : controller.status.value ==
-                                                            'Hadir'
-                                                        ? Colors.green
-                                                        : null,
-                                              ),
-                                            )),
-                                      ],
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.to(() => HistoryAbsensiView());
+                                },
+                                child: Container(
+                                  width: 350, // Set the width as needed
+                                  height: 43, // Set the height as needed
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.grey,
+                                      width: 0.9,
                                     ),
-                                    Row(
-                                      children: [
-                                        Icon(Icons
-                                            .access_time), // Add your icon here
-                                        SizedBox(
-                                            width:
-                                                10.0), // Add some space between the icon and the text
-                                        Obx(() => Text(
-                                              'Waktu: ${controller.waktu.value}',
-                                              style: TextStyle(
-                                                color: controller.waktu.value
-                                                            .isEmpty ||
-                                                        controller
-                                                                .waktu.value ==
-                                                            '-'
-                                                    ? Colors.black
-                                                    : Color.fromARGB(
-                                                        255, 110, 110, 110),
-                                              ),
-                                            )),
-                                      ],
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(9.0),
                                     ),
-                                  ],
+                                  ),
+                                  padding: EdgeInsets.only(
+                                      left: 0.3, right: 22), // Add padding
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(Icons
+                                              .check_circle_outline), // Add your icon here
+                                          SizedBox(
+                                              width:
+                                                  10.0), // Add some space between the icon and the text
+                                          Obx(() => Text(
+                                                'Status: ${controller.status.value}',
+                                                style: TextStyle(
+                                                  color:
+                                                      controller.status.value ==
+                                                              'Terlambat'
+                                                          ? Colors.red
+                                                          : controller.status
+                                                                      .value ==
+                                                                  'Hadir'
+                                                              ? Colors.green
+                                                              : null,
+                                                ),
+                                              )),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(Icons
+                                              .access_time), // Add your icon here
+                                          SizedBox(
+                                              width:
+                                                  10.0), // Add some space between the icon and the text
+                                          Obx(() => Text(
+                                                'Waktu: ${controller.waktu.value}',
+                                                style: TextStyle(
+                                                  color: controller.waktu.value
+                                                              .isEmpty ||
+                                                          controller.waktu
+                                                                  .value ==
+                                                              '-'
+                                                      ? Colors.black
+                                                      : Color.fromARGB(
+                                                          255, 110, 110, 110),
+                                                ),
+                                              )),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -318,7 +304,7 @@ class DashboardView extends StatelessWidget {
                 }
                 break;
               case 2: // Profile
-                Get.offNamed(Routes.PROFILE);
+                Get.offNamed(Routes.MENU_PROFILE);
                 break;
             }
             print('click index=$i');
@@ -334,7 +320,8 @@ class DashboardView extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           if (title == 'Absensi') {
-            Get.toNamed(Routes.HISTORY_ABSENSI); // replace with your Absensi route
+            Get.toNamed(
+                Routes.HISTORY_ABSENSI); // replace with your Absensi route
           }
         },
         child: Card(

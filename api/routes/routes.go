@@ -51,6 +51,7 @@ func SetupSiswa(app *fiber.App) {
 	app.Get("/api/siswa/:id", siswaController.GetSiswaById)
 	app.Put("/api/siswa/:id", siswaController.UpdateSiswa)
 	app.Delete("/api/siswa/:id", siswaController.DeleteSiswa)
+	app.Put("/api/siswa/:id/password", siswaController.ChangePassword)
 
 }
 
@@ -85,4 +86,5 @@ func SetupAbsensi(app *fiber.App) {
 	app.Put("/api/absensi/:id", absensiController.UpdateAbsensi)
 	app.Delete("/api/absensi/:id", absensiController.DeleteAbsensi)
 	app.Get("/api/absensi/user/:id", absensiController.GetAbsensiByUser)
+	app.Get("/api/absensi/history/:id", absensiController.GetAbsensiHistoryByUser)
 }
