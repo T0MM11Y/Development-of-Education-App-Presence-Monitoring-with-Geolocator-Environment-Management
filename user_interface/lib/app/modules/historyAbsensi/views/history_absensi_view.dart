@@ -145,18 +145,34 @@ class HistoryAbsensiView extends GetView<HistoryAbsensiController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Status', style: TextStyle(fontSize: 16.0)),
-                              Obx(() => Text(
+                              Obx(() => Row(
+                                children: [
+                                  Text(
                                     controller.status.value,
                                     style: TextStyle(
                                       fontSize: 19.0,
-                                      color: controller.status.value ==
-                                              'Terlambat'
+                                      color: controller.status.value == 'Terlambat'
                                           ? Colors.red
                                           : controller.status.value == 'Hadir'
                                               ? Colors.green
                                               : null,
                                     ),
-                                  )),
+                                  ),
+                                  SizedBox(width: 8.0), // Add some spacing between the text and the icon
+                                  Icon(
+                                    controller.status.value == 'Terlambat'
+                                        ? Icons.access_time
+                                        : controller.status.value == 'Hadir'
+                                            ? Icons.check_circle
+                                            : Icons.close,
+                                    color: controller.status.value == 'Terlambat'
+                                        ? Colors.red
+                                        : controller.status.value == 'Hadir'
+                                            ? Colors.green
+                                            : null,
+                                  ),
+                                ],
+                              )),
                             ],
                           ),
                         ],
@@ -198,10 +214,10 @@ class HistoryAbsensiView extends GetView<HistoryAbsensiController> {
                             Expanded(
                               child: Column(
                                 children: [
-                                  Text("Waktu Absen",
+                                  Text("Waktu ",
                                       style: TextStyle(
                                           fontSize: 20,
-                                          fontWeight: FontWeight.bold)),
+                                          )),
                                   SizedBox(
                                       height:
                                           5.0), // Add space between the texts
@@ -216,7 +232,7 @@ class HistoryAbsensiView extends GetView<HistoryAbsensiController> {
                                   Text("Status",
                                       style: TextStyle(
                                           fontSize: 20,
-                                          fontWeight: FontWeight.bold)),
+                                          )),
                                   SizedBox(
                                       height:
                                           5.0), // Add space between the texts
@@ -238,7 +254,7 @@ class HistoryAbsensiView extends GetView<HistoryAbsensiController> {
                                   Text("Tanggal",
                                       style: TextStyle(
                                           fontSize: 20,
-                                          fontWeight: FontWeight.bold)),
+                                      )),
                                   SizedBox(
                                       height:
                                           5.0), // Add space between the texts

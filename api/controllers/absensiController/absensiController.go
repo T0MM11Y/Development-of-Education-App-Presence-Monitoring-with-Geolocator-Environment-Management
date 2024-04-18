@@ -43,6 +43,15 @@ func GetAbsensiByUser(c *fiber.Ctx) error {
 	}
 	return c.JSON(fiber.Map{"status": "success", "message": "Absensi retrieved", "data": absensi})
 }
+func GetAbsensiByUserhariini(c *fiber.Ctx) error {
+	userID, _ := strconv.Atoi(c.Params("id"))
+	var absensis []models.Absensi
+	database.DB.Where("user_id = ? AND DATE(tanggal) = ?", userID, time.Now().Format("2006-01-02")).Find(&absensis)
+	if len(absensis) == 0 {
+		return c.Status(404).JSON(fiber.Map{"status": "error", "message": "No absensi found for user today", "data": nil})
+	}
+	return c.JSON(fiber.Map{"status": "success", "message": "Absensi retrieved", "data": absensis})
+}
 func GetAbsensiHistoryByUser(c *fiber.Ctx) error {
 	userID, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
@@ -82,7 +91,7 @@ func NewAbsensi(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Absensi sudah dilakukan hari ini"})
 	}
 	// Koordinat tempat yang ditentukan
-	lat, lon := 3.540176, 98.6576913 // Ganti dengan koordinat yang sesuai
+	lat, lon := 2.3858489, 99.1474664 // Ganti dengan koordinat yang sesuai
 
 	// Hitung jarak antara tempat pengguna melakukan absen dan tempat yang ditentukan
 	jarak := haversine(lat, lon, absensi.Latitude, absensi.Longitude)

@@ -11,6 +11,7 @@ class DashboardController extends GetxController {
   var waktu = '-'.obs;
   var imageUrl = ''.obs;
   final GetConnect getConnect = GetConnect();
+  Map<String, dynamic> user = {};
 
   @override
   void onInit() {
@@ -18,7 +19,7 @@ class DashboardController extends GetxController {
 
     // Access and print user info
     final storage = GetStorage();
-    Map<String, dynamic> user = storage.read('user');
+    user = storage.read('user');
     print('User info: $user');
     imageUrl.value = user['Urlphoto'];
     if (imageUrl.value.startsWith('http://localhost:5000/')) {
@@ -84,7 +85,7 @@ class DashboardController extends GetxController {
       }
     } else {
       // Handle error
-        waktu.value = '-';
+      waktu.value = '-';
 
       print('Failed to check absensi');
     }
@@ -146,7 +147,7 @@ class DashboardController extends GetxController {
             'Gagal membuat absensi',
             backgroundColor: Colors.red,
             colorText: Colors.white,
-          );  
+          );
         }
       } else {
         Get.snackbar(

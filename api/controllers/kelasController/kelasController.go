@@ -3,6 +3,7 @@ package kelasController
 import (
 	"API/database"
 	"API/models"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -18,15 +19,16 @@ func GetAllKelas(c *fiber.Ctx) error {
 	}
 	return c.JSON(kelass)
 }
-
 func GetKelasById(c *fiber.Ctx) error {
 	db := database.DB
 	var kelas models.Kelas
 	id := c.Params("id")
 
+	today := time.Now().Format("2006-01-02")
+
 	db.Preload("Rosters").Find(&kelas, id)
 	db.Preload("Users").Find(&kelas, id)
-	db.Preload("Pengajar").Find(&kelas, id)
+	db.Preload("Users.Absensis", "DATE(tanggal) = DATE(?)", today).Find(&kelas, id)
 	if kelas.ID == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"message": "No class found with given ID",

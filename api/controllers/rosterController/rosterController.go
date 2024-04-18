@@ -2,6 +2,7 @@ package rosterController
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 
@@ -24,21 +25,19 @@ func GetAllRosters(c *fiber.Ctx) error {
 
 func GetRosterById(c *fiber.Ctx) error {
 	db := database.DB
-	var roster models.Roster // Changed this line
+	var roster models.Roster
 
-	db.Preload("Pengajar").Find(&roster)
+	rosterID, _ := strconv.Atoi(c.Params("id"))    // Get roster ID from route parameters
+	db.Preload("Pengajar").Find(&roster, rosterID) // Find roster by ID
+
 	if roster.ID == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"message": "No roster found with given ID",
 		})
 	}
 
-	namaDepanPengajar := roster.Pengajar.Nama_Depan // Access nama_depan of Pengajar
+	return c.JSON(roster)
 
-	return c.JSON(fiber.Map{
-		"roster":     roster,
-		"nama_depan": namaDepanPengajar,
-	})
 }
 func CreateRoster(c *fiber.Ctx) error {
 	db := database.DB
@@ -67,6 +66,7 @@ func GetRostersByKelasId(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	db.Preload("Rosters").Find(&kelas, id)
+	db.Preload("Rosters.Pengajar").Find(&kelas, id)
 	if kelas.ID == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"message": "No class found with given ID",

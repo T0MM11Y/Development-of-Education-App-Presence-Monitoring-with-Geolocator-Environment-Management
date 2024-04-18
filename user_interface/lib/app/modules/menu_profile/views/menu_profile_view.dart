@@ -28,167 +28,170 @@ class MenuProfileView extends GetView<MenuProfileController> {
             false; // return false if dialog is dismissed
       },
       child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-        ),
-        body: Align(
-          alignment:
-              Alignment.topCenter, // Menempatkan konten di paling atas tengah
-          child: Column(
-            mainAxisSize:
-                MainAxisSize.min, // Membuat Column mengambil ukuran minimal
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 20),
-              Obx(() => CircleAvatar(
-                    backgroundImage: controller.imageUrl.value.isNotEmpty
-                        ? NetworkImage(controller.imageUrl.value)
-                        : null,
-                    radius: 65,
-                    child: controller.imageUrl.value.isEmpty
-                        ? Text(
-                            '${controller.user['Nama_Depan'][0]}${controller.user['Nama_Belakang'][0]}',
-                            style: TextStyle(fontSize: 28),
-                          )
-                        : null,
-                  )),
-              const SizedBox(height: 10),
-              Text(
-                '${controller.user['Nama_Depan']} ${controller.user['Nama_Belakang']}',
-                style: TextStyle(fontSize: 24),
-              ),
-              Text(
-                "Student",
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.only(
-                    left: 25, right: 25, top: 20, bottom: 10),
-                child: Column(
-                  children: [
-                    Divider(
-                        color: Color.fromARGB(
-                            255, 219, 214, 214)), // Add divider here
-                    // Add divider here
-                    ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor:
-                            Colors.blue, // Change your icon color here
-                        child: IconTheme(
-                          data: IconThemeData(
-                            size: 30, // Change your icon size here
-                          ),
-                          child:
-                              Icon(Icons.person_outlined, color: Colors.white),
-                        ),
-                      ),
-                      title: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8.0), // Add padding here
-                        child: Text(
-                          'Update Profile',
-                          style: TextStyle(
-                              fontSize: 18), // Change your text size here
-                        ),
-                      ),
-                      trailing:
-                          Icon(Icons.arrow_forward_ios), // Add arrow icon here
-                      onTap: () {
-                        Get.toNamed('/profile');
-                      },
-                    ),
-                    Divider(
-                        color: Color.fromARGB(
-                            255, 219, 214, 214)), // Add divider here
-                    // Add divider here
-                    ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor:
-                            Colors.blue, // Change your icon color here
-                        child: IconTheme(
-                          data: IconThemeData(
-                            size: 30, // Change your icon size here
-                          ),
-                          child: Icon(Icons.lock, color: Colors.white),
-                        ),
-                      ),
-                      title: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8.0), // Add padding here
-                        child: Text(
-                          'Change Password',
-                          style: TextStyle(
-                              fontSize: 18), // Change your text size here
-                        ),
-                      ),
-                      trailing:
-                          Icon(Icons.arrow_forward_ios), // Add arrow icon here
-                      onTap: () {
-                        Get.toNamed("/ganti-password");
-                      },
-                    ),
-                    Divider(
-                        color: Color.fromARGB(
-                            255, 219, 214, 214)), // Add divider here
-                    ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor:
-                            Colors.red, // Change your icon color here
-                        child: IconTheme(
-                          data: IconThemeData(
-                            size: 30, // Change your icon size here
-                          ),
-                          child: Icon(Icons.logout, color: Colors.white),
-                        ),
-                      ),
-                      title: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8.0), // Add padding here
-                        child: Text(
-                          'Sign Out',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.red), // Change your text size here
-                        ),
-                      ),
-                      trailing:
-                          Icon(Icons.arrow_forward_ios), // Add arrow icon here
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Logout'),
-                              content: Text('Are you sure you want to logout?'),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: Text('Cancel'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                TextButton(
-                                  child: Text('Yes'),
-                                  onPressed: () {
-                                    controller.logout();
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                    ),
-                    Divider(
-                        color: Color.fromARGB(
-                            255, 219, 214, 214)), // Add divider here
-                  ],
+       
+        body: SingleChildScrollView(
+          // Add SingleChildScrollView here
+          child: Align(
+            alignment:
+                Alignment.topCenter, // Menempatkan konten di paling atas tengah
+            child: Column(
+              mainAxisSize:
+                  MainAxisSize.min, // Membuat Column mengambil ukuran minimal
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 70),
+                Obx(() => CircleAvatar(
+                      backgroundImage: controller.imageUrl.value.isNotEmpty
+                          ? NetworkImage(controller.imageUrl.value)
+                          : null,
+                      radius: 65,
+                      child: controller.imageUrl.value.isEmpty
+                          ? Text(
+                              '${controller.user['Nama_Depan'][0]}${controller.user['Nama_Belakang'][0]}',
+                              style: TextStyle(fontSize: 28),
+                            )
+                          : null,
+                    )),
+                const SizedBox(height: 10),
+                Text(
+                  '${controller.user['Nama_Depan']} ${controller.user['Nama_Belakang']}',
+                  style: TextStyle(fontSize: 24),
                 ),
-              ),
-            ],
+                Text(
+                  "Student",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.only(
+                      left: 25, right: 25, top: 5, bottom: 10),
+                  child: Column(
+                    children: [
+                      Divider(
+                          color: Color.fromARGB(
+                              255, 219, 214, 214)), // Add divider here
+                      // Add divider here
+                      ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor:
+                              Colors.blue, // Change your icon color here
+                          child: IconTheme(
+                            data: IconThemeData(
+                              size: 30, // Change your icon size here
+                            ),
+                            child: Icon(Icons.person_outlined,
+                                color: Colors.white),
+                          ),
+                        ),
+                        title: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8.0), // Add padding here
+                          child: Text(
+                            'Update Profile',
+                            style: TextStyle(
+                                fontSize: 18), // Change your text size here
+                          ),
+                        ),
+                        trailing: Icon(
+                            Icons.arrow_forward_ios), // Add arrow icon here
+                        onTap: () {
+                          Get.toNamed('/profile');
+                        },
+                      ),
+                      Divider(
+                          color: Color.fromARGB(
+                              255, 219, 214, 214)), // Add divider here
+                      // Add divider here
+                      ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor:
+                              Colors.blue, // Change your icon color here
+                          child: IconTheme(
+                            data: IconThemeData(
+                              size: 30, // Change your icon size here
+                            ),
+                            child: Icon(Icons.lock, color: Colors.white),
+                          ),
+                        ),
+                        title: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8.0), // Add padding here
+                          child: Text(
+                            'Change Password',
+                            style: TextStyle(
+                                fontSize: 18), // Change your text size here
+                          ),
+                        ),
+                        trailing: Icon(
+                            Icons.arrow_forward_ios), // Add arrow icon here
+                        onTap: () {
+                          Get.toNamed("/ganti-password");
+                        },
+                      ),
+                      Divider(
+                          color: Color.fromARGB(
+                              255, 219, 214, 214)), // Add divider here
+                      ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor:
+                              Colors.red, // Change your icon color here
+                          child: IconTheme(
+                            data: IconThemeData(
+                              size: 30, // Change your icon size here
+                            ),
+                            child: Icon(Icons.logout, color: Colors.white),
+                          ),
+                        ),
+                        title: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8.0), // Add padding here
+                          child: Text(
+                            'Sign Out',
+                            style: TextStyle(
+                                fontSize: 18,
+                                color:
+                                    Colors.red), // Change your text size here
+                          ),
+                        ),
+                        trailing: Icon(
+                            Icons.arrow_forward_ios), // Add arrow icon here
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Logout'),
+                                content:
+                                    Text('Are you sure you want to logout?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('Cancel'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: Text('Yes'),
+                                    onPressed: () {
+                                      controller.logout();
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      ),
+                      Divider(
+                          color: Color.fromARGB(
+                              255, 219, 214, 214)), // Add divider here
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         bottomNavigationBar: CustomBottomNavigationBar(

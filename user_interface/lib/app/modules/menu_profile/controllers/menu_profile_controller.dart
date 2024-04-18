@@ -15,6 +15,15 @@ class MenuProfileController extends GetxController {
     final storage = GetStorage();
     user = storage.read('user');
     imageUrl.value = user['Urlphoto'];
+
+    // Only update imageUrl if it's not a local file path
+    if (!imageUrl.value.startsWith('file://')) {
+      imageUrl.value = user['Urlphoto'];
+      if (imageUrl.value.startsWith('http://localhost:5000/')) {
+        imageUrl.value = imageUrl.value
+            .replaceFirst('http://localhost:5000/', ConfigAPI.baseUrl);
+      }
+    }
   }
 
   Future<void> logout() async {

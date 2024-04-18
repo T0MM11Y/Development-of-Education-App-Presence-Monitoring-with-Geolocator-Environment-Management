@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:user_interface/app/routes/app_pages.dart';
 import 'package:user_interface/configapi.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -118,6 +119,8 @@ class ProfileController extends GetxController {
             colorText: Colors.white,
           );
           print('Response data: $responseData');
+            Get.offAllNamed(Routes.DASHBOARD);
+
         } else if (responseData['message'] != null) {
           // Show error alert
           Get.snackbar(

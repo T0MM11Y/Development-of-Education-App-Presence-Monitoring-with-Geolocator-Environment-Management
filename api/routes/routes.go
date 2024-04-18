@@ -20,6 +20,7 @@ func SetupRoster(app *fiber.App) {
 	app.Get("/api/roster/:id", rosterController.GetRosterById)
 	app.Put("/api/roster/:id", rosterController.UpdateRoster)
 	app.Delete("/api/roster/:id", rosterController.DeleteRoster)
+	app.Get("/api/roster/kelas/:id", rosterController.GetRostersByKelasId)
 }
 
 // UserRoutes ...
@@ -87,4 +88,5 @@ func SetupAbsensi(app *fiber.App) {
 	app.Delete("/api/absensi/:id", absensiController.DeleteAbsensi)
 	app.Get("/api/absensi/user/:id", absensiController.GetAbsensiByUser)
 	app.Get("/api/absensi/history/:id", absensiController.GetAbsensiHistoryByUser)
+	app.Get("/api/absensi/user/:id/hariini", absensiController.GetAbsensiByUserhariini)
 }

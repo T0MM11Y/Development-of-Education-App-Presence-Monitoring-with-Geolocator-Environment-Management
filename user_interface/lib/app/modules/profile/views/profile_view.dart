@@ -440,8 +440,9 @@ class ProfileView extends GetView<ProfileController> {
                   style: TextStyle(fontSize: 20.0, color: Colors.white),
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: Color.fromARGB(255, 95, 187, 241),
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 2),
+                  backgroundColor: Color.fromARGB(255, 95, 187, 241),
+                  padding: EdgeInsets.symmetric
+                  (horizontal: 50, vertical: 2),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),

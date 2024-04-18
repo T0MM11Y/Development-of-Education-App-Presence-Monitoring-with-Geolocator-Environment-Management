@@ -7,6 +7,7 @@ import ReactPaginate from 'react-paginate';
 import { error } from 'jquery';
 
 function AllRoster() {
+    // Create a new array that only contains unique mata_pelajaran values
     const [rosters, setRosters] = useState([]); // Add this line
     const [kelas, setKelas] = useState([]);
     const [selectedDay, setSelectedDay] = useState(''); // Tambahkan state ini
@@ -69,6 +70,9 @@ function AllRoster() {
             .then(rosters => setRosters(rosters))
             .catch(error => console.error(error));
     };
+    //jadi gadak roster yang sama 
+    const uniqueRosters = [...new Set(rosters.map(roster => roster.mata_pelajaran))];
+
     const [pengajar, setPengajar] = useState([]);
     useEffect(() => {
         fetch(`${BASE_URL}api/pengajar`)
@@ -161,6 +165,12 @@ function AllRoster() {
             });
     };
 
+    const [selectedMataPelajaran, setSelectedMataPelajaran] = useState(null);
+
+    const handleMataPelajaranChange = (event) => {
+        const selectedRoster = rosters.find(roster => roster.mata_pelajaran === event.target.value);
+        setSelectedMataPelajaran(selectedRoster);
+    };
     const handleButtonClick = (id) => {
         fetch(`${BASE_URL}api/kelas/${id}`)
             .then(response => response.json())
@@ -201,7 +211,15 @@ function AllRoster() {
                                     <div className="col-12">
                                         <div className="mb-3">
                                             <label className="form-label">Mata Pelajaran</label>
-                                            <input className="form-control" placeholder="Masukkan Mata Pelajaran" type="text" name="mata_pelajaran" id="mata_pelajaran" required="" />
+
+
+                                            <select className="form-control" name="mata_pelajaran" id="mata_pelajaran" required="" onChange={handleMataPelajaranChange}>
+                                                {uniqueRosters.map((mata_pelajaran, index) => (
+                                                    <option key={index} value={mata_pelajaran}>
+                                                        {mata_pelajaran}
+                                                    </option>
+                                                ))}
+                                            </select>
                                         </div>
                                         <div className="mb-3">
                                             <label className="form-label">Kelas</label>
@@ -218,10 +236,12 @@ function AllRoster() {
                                             <label className="form-label">Guru Pengajar</label>
                                             <select className="form-control" name="guru_pengajar" id="guru_pengajar" required="">
                                                 <option value="">Pilih Guru Pengajar</option>
-                                                {pengajar.map((guru, index) => (
-                                                    <option key={index} value={guru.ID}>
-                                                        {guru.Nama_Depan} {guru.Nama_Belakang}
-                                                    </option>
+                                                {selectedMataPelajaran && pengajar.map((guru, index) => (
+                                                    guru.ID === selectedMataPelajaran.pengajar_id ? (
+                                                        <option key={index} value={guru.ID} selected>
+                                                            {guru.Nama_Depan} {guru.Nama_Belakang}
+                                                        </option>
+                                                    ) : null
                                                 ))}
                                             </select>
                                         </div>
@@ -234,6 +254,8 @@ function AllRoster() {
                                                 <option value="Rabu">Rabu</option>
                                                 <option value="Kamis">Kamis</option>
                                                 <option value="Jumat">Jumat</option>
+                                                <option value="Sabtu">Sabtu</option>
+
 
                                             </select>
                                         </div>
@@ -348,7 +370,6 @@ function AllRoster() {
                                                             <option value="Kamis">Kamis</option>
                                                             <option value="Jumat">Jumat</option>
                                                             <option value="Sabtu">Sabtu</option>
-                                                            <option value="Minggu">Minggu</option>
                                                         </select>
                                                     </label>
                                                 </div>
@@ -356,7 +377,7 @@ function AllRoster() {
                                             <div class="col-sm-12 col-md-2">
                                                 <div id="complex-header-datatable_filter" class="dataTables_filter">
                                                     <label>Search:
-                                                        <input type="search" style={{width:'140'}} class="form-control form-control-sm" placeholder="Cari disini " aria-controls="complex-header-datatable" onChange={handleSearchChange} />
+                                                        <input type="search" style={{ width: '140' }} class="form-control form-control-sm" placeholder="Cari disini " aria-controls="complex-header-datatable" onChange={handleSearchChange} />
                                                     </label>
                                                 </div>
                                             </div>

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -54,9 +56,9 @@ class DashboardView extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               DateTime now = snapshot.data!;
-              String formattedDate =
-                  DateFormat('yyyy-MM-dd – hh:mm a', 'id').format(now);
-
+              String formattedDay = DateFormat('EEEE', 'id_ID').format(now);
+              String formattedTime = DateFormat('yyyy-MM-dd – hh:mm:ss a', 'id').format(now);
+              String formattedDateTime = "$formattedDay, $formattedTime";
               return Center(
                 child: Column(
                   children: [
@@ -164,13 +166,14 @@ class DashboardView extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              '$formattedDate',
+                              '$formattedDateTime',
                               style: TextStyle(
                                 fontFamily: 'Inconsolata',
                                 fontSize: 15,
                                 color: Color.fromARGB(255, 110, 110, 110),
                               ),
                             ),
+                            
                             Padding(
                               padding: const EdgeInsets.only(
                                   top: 25.0,
@@ -258,11 +261,11 @@ class DashboardView extends StatelessWidget {
                         childAspectRatio: 1.0, // Adjust this as needed
                         mainAxisSpacing: 5, // Adjust this as needed
                         crossAxisSpacing: 18, // Adjust this as needed
-                        padding: const EdgeInsets.all(30), // Add padding here
+                        padding: const EdgeInsets.all(40), // Add padding here
                         children: [
                           _buildMenuCard(
                               'Absensi', 'assets/images/absensi.png'),
-                          _buildMenuCard('Kelas', 'assets/images/class.png'),
+                          _buildMenuCard('Kelasku', 'assets/images/class.png'),
                           _buildMenuCard('Roster', 'assets/images/roster.png'),
                           _buildMenuCard(
                               'Pengumuman', 'assets/images/pengumuman.png'),
@@ -322,6 +325,18 @@ class DashboardView extends StatelessWidget {
           if (title == 'Absensi') {
             Get.toNamed(
                 Routes.HISTORY_ABSENSI); // replace with your Absensi route
+          } else if (title == 'Kelasku') {
+            Get.toNamed(Routes.KELAS); // replace with your Kelas route
+          } else if (title == 'Roster') {
+            Get.toNamed(Routes.ROSTER); // replace with your Roster route
+          } else if (title == 'Pengumuman') {
+            Get.toNamed(
+                Routes.ALLPENGUMUMAN); // replace with your Pengumuman route
+          } else if (title == 'Guru') {
+            Get.toNamed(Routes.GURU); 
+          } else if (title == 'TanyaJawab') {
+            Get.toNamed(Routes.TANYAJAWAB); // replace with your TanyaJawab route
+            // Add your TanyaJawab route here
           }
         },
         child: Card(

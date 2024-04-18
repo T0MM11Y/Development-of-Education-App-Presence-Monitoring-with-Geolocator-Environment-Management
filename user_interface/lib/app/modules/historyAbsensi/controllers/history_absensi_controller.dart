@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:user_interface/configapi.dart';
