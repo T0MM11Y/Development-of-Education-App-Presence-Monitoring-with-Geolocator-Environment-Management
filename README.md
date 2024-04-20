@@ -5,5 +5,5 @@ Welcome to this dynamic project! Our repository seamlessly integrates Golang as 
 Explore the following snapshots for a visual overview:
 - ![logindashboard.jpg](https://github.com/T0MM11Y/Development-of-Education-App-Presence-Monitoring-with-Geolocator-Environment-Management-/blob/main/Overview/login%26dashboarduser.jpg)
 - ![rosterqnauser.jpg](https://github.com/T0MM11Y/Development-of-Education-App-Presence-Monitoring-with-Geolocator-Environment-Management-/blob/main/Overview/roster%26qnauser.jpg)
-- ![adminlogindashboard.jpg](https://github.com/T0MM11Y/Development-of-Education-App-Presence-Monitoring-with-Geolocator-Environment-Management-/blob/main/Overview/adminlogin%26dashboard.jpg)
+- ![adminlogindashboard.jpg](https://github.com/T0MM11Y/Development-of-Education-App-Presence-Monitoring-with-Geolocator-Environment-Management-/blob/main/Overview/dashboard%26login.jpg)
 
