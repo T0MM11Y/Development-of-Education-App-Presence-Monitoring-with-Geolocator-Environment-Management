@@ -1,0 +1,8 @@
+Development of Education App Presence Monitoring with Geolocator Environment Management repository! This dynamic project harmonizes Golang as the API bridge between the administrative interface developed in React.js and the user interface crafted in Flutter. Leveraging the power of geolocation technology from Flutter, the application not only tracks student attendance through latitude and longitude coordinates but also incorporates a suite of features including roster management, interactive Q&A functionality, and other educational necessities. 
+
+- ![dashboard.png](https://github.com/T0MM11Y/Development-of-Education-App-Presence-Monitoring-with-Geolocator-Environment-Management-/blob/main/Overview/dashboard.png): Dashboard overview.
+- ![dashboarduser.png](https://github.com/T0MM11Y/Development-of-Education-App-Presence-Monitoring-with-Geolocator-Environment-Management-/blob/main/Overview/dashboarduser.png): User dashboard.
+- ![login.png](https://github.com/T0MM11Y/Development-of-Education-App-Presence-Monitoring-with-Geolocator-Environment-Management-/blob/main/Overview/login.png): Login interface.
+- ![loginuser.png](https://github.com/T0MM11Y/Development-of-Education-App-Presence-Monitoring-with-Geolocator-Environment-Management-/blob/main/Overview/loginuser.png): User login page.
+- ![roster.png](https://github.com/T0MM11Y/Development-of-Education-App-Presence-Monitoring-with-Geolocator-Environment-Management-/blob/main/Overview/roster.png): Roster management.
+- ![tanyajawab.png](https://github.com/T0MM11Y/Development-of-Education-App-Presence-Monitoring-with-Geolocator-Environment-Management-/blob/main/Overview/tanyajawab.png): Q&A interface.
