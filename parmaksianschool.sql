@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 09, 2024 at 07:40 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.2
+-- Waktu pembuatan: 11 Bulan Mei 2024 pada 06.45
+-- Versi server: 10.4.28-MariaDB
+-- Versi PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -25,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `absensis`
+-- Struktur dari tabel `absensis`
 --
 
 CREATE TABLE `absensis` (
@@ -35,10 +34,10 @@ CREATE TABLE `absensis` (
   `latitude` double DEFAULT NULL,
   `longitude` double DEFAULT NULL,
   `status` longtext DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `absensis`
+-- Dumping data untuk tabel `absensis`
 --
 
 INSERT INTO `absensis` (`id`, `user_id`, `tanggal`, `latitude`, `longitude`, `status`) VALUES
@@ -47,17 +46,17 @@ INSERT INTO `absensis` (`id`, `user_id`, `tanggal`, `latitude`, `longitude`, `st
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admins`
+-- Struktur dari tabel `admins`
 --
 
 CREATE TABLE `admins` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `username` longtext DEFAULT NULL,
   `password` longblob DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `admins`
+-- Dumping data untuk tabel `admins`
 --
 
 INSERT INTO `admins` (`id`, `username`, `password`) VALUES
@@ -66,16 +65,16 @@ INSERT INTO `admins` (`id`, `username`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kelas`
+-- Struktur dari tabel `kelas`
 --
 
 CREATE TABLE `kelas` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `nama_kelas` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `kelas`
+-- Dumping data untuk tabel `kelas`
 --
 
 INSERT INTO `kelas` (`id`, `nama_kelas`) VALUES
@@ -89,7 +88,7 @@ INSERT INTO `kelas` (`id`, `nama_kelas`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pengajars`
+-- Struktur dari tabel `pengajars`
 --
 
 CREATE TABLE `pengajars` (
@@ -104,10 +103,10 @@ CREATE TABLE `pengajars` (
   `tanggal_lahir` longtext DEFAULT NULL,
   `jenis_kelamin` longtext DEFAULT NULL,
   `urlphoto` longtext DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `pengajars`
+-- Dumping data untuk tabel `pengajars`
 --
 
 INSERT INTO `pengajars` (`id`, `NIP`, `nama_depan`, `nama_belakang`, `bidang`, `email`, `alamat`, `agama`, `tanggal_lahir`, `jenis_kelamin`, `urlphoto`) VALUES
@@ -118,7 +117,7 @@ INSERT INTO `pengajars` (`id`, `NIP`, `nama_depan`, `nama_belakang`, `bidang`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pengumumen`
+-- Struktur dari tabel `pengumumen`
 --
 
 CREATE TABLE `pengumumen` (
@@ -128,10 +127,10 @@ CREATE TABLE `pengumumen` (
   `isi` longtext DEFAULT NULL,
   `created_at` longtext DEFAULT NULL,
   `updated_at` longtext DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `pengumumen`
+-- Dumping data untuk tabel `pengumumen`
 --
 
 INSERT INTO `pengumumen` (`id`, `judul`, `urlphoto`, `isi`, `created_at`, `updated_at`) VALUES
@@ -140,7 +139,7 @@ INSERT INTO `pengumumen` (`id`, `judul`, `urlphoto`, `isi`, `created_at`, `updat
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rosters`
+-- Struktur dari tabel `rosters`
 --
 
 CREATE TABLE `rosters` (
@@ -151,10 +150,10 @@ CREATE TABLE `rosters` (
   `kelas_id` bigint(20) UNSIGNED DEFAULT NULL,
   `hari` longtext NOT NULL,
   `pengajar_id` bigint(20) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `rosters`
+-- Dumping data untuk tabel `rosters`
 --
 
 INSERT INTO `rosters` (`id`, `mata_pelajaran`, `waktu_mulai`, `waktu_selesai`, `kelas_id`, `hari`, `pengajar_id`) VALUES
@@ -163,7 +162,7 @@ INSERT INTO `rosters` (`id`, `mata_pelajaran`, `waktu_mulai`, `waktu_selesai`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tanya_jawabs`
+-- Struktur dari tabel `tanya_jawabs`
 --
 
 CREATE TABLE `tanya_jawabs` (
@@ -174,10 +173,10 @@ CREATE TABLE `tanya_jawabs` (
   `tanggal_jawab` longtext DEFAULT NULL,
   `admin_id` bigint(20) UNSIGNED DEFAULT NULL,
   `user_id` bigint(20) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `tanya_jawabs`
+-- Dumping data untuk tabel `tanya_jawabs`
 --
 
 INSERT INTO `tanya_jawabs` (`id`, `pertanyaan`, `jawaban`, `tanggal_tanya`, `tanggal_jawab`, `admin_id`, `user_id`) VALUES
@@ -186,7 +185,7 @@ INSERT INTO `tanya_jawabs` (`id`, `pertanyaan`, `jawaban`, `tanggal_tanya`, `tan
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Struktur dari tabel `users`
 --
 
 CREATE TABLE `users` (
@@ -202,40 +201,41 @@ CREATE TABLE `users` (
   `jenis_kelamin` longtext DEFAULT NULL,
   `urlphoto` longtext DEFAULT NULL,
   `password` longblob DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `users`
+-- Dumping data untuk tabel `users`
 --
 
 INSERT INTO `users` (`id`, `nisn`, `nama_depan`, `nama_belakang`, `kelas_id`, `agama`, `email`, `alamat`, `tanggal_lahir`, `jenis_kelamin`, `urlphoto`, `password`) VALUES
-(1, 12345678, 'siswa', 'siswa', 1, 'Kristen Protestan', 'siswa@gmail.com', 'siswa', '2000-12-24', 'Lainnya', 'http://localhost:5000/api/siswa/uploads/siswa/toon_9.png', 0x24326124313424394b506d4d4f693844617a58345153545457517a6d2e4f506b6d42466e376e38326f6a58346d4330503566504d5a4778366e507657);
+(1, 12345678, 'siswa', 'siswa', 1, 'Kristen Protestan', 'siswa@gmail.com', 'siswa', '2000-12-24', 'Lainnya', 'http://localhost:5000/api/siswa/uploads/siswa/toon_9.png', 0x24326124313424394b506d4d4f693844617a58345153545457517a6d2e4f506b6d42466e376e38326f6a58346d4330503566504d5a4778366e507657),
+(2, 72443776, 'AHMAD HUSIN', 'SITORUS', 4, 'Islam', 'ahmad@gmail.com', 'TANGGA BATU II', '2007-03-28', 'Laki-Laki', 'http://localhost:5000/api/siswa/uploads/siswa/sdlc.png', 0x243261243134244553334e31687243644b506d6e6764796539437748754e2e4e476b38416261724f503555724a636761774a3068457043434972584f);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `absensis`
+-- Indeks untuk tabel `absensis`
 --
 ALTER TABLE `absensis`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_users_absensis` (`user_id`);
 
 --
--- Indexes for table `admins`
+-- Indeks untuk tabel `admins`
 --
 ALTER TABLE `admins`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `kelas`
+-- Indeks untuk tabel `kelas`
 --
 ALTER TABLE `kelas`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `pengajars`
+-- Indeks untuk tabel `pengajars`
 --
 ALTER TABLE `pengajars`
   ADD PRIMARY KEY (`id`),
@@ -243,13 +243,13 @@ ALTER TABLE `pengajars`
   ADD UNIQUE KEY `uni_pengajars_email` (`email`);
 
 --
--- Indexes for table `pengumumen`
+-- Indeks untuk tabel `pengumumen`
 --
 ALTER TABLE `pengumumen`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `rosters`
+-- Indeks untuk tabel `rosters`
 --
 ALTER TABLE `rosters`
   ADD PRIMARY KEY (`id`),
@@ -257,7 +257,7 @@ ALTER TABLE `rosters`
   ADD KEY `fk_kelas_rosters` (`kelas_id`);
 
 --
--- Indexes for table `tanya_jawabs`
+-- Indeks untuk tabel `tanya_jawabs`
 --
 ALTER TABLE `tanya_jawabs`
   ADD PRIMARY KEY (`id`),
@@ -265,7 +265,7 @@ ALTER TABLE `tanya_jawabs`
   ADD KEY `fk_admins_tanya_jawab` (`admin_id`);
 
 --
--- Indexes for table `users`
+-- Indeks untuk tabel `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
@@ -274,83 +274,83 @@ ALTER TABLE `users`
   ADD KEY `fk_kelas_users` (`kelas_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `absensis`
+-- AUTO_INCREMENT untuk tabel `absensis`
 --
 ALTER TABLE `absensis`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `admins`
+-- AUTO_INCREMENT untuk tabel `admins`
 --
 ALTER TABLE `admins`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `kelas`
+-- AUTO_INCREMENT untuk tabel `kelas`
 --
 ALTER TABLE `kelas`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `pengajars`
+-- AUTO_INCREMENT untuk tabel `pengajars`
 --
 ALTER TABLE `pengajars`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `pengumumen`
+-- AUTO_INCREMENT untuk tabel `pengumumen`
 --
 ALTER TABLE `pengumumen`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `rosters`
+-- AUTO_INCREMENT untuk tabel `rosters`
 --
 ALTER TABLE `rosters`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `tanya_jawabs`
+-- AUTO_INCREMENT untuk tabel `tanya_jawabs`
 --
 ALTER TABLE `tanya_jawabs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Constraints for dumped tables
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `absensis`
+-- Ketidakleluasaan untuk tabel `absensis`
 --
 ALTER TABLE `absensis`
   ADD CONSTRAINT `fk_users_absensis` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
--- Constraints for table `rosters`
+-- Ketidakleluasaan untuk tabel `rosters`
 --
 ALTER TABLE `rosters`
   ADD CONSTRAINT `fk_kelas_rosters` FOREIGN KEY (`kelas_id`) REFERENCES `kelas` (`id`),
   ADD CONSTRAINT `fk_pengajars_rosters` FOREIGN KEY (`pengajar_id`) REFERENCES `pengajars` (`id`);
 
 --
--- Constraints for table `tanya_jawabs`
+-- Ketidakleluasaan untuk tabel `tanya_jawabs`
 --
 ALTER TABLE `tanya_jawabs`
   ADD CONSTRAINT `fk_admins_tanya_jawab` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`id`),
   ADD CONSTRAINT `fk_users_tanya_jawabs` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
--- Constraints for table `users`
+-- Ketidakleluasaan untuk tabel `users`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `fk_kelas_users` FOREIGN KEY (`kelas_id`) REFERENCES `kelas` (`id`);
