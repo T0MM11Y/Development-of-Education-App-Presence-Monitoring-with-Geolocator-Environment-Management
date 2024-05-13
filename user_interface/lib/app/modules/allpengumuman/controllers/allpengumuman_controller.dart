@@ -74,6 +74,6 @@ Future<void> getPengumumanById(String id) async {
       update();
     } else {
       throw Exception('Failed to load pengumuman');
-    }
+    } 
   }
 }
