@@ -1,5 +1,8 @@
 // ignore_for_file: invalid_use_of_protected_member, duplicate_ignore
 
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -69,6 +72,27 @@ class KelasController extends GetxController {
   void fetchKelasData(int kelasId) async {
     final response =
         await getConnect.get('${ConfigAPI.baseUrl}api/kelas/$kelasId');
+    Get.dialog(
+      Dialog(
+        backgroundColor: Colors.transparent,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            width: 50,
+            height: 100,
+            child: Image.asset(
+              'assets/images/loading.gif',
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
+      barrierDismissible: false,
+    );
     if (response.status.code! >= 200 && response.status.code! < 300) {
       if (response.bodyString != null) {
         Map<String, dynamic> responseBody = json.decode(response.bodyString!);
@@ -82,6 +106,10 @@ class KelasController extends GetxController {
           Map<String, String> absensiData = await checkAbsensi(user['ID']);
           user['status'] = absensiData['status'];
           user['absensiTime'] = absensiData['absensiTime'];
+        }
+        if (Get.isDialogOpen!) {
+          await Future.delayed(Duration(seconds: 2)); // Add delay
+          Get.back();
         }
         filteredUsers.value = responseBody['users'];
       }

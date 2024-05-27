@@ -1,9 +1,25 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../controllers/tanyajawab_controller.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'dart:math';
+
+List<Color> colors = [
+  const Color.fromARGB(255, 11, 164, 164),
+  Color.fromARGB(219, 103, 168, 233),
+  Color.fromARGB(219, 233, 103, 168),
+  Color.fromARGB(219, 233, 168, 103),
+  Color.fromARGB(219, 168, 103, 233),
+  Color.fromARGB(219, 168, 233, 103),
+  Color.fromARGB(219, 103, 233, 168),
+];
+
+// Create a random number generator
+Random random = Random();
 
 class TanyajawabView extends GetView<TanyajawabController> {
   const TanyajawabView({Key? key}) : super(key: key);
@@ -62,7 +78,7 @@ class TanyajawabView extends GetView<TanyajawabController> {
                   return ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          Color.fromARGB(255, 164, 223, 238)),
+                          Color.fromARGB(255, 116, 214, 181)),
                       foregroundColor:
                           MaterialStateProperty.all<Color>(Colors.white),
                       minimumSize: MaterialStateProperty.all<Size>(
@@ -81,134 +97,165 @@ class TanyajawabView extends GetView<TanyajawabController> {
                                 String question = '';
                                 return Theme(
                                   data: Theme.of(context).copyWith(
-                                      dialogBackgroundColor:
-                                          Color.fromARGB(255, 255, 255, 255)),
-                                  child: AlertDialog(
-                                    title: Text(
-                                      'Buat Pertanyaan',
-                                      style: TextStyle(
-                                        color: const Color.fromARGB(
-                                            255, 75, 76, 77),
-                                        fontSize: 24.0,
-                                        fontFamily: 'Arial',
+                                    dialogBackgroundColor:
+                                        Color.fromARGB(172, 77, 77, 77),
+                                  ),
+                                  child: BackdropFilter(
+                                    filter:
+                                        ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                    child: AlertDialog(
+                                      title: Text(
+                                        'Buat Pertanyaan',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.0,
+                                          fontFamily: 'Roboto',
+                                        ),
                                       ),
-                                    ),
-                                    content: TextField(
-                                      onChanged: (value) {
-                                        question = value;
-                                      },
-                                      decoration: InputDecoration(
-                                        hintText:
-                                            "Masukkan pertanyaan Anda di sini",
-                                        hintStyle: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 18.0,
-                                          fontFamily: 'Arial',
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                          borderSide: BorderSide.none,
-                                        ),
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 16.0, vertical: 12.0),
-                                      ),
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.red,
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16.0, vertical: 5.0),
-                                          child: Text(
-                                            'Batal',
-                                            style: TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 255, 255, 255),
-                                              fontSize: 19.0,
-                                              fontFamily: 'Arial',
-                                            ),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
+                                      content: TextField(
+                                        onChanged: (value) {
+                                          question = value;
                                         },
-                                      ),
-                                      TextButton(
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.blue,
+                                        decoration: InputDecoration(
+                                          hintText:
+                                              "Masukkan pertanyaan di sini",
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 18.0,
+                                            fontFamily: 'Roboto',
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(5.0),
+                                            borderSide: BorderSide.none,
                                           ),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16.0, vertical: 5.0),
-                                          child: Text(
-                                            'Kirim',
-                                            style: TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 255, 255, 255),
-                                              fontSize: 19.0,
-                                              fontFamily: 'Arial',
-                                            ),
-                                          ),
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 20.0, vertical: 10.0),
                                         ),
-                                        onPressed: () async {
-                                          if (question.trim().isEmpty) {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                  title: Text('Error'),
-                                                  content: Text(
-                                                      'Isi dulu pertanyaannya'),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      child: Text('OK'),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          } else {
-                                            try {
-                                              await controller
-                                                  .askQuestion(question);
-                                              Navigator.of(context).pop();
-                                            } catch (e) {
-                                              showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return AlertDialog(
-                                                    title: Text('Error'),
-                                                    content: Text(e.toString()),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        child: Text('OK'),
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                      ),
-                                                    ],
+                                      ),
+                                      actions: <Widget>[
+                                        Row(
+                                          children: <Widget>[
+                                            // Add a SizedBox for some space between the buttons
+                                            TextButton(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: Color.fromARGB(
+                                                      255, 120, 172, 166),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0),
+                                                ),
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 80.0,
+                                                    vertical: 4.0),
+                                                child: Text(
+                                                  'Kirim',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20.0,
+                                                    fontFamily: 'Roboto',
+                                                  ),
+                                                ),
+                                              ),
+                                              onPressed: () async {
+                                                if (question.trim().isEmpty) {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return AlertDialog(
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(20),
+                                                        ),
+                                                        title: Row(
+                                                          // new
+                                                          children: [
+                                                            Icon(Icons.error,
+                                                                color:
+                                                                    Colors.red,
+                                                                size:
+                                                                    24), // new
+                                                            SizedBox(
+                                                                width:
+                                                                    10), // new
+                                                            Text(
+                                                              'Error',
+                                                              style: TextStyle(
+                                                                color:
+                                                                    Colors.red,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 24,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        content: Text(
+                                                          'Isi dulu pertanyaannya',
+                                                          style: TextStyle(
+                                                            fontSize: 18,
+                                                          ),
+                                                        ),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            child: Text(
+                                                              'OK',
+                                                              style: TextStyle(
+                                                                color:
+                                                                    Colors.blue,
+                                                                fontSize: 18,
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
                                                   );
-                                                },
-                                              );
-                                            }
-                                          }
-                                        },
-                                      ),
-                                    ],
+                                                } else {
+                                                  try {
+                                                    await controller
+                                                        .askQuestion(question);
+                                                    Navigator.of(context).pop();
+                                                  } catch (e) {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return AlertDialog(
+                                                          title: Text('Error'),
+                                                          content: Text(
+                                                              e.toString()),
+                                                          actions: <Widget>[
+                                                            TextButton(
+                                                              child: Text('OK'),
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  }
+                                                }
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 );
                               },
@@ -356,7 +403,26 @@ class TanyajawabView extends GetView<TanyajawabController> {
                         child: Text(
                             'Tidak ada pertanyaan dalam jangka waktu ini'));
                   } else {
-                    return Center(child: CircularProgressIndicator());
+                    return Center(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          width:
+                              200, // adjust this value to change the width of the GIF
+                          height:
+                              200, // adjust this value to change the height of the GIF
+                          child: Image.asset(
+                            'assets/images/loading.gif',
+                            fit:
+                                BoxFit.cover, // make the GIF fill the container
+                          ),
+                        ),
+                      ),
+                    );
                   }
                 }
                 return ListView.builder(
@@ -373,6 +439,7 @@ class TanyajawabView extends GetView<TanyajawabController> {
                         DateTime.parse(tanggalTanya);
                     final String tanggalTanyaReadable =
                         timeago.format(tanggalTanyaDateTime);
+
                     return Column(
                       children: <Widget>[
                         Padding(
@@ -381,6 +448,8 @@ class TanyajawabView extends GetView<TanyajawabController> {
                             margin: EdgeInsets.only(
                                 top: 2.0, left: 9.0, right: 9.0),
                             child: Card(
+                              color: Colors
+                                  .white, // Menambahkan warna putih pada Card
                               child: Column(
                                 children: <Widget>[
                                   Padding(
@@ -393,17 +462,33 @@ class TanyajawabView extends GetView<TanyajawabController> {
                                           children: <Widget>[
                                             CircleAvatar(
                                               backgroundImage:
-                                                  NetworkImage(urlPhoto),
-                                              backgroundColor: Colors.blue,
+                                                  urlPhoto != null &&
+                                                          urlPhoto != ''
+                                                      ? NetworkImage(urlPhoto)
+                                                      : null,
+                                              backgroundColor: urlPhoto ==
+                                                          null ||
+                                                      urlPhoto == ''
+                                                  ? colors[random
+                                                      .nextInt(colors.length)]
+                                                  : null,
                                               radius: 21.0,
+                                              child: urlPhoto == null ||
+                                                      urlPhoto == ''
+                                                  ? Text(
+                                                      '${namaDepan[0]}${namaBelakang[0]}',
+                                                      style: TextStyle(
+                                                          fontSize: 20),
+                                                    )
+                                                  : null,
                                             ),
                                             SizedBox(width: 10.0),
                                             Text(
                                               '$namaDepan $namaBelakang',
                                               style: TextStyle(
                                                 fontSize: 16.0,
-                                                color: const Color.fromARGB(
-                                                    255, 68, 66, 66),
+                                                color: Color.fromARGB(
+                                                    255, 89, 86, 86),
                                               ),
                                             ),
                                           ],
@@ -411,9 +496,7 @@ class TanyajawabView extends GetView<TanyajawabController> {
                                         SizedBox(height: 8.0),
                                         Text(
                                           pertanyaan,
-                                          style: TextStyle(
-                                            fontSize: 17.0,
-                                          ),
+                                          style: TextStyle(fontSize: 17.0),
                                         ),
                                         SizedBox(height: 10.0),
                                         Row(
@@ -441,26 +524,44 @@ class TanyajawabView extends GetView<TanyajawabController> {
                                   if (jawaban != null &&
                                       jawaban.trim().isNotEmpty)
                                     ExpansionTile(
-                                      backgroundColor: Colors.grey[200], // Background color of the ExpansionTile
-                                      iconColor: Colors.blue, // Color of the expand/collapse icon
-                                      collapsedIconColor: Colors.red, // Color of the icon when the tile is collapsed
+                                      backgroundColor: Colors
+                                          .white, // Mengubah warna latar belakang menjadi putih
+                                      iconColor: Colors.blue,
+                                      collapsedIconColor: Colors.red,
                                       title: Text(
                                         'Lihat Balasan',
                                         style: TextStyle(
-                                          color: Color.fromARGB(255, 55, 134, 224),
+                                          color: Colors
+                                              .blue, // Mengubah warna teks menjadi biru
                                           fontSize: 17.0,
-                                          fontWeight: FontWeight.bold, // Make the title bold
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                       children: <Widget>[
                                         Container(
-                                          color: Colors.white, // Background color of the expanded area
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(
+                                                15), // Menambahkan border radius
+                                            boxShadow: [
+                                              // Menambahkan shadow
+                                              BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(0.5),
+                                                spreadRadius: 5,
+                                                blurRadius: 7,
+                                                offset: Offset(0, 3),
+                                              ),
+                                            ],
+                                          ),
                                           padding: EdgeInsets.all(16.0),
                                           child: Html(
                                             data: jawaban,
                                             style: {
                                               "body": Style(
                                                 fontSize: FontSize(16.0),
+                                                color: Colors
+                                                    .black, // Mengubah warna teks menjadi hitam
                                               ),
                                             },
                                           ),

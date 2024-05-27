@@ -56,7 +56,6 @@ class ProfileController extends GetxController {
   void updateProfilePicture(String imagePath) {
     profilePictureFile.value = imagePath;
     imageUrl.value = imagePath;
-  
   }
 
   void updateProfile() async {
@@ -77,7 +76,7 @@ class ProfileController extends GetxController {
 
         // Create a MultipartFile using the compressed image
         final multipartFile = http.MultipartFile.fromBytes(
-          'file',
+          'Urlphoto',
           bytes as List<int>,
           contentType: MediaType('image', 'jpeg'),
           filename: profilePictureFile.value.split("/").last, // get filename
@@ -106,7 +105,6 @@ class ProfileController extends GetxController {
           user =
               responseData; // Assuming responseData contains the updated user data
 
-        
           // Manually update the 'kelas' field in the user object
           user['kelas'] = storage.read('user')['kelas'];
           storage.write('user', user);
@@ -119,8 +117,7 @@ class ProfileController extends GetxController {
             colorText: Colors.white,
           );
           print('Response data: $responseData');
-            Get.offAllNamed(Routes.DASHBOARD);
-
+          Get.offAllNamed(Routes.DASHBOARD);
         } else if (responseData['message'] != null) {
           // Show error alert
           Get.snackbar(

@@ -96,8 +96,8 @@ func Admin(c *fiber.Ctx) error {
 	database.DB.Where("id = ?", claims.Issuer).First(&admin)
 
 	return c.JSON(fiber.Map{
-		"admin": admin,
-		"jwt":   cookie,
+		"message": "Success",
+		"jwt":     cookie,
 	})
 }
 func LogoutAdmin(c *fiber.Ctx) error {

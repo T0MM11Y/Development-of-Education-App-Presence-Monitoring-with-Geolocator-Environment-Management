@@ -18,8 +18,8 @@ class HistoryAbsensiView extends GetView<HistoryAbsensiController> {
                   ? NetworkImage(controller.userImage.value)
                   : null,
               child: controller.userImage.value.isEmpty
-                  ? Text('${controller.userName.value[0]}',
-                      style: TextStyle(fontSize: 42.0))
+                  ? Text('${controller.userName.value.substring(0, 2)}',
+                      style: TextStyle(fontSize: 25.0))
                   : null,
             ),
             SizedBox(width: 18.0),
@@ -49,7 +49,7 @@ class HistoryAbsensiView extends GetView<HistoryAbsensiController> {
                     left: 20.0, right: 20.0, top: 20.0, bottom: 5.0),
                 padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
-                  color: Colors.blueAccent,
+                  color: Color.fromARGB(255, 219, 180, 95),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Column(
@@ -146,33 +146,38 @@ class HistoryAbsensiView extends GetView<HistoryAbsensiController> {
                             children: [
                               Text('Status', style: TextStyle(fontSize: 16.0)),
                               Obx(() => Row(
-                                children: [
-                                  Text(
-                                    controller.status.value,
-                                    style: TextStyle(
-                                      fontSize: 19.0,
-                                      color: controller.status.value == 'Terlambat'
-                                          ? Colors.red
-                                          : controller.status.value == 'Hadir'
-                                              ? Colors.green
-                                              : null,
-                                    ),
-                                  ),
-                                  SizedBox(width: 8.0), // Add some spacing between the text and the icon
-                                  Icon(
-                                    controller.status.value == 'Terlambat'
-                                        ? Icons.access_time
-                                        : controller.status.value == 'Hadir'
-                                            ? Icons.check_circle
-                                            : Icons.close,
-                                    color: controller.status.value == 'Terlambat'
-                                        ? Colors.red
-                                        : controller.status.value == 'Hadir'
-                                            ? Colors.green
-                                            : null,
-                                  ),
-                                ],
-                              )),
+                                    children: [
+                                      Text(
+                                        controller.status.value,
+                                        style: TextStyle(
+                                          fontSize: 19.0,
+                                          color: controller.status.value ==
+                                                  'Terlambat'
+                                              ? Colors.red
+                                              : controller.status.value ==
+                                                      'Hadir'
+                                                  ? Colors.green
+                                                  : null,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                          width:
+                                              8.0), // Add some spacing between the text and the icon
+                                      Icon(
+                                        controller.status.value == 'Terlambat'
+                                            ? Icons.access_time
+                                            : controller.status.value == 'Hadir'
+                                                ? Icons.check_circle
+                                                : Icons.close,
+                                        color: controller.status.value ==
+                                                'Terlambat'
+                                            ? Colors.red
+                                            : controller.status.value == 'Hadir'
+                                                ? Colors.green
+                                                : null,
+                                      ),
+                                    ],
+                                  )),
                             ],
                           ),
                         ],
@@ -216,8 +221,8 @@ class HistoryAbsensiView extends GetView<HistoryAbsensiController> {
                                 children: [
                                   Text("Waktu ",
                                       style: TextStyle(
-                                          fontSize: 20,
-                                          )),
+                                        fontSize: 20,
+                                      )),
                                   SizedBox(
                                       height:
                                           5.0), // Add space between the texts
@@ -231,8 +236,8 @@ class HistoryAbsensiView extends GetView<HistoryAbsensiController> {
                                 children: [
                                   Text("Status",
                                       style: TextStyle(
-                                          fontSize: 20,
-                                          )),
+                                        fontSize: 20,
+                                      )),
                                   SizedBox(
                                       height:
                                           5.0), // Add space between the texts
@@ -253,7 +258,7 @@ class HistoryAbsensiView extends GetView<HistoryAbsensiController> {
                                 children: [
                                   Text("Tanggal",
                                       style: TextStyle(
-                                          fontSize: 20,
+                                        fontSize: 20,
                                       )),
                                   SizedBox(
                                       height:

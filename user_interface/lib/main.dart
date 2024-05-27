@@ -7,13 +7,11 @@ import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   await GetStorage.init();
-  
+
   await initializeDateFormatting('id', null);
-  
+
   runApp(
-    
     GetMaterialApp(
-      
       title: "Application",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,

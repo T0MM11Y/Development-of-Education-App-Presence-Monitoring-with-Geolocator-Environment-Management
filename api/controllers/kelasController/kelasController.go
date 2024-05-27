@@ -36,7 +36,6 @@ func GetKelasById(c *fiber.Ctx) error {
 	}
 	return c.JSON(kelas)
 }
-
 func CreateKelas(c *fiber.Ctx) error {
 	db := database.DB
 	kelas := new(models.Kelas)
@@ -44,6 +43,12 @@ func CreateKelas(c *fiber.Ctx) error {
 	if err := c.BodyParser(kelas); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Cannot parse JSON",
+		})
+	}
+
+	if kelas.NamaKelas == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "NamaKelas cannot be empty",
 		})
 	}
 

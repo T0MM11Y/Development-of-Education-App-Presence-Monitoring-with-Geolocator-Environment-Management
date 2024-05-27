@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -47,9 +49,21 @@ class RosterView extends GetView<RosterController> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(50.0),
-              child: CircularProgressIndicator(),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                width: 200, // adjust this value to change the width of the GIF
+                height:
+                    170, // adjust this value to change the height of the GIF
+                child: Image.asset(
+                  'assets/images/loading.gif',
+                  fit: BoxFit.cover, // make the GIF fill the container
+                ),
+              ),
             ),
           );
         } else if (snapshot.hasError) {
@@ -153,7 +167,6 @@ class RosterView extends GetView<RosterController> {
                       );
                     },
                   ),
-                  
                   Expanded(
                     child: TabBarView(
                       children: [

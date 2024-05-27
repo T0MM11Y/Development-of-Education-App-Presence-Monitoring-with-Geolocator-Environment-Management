@@ -56,11 +56,11 @@ func CreatePengumuman(c *fiber.Ctx) error {
 	}
 
 	// Get the content from the form data
-	content := c.FormValue("content")
+	content := c.FormValue("isi")
 	pengumuman.Isi = content // Set the content
 
 	// Get the file from the form data
-	file, err := c.FormFile("file")
+	file, err := c.FormFile("Urlphoto")
 
 	// If a file was uploaded, save it and create the URL
 	if err == nil {
@@ -82,7 +82,6 @@ func CreatePengumuman(c *fiber.Ctx) error {
 	now := time.Now().Format(time.RFC3339)
 
 	pengumuman.Created_At = now
-	pengumuman.Updated_At = now
 	pengumuman.Urlphoto = url // Use the file URL here
 
 	db.Create(&pengumuman)
@@ -111,7 +110,7 @@ func UpdatePengumuman(c *fiber.Ctx) error {
 	}
 
 	// Get the file from the form data
-	file, err := c.FormFile("file")
+	file, err := c.FormFile("Urlphoto")
 
 	// If a file was uploaded, save it and create the URL
 	if err == nil {

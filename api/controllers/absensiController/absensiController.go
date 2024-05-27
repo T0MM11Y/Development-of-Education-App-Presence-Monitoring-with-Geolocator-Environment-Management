@@ -91,7 +91,7 @@ func NewAbsensi(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"status": "error", "message": "Absensi sudah dilakukan hari ini"})
 	}
 	// Koordinat tempat yang ditentukan
-	lat, lon := 2.3858489, 99.1474664 // Ganti dengan koordinat yang sesuai
+	lat, lon := 2.385738, 99.148592 // Ganti dengan koordinat yang sesuai
 
 	// Hitung jarak antara tempat pengguna melakukan absen dan tempat yang ditentukan
 	jarak := haversine(lat, lon, absensi.Latitude, absensi.Longitude)

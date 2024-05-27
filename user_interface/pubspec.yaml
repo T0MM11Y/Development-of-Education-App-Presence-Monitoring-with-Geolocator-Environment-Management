@@ -2,10 +2,10 @@ name: user_interface
 version: 1.0.0+1
 publish_to: none
 description: A new Flutter project.
-environment: 
-  sdk: '>=3.2.3 <4.0.0'
+environment:
+  sdk: ">=3.2.3 <4.0.0"
 
-dependencies: 
+dependencies:
   cupertino_icons: ^1.0.2
   get_storage: ^2.0.3
   convex_bottom_bar: ^3.2.0
@@ -13,7 +13,7 @@ dependencies:
   http: ^1.2.1
   intl: ^0.19.0
   geolocator: ^11.0.0
-  flutter: 
+  flutter:
     sdk: flutter
   image_picker: ^1.0.7
   flutter_image_compress: ^2.2.0
@@ -23,14 +23,14 @@ dependencies:
   flutter_html: 3.0.0-beta.2
   flutter_layout_grid: ^1.0.6
   flutter_math_fork: ^0.6.1
+  permission_handler: ^8.1.6
 
-
-dev_dependencies: 
+dev_dependencies:
   flutter_lints: 3.0.2
-  flutter_test: 
+  flutter_test:
     sdk: flutter
 
-flutter: 
+flutter:
   assets:
     - assets/images/LoginLogo.png
     - assets/images/AppBar.png
@@ -42,6 +42,7 @@ flutter:
     - assets/images/tanyajawab.png
     - assets/images/ChangePassword.png
     - assets/images/contohgambar.png
+    - assets/images/loading.gif
 
   uses-material-design: true
   fonts:

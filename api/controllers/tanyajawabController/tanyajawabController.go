@@ -14,7 +14,7 @@ func AskQuestion(c *fiber.Ctx) error {
 	question := new(models.TanyaJawab)
 	question.AdminID = nil
 
-	if err := c.BodyParser(question); err != nil {
+	if err := c.BodyParser(question); err != nil {	
 		fmt.Println(err)
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Cannot parse JSON",

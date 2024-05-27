@@ -54,7 +54,7 @@ func UpdateSiswa(c *fiber.Ctx) error {
 	}
 
 	// Handle file upload
-	file, err := c.FormFile("file")
+	file, err := c.FormFile("Urlphoto")
 	if err == nil {
 		dir := "./uploads/siswa/"
 		dst := filepath.Join(dir, file.Filename)
@@ -93,6 +93,9 @@ func DeleteSiswa(c *fiber.Ctx) error {
 	db := database.DB
 	var siswa models.User
 	id := c.Params("id")
+
+	// Delete referencing records in the tanya_jawabs table
+	db.Where("user_id = ?", id).Delete(&models.TanyaJawab{})
 
 	db.Find(&siswa, id)
 	if siswa.ID == 0 {
@@ -174,7 +177,7 @@ func RegisterSiswa(c *fiber.Ctx) error {
 	url := ""
 
 	// Get the file from the form data
-	file, err := c.FormFile("file")
+	file, err := c.FormFile("Urlphoto")
 
 	// If a file was uploaded, save it and create the URL
 	if err == nil {
@@ -192,8 +195,28 @@ func RegisterSiswa(c *fiber.Ctx) error {
 		url = fmt.Sprintf("http://%s/api/siswa/uploads/siswa/%s", c.Hostname(), file.Filename)
 	}
 
-	// Get the other fields from the form data
+	// Dapatkan KelasID dari request
 	kelasID, err := strconv.ParseUint(c.FormValue("KelasID"), 10, 32)
+	if err != nil {
+		// Handle parsing error
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error":   true,
+			"message": "Invalid KelasID format",
+		})
+	}
+
+	// Cek apakah Kelas dengan KelasID tersebut ada
+	var kelas models.Kelas
+	result := database.DB.First(&kelas, kelasID)
+	if result.Error != nil {
+		// Jika tidak ada, kembalikan error
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error":   true,
+			"message": "Kelas with given ID does not exist",
+		})
+	}
+
+	// Jika ada, lanjutkan dengan membuat User
 
 	password, _ := bcrypt.GenerateFromPassword([]byte("siswa123"), 14)
 	nisn, err := strconv.ParseInt(c.FormValue("NISN"), 10, 32)
@@ -217,6 +240,7 @@ func RegisterSiswa(c *fiber.Ctx) error {
 	}
 
 	user := models.User{
+
 		NISN:          int(nisn),
 		Nama_Depan:    c.FormValue("Nama_Depan"),
 		Nama_Belakang: c.FormValue("Nama_Belakang"),
@@ -233,10 +257,9 @@ func RegisterSiswa(c *fiber.Ctx) error {
 
 	// Return appropriate response, for example, user ID
 	return c.JSON(fiber.Map{
-		"message":   "User created successfully",
-		"toast":     "Siswa telah berhasil ditambahkan",
-		"user_id":   user.NISN,
-		"url_photo": url,
+		"message": "User created successfully",
+		"toast":   "Siswa telah berhasil ditambahkan",
+		"user_id": user,
 	})
 
 }

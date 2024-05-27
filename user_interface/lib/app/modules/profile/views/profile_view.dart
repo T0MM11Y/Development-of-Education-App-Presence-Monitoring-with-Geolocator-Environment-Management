@@ -22,10 +22,8 @@ class ProfileView extends GetView<ProfileController> {
     DashboardController dashboardController =
         Get.find<DashboardController>(); // Get instance of DashboardController
     return Scaffold(
-      appBar: 
-      AppBar(
+      appBar: AppBar(
         centerTitle: true,
-       
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -429,6 +427,15 @@ class ProfileView extends GetView<ProfileController> {
                     confirmTextColor: Colors.white,
                     onConfirm: () => Get.back(result: true),
                     onCancel: () => Get.back(result: false),
+                    titleStyle: TextStyle(
+                        color: Color.fromARGB(255, 39, 92, 176),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold), // new
+                    middleTextStyle:
+                        TextStyle(color: Colors.black, fontSize: 20), // new
+                    backgroundColor: Colors.white, // new
+                    radius: 20, // new
+                    buttonColor: Color.fromARGB(255, 39, 92, 176), // new
                   );
 
                   if (shouldUpdate == true) {
@@ -440,9 +447,8 @@ class ProfileView extends GetView<ProfileController> {
                   style: TextStyle(fontSize: 20.0, color: Colors.white),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 95, 187, 241),
-                  padding: EdgeInsets.symmetric
-                  (horizontal: 50, vertical: 2),
+                  backgroundColor: Color.fromARGB(255, 44, 150, 250),
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 2),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -460,15 +466,75 @@ class ProfileView extends GetView<ProfileController> {
               Get.offNamed(Routes.DASHBOARD);
               break;
             case 1: // Absensi
-              bool? shouldAbsen = await Get.defaultDialog<bool>(
-                title: 'Konfirmasi Absensi',
-                middleText: 'Absensi sekarang?',
-                textConfirm: 'Ya',
-                textCancel: 'Tidak',
-                confirmTextColor: Colors.white,
-                onConfirm: () => Get.back(result: true),
-                onCancel: () => Get.back(result: false),
-              );
+              bool? shouldAbsen = await Get.dialog<bool>(
+                    Dialog(
+                      backgroundColor: Colors.transparent,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        padding: EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'Konfirmasi Absensi',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blueGrey),
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              'Absensi sekarang?',
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.grey),
+                            ),
+                            SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: Colors.blue,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                  child: Text('Ya'),
+                                  onPressed: () => Get.back(result: true),
+                                ),
+                                OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    foregroundColor: Colors.blue,
+                                    backgroundColor: Colors.white,
+                                    side: BorderSide(color: Colors.blue),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                  child: Text('Tidak'),
+                                  onPressed: () => Get.back(result: false),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    barrierDismissible: false,
+                  ) ??
+                  false; // return false if dialog is dismissed
 
               if (shouldAbsen == true) {
                 dashboardController

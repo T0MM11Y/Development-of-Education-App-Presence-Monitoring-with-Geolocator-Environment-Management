@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -19,17 +21,17 @@ class KelasView extends GetView<KelasController> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-        SizedBox(
-          height: 120,
-          width: 150,
-          child: Image(image: AssetImage('assets/images/AppBar.png')),
-        ),
-        Text(
-          'Myclass',
-          style: TextStyle(
-            fontSize: 19,
-          ),
-        ),
+            SizedBox(
+              height: 120,
+              width: 150,
+              child: Image(image: AssetImage('assets/images/AppBar.png')),
+            ),
+            Text(
+              'Myclass',
+              style: TextStyle(
+                fontSize: 19,
+              ),
+            ),
           ],
         ),
         centerTitle: true,
@@ -38,7 +40,6 @@ class KelasView extends GetView<KelasController> {
         padding: EdgeInsets.all(20.0),
         child: Column(
           children: <Widget>[
-            
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -49,7 +50,8 @@ class KelasView extends GetView<KelasController> {
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     decoration: BoxDecoration(
                       color: Colors.white, // Changed color to white
-                      boxShadow: [ // Added boxShadow for a subtle 3D effect
+                      boxShadow: [
+                        // Added boxShadow for a subtle 3D effect
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.5),
                           spreadRadius: 1,
@@ -61,7 +63,8 @@ class KelasView extends GetView<KelasController> {
                     ),
                     child: Row(
                       children: <Widget>[
-                        Icon(Icons.search, color: Colors.grey), // Changed icon color to grey
+                        Icon(Icons.search,
+                            color: Colors.grey), // Changed icon color to grey
                         SizedBox(width: 25),
                         Expanded(
                           child: TextField(
@@ -69,7 +72,9 @@ class KelasView extends GetView<KelasController> {
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Find Students Here',
-                              hintStyle: TextStyle(color: Colors.grey), // Changed hint text color to grey
+                              hintStyle: TextStyle(
+                                  color: Colors
+                                      .grey), // Changed hint text color to grey
                             ),
                             onChanged: (value) {
                               controller.searchUser(value);
@@ -105,10 +110,8 @@ class KelasView extends GetView<KelasController> {
             SizedBox(height: 20),
             Obx(() {
               if (controller.kelasData['users'] == null) {
-                // Show a loading spinner if the data is still null
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
+                // Show a loading indicator while waiting for the data
+                return Center();
               } else if (controller.filteredUsers.length == 0) {
                 // Show a message if no students match the search query
                 return Center(
@@ -161,8 +164,8 @@ class KelasView extends GetView<KelasController> {
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontFamily: 'regular',
-                                        color: Color.fromARGB(255, 77, 70, 136) 
-                                    ),
+                                        color:
+                                            Color.fromARGB(255, 77, 70, 136)),
                                   ),
                                   Text(
                                     '${student['NISN']}',
@@ -191,12 +194,14 @@ class KelasView extends GetView<KelasController> {
                               ),
                             ),
                             Expanded(
-                              flex: 2, // Decrease flex to make this column narrower
+                              flex:
+                                  2, // Decrease flex to make this column narrower
                               child: Column(
                                 children: <Widget>[
                                   Row(
                                     children: <Widget>[
-                                      if (student['status'] == 'Hadir' || student['status'] == 'Terlambat')
+                                      if (student['status'] == 'Hadir' ||
+                                          student['status'] == 'Terlambat')
                                         Icon(
                                           student['status'] == 'Hadir'
                                               ? Icons.check_circle_outline
@@ -205,8 +210,11 @@ class KelasView extends GetView<KelasController> {
                                               ? Colors.green
                                               : Colors.red,
                                         ),
-                                      if (student['status'] == 'Hadir' || student['status'] == 'Terlambat')
-                                        SizedBox(width: 5), // Add some spacing between the icon and the text
+                                      if (student['status'] == 'Hadir' ||
+                                          student['status'] == 'Terlambat')
+                                        SizedBox(
+                                            width:
+                                                5), // Add some spacing between the icon and the text
                                       Flexible(
                                         child: Text(
                                           '${student['status']}',
@@ -215,7 +223,8 @@ class KelasView extends GetView<KelasController> {
                                             fontFamily: 'regular',
                                             color: student['status'] == 'Hadir'
                                                 ? Colors.green
-                                                : student['status'] == 'Terlambat'
+                                                : student['status'] ==
+                                                        'Terlambat'
                                                     ? Colors.red
                                                     : Colors.black,
                                           ),
@@ -223,15 +232,18 @@ class KelasView extends GetView<KelasController> {
                                       ),
                                     ],
                                   ),
-                                  
                                   Align(
-                                    
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      student['absensiTime'] != null && student['absensiTime'].toString().length >= 16
+                                      student['absensiTime'] != null &&
+                                              student['absensiTime']
+                                                      .toString()
+                                                      .length >=
+                                                  16
                                           ? '${DateFormat.jm().format(DateTime.parse("1970-01-01 ${student['absensiTime'].toString().substring(11, 16)}:00"))}'
                                           : '',
-                                      style: TextStyle(fontSize: 20, fontFamily: 'regular'),
+                                      style: TextStyle(
+                                          fontSize: 20, fontFamily: 'regular'),
                                     ),
                                   ),
                                 ],

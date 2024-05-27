@@ -1,5 +1,8 @@
 // ignore_for_file: invalid_use_of_protected_member
 
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:user_interface/configapi.dart';
@@ -52,8 +55,34 @@ class HistoryAbsensiController extends GetxController {
     final response = await getConnect.get(
       '${ConfigAPI.baseUrl}api/absensi/history/${user['ID']}',
     );
+    Get.dialog(
+      Dialog(
+        backgroundColor: Colors.transparent,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            width: 50,
+            height: 110,
+            child: Image.asset(
+              'assets/images/loading.gif',
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
+      barrierDismissible: false,
+    );
     if (response.status.code! >= 200 && response.status.code! < 300) {
       if (response.bodyString != null) {
+// Dismiss loading dialog
+        if (Get.isDialogOpen!) {
+          await Future.delayed(Duration(seconds: 2)); // Add delay
+          Get.back();
+        }
         Map<String, dynamic> responseBody = json.decode(response.bodyString!);
         if (responseBody['data'] != null && responseBody['data'].isNotEmpty) {
           absensiHistory.value = responseBody['data'];

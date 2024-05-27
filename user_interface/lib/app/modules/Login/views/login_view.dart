@@ -97,7 +97,6 @@ class _LoginViewState extends State<LoginView> {
                       ),
                     ),
                   ),
-                 
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Container(
@@ -105,7 +104,8 @@ class _LoginViewState extends State<LoginView> {
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white, backgroundColor: Colors.blue[700],
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.blue[700],
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             side: BorderSide(color: Colors.blue[500]!),
@@ -114,7 +114,7 @@ class _LoginViewState extends State<LoginView> {
                         onPressed: () {
                           controller.nisn.value = nisnController.text;
                           controller.password.value = passwordController.text;
-                          controller.login();
+                          controller.login(context);
                         },
                         child: Text(
                           "Login".toUpperCase(),

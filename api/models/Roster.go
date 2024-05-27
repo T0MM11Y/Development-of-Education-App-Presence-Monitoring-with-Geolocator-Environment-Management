@@ -8,5 +8,5 @@ type Roster struct {
 	KelasID       uint     `json:"kelas_id"`
 	Hari          string   `json:"hari" gorm:"not null"`
 	PengajarID    uint     `json:"pengajar_id"`
-	Pengajar      Pengajar `json:"Pengajar" gorm:"foreignKey:PengajarID;references:ID"`
+	Pengajar      Pengajar `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }

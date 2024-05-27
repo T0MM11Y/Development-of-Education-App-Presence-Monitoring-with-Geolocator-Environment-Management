@@ -28,8 +28,6 @@ func GetAllPengajar(c *fiber.Ctx) error {
 	db := database.DB
 	var pengajars []models.Pengajar
 	db.Find(&pengajars)
-	db.Preload("Kelass").Find(&pengajars)
-	db.Preload("Kelass.Rosters").Find(&pengajars)
 
 	if len(pengajars) == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
@@ -52,7 +50,7 @@ func UpdatePengajar(c *fiber.Ctx) error {
 	}
 
 	// Handle file upload
-	file, err := c.FormFile("file")
+	file, err := c.FormFile("Urlphoto")
 	if err == nil {
 		dir := "./uploads/pengajar/"
 		dst := filepath.Join(dir, file.Filename)
@@ -66,6 +64,7 @@ func UpdatePengajar(c *fiber.Ctx) error {
 	}
 
 	// Update the teacher's data
+	pengajar.NIP, _ = strconv.Atoi(c.FormValue("NIP"))
 	pengajar.Nama_Depan = c.FormValue("Nama_Depan")
 	pengajar.Nama_Belakang = c.FormValue("Nama_Belakang")
 	pengajar.Bidang = c.FormValue("Bidang")
@@ -79,7 +78,6 @@ func UpdatePengajar(c *fiber.Ctx) error {
 
 	return c.JSON(pengajar)
 }
-
 func DeletePengajar(c *fiber.Ctx) error {
 	db := database.DB
 	var pengajar models.Pengajar
@@ -89,7 +87,19 @@ func DeletePengajar(c *fiber.Ctx) error {
 	if pengajar.ID == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"message": "No teacher found with given ID",
-		})
+		})	
+	}
+
+	// Find all rosters associated with this teacher
+	var rosters []models.Roster
+	db.Where("pengajar_id = ?", pengajar.ID).Find(&rosters)
+
+	// Set the PengajarID to null for all associated rosters
+	for _, roster := range rosters {
+		roster.PengajarID = 0
+		db.Model(&roster).Update("PengajarID", 0)
+
+		db.Save(&roster)
 	}
 
 	db.Delete(&pengajar)
@@ -98,13 +108,12 @@ func DeletePengajar(c *fiber.Ctx) error {
 		"message": "Teacher deleted successfully",
 	})
 }
-
 func CreatePengajar(c *fiber.Ctx) error {
 	// Initialize the URL to an empty string
 	url := ""
 
 	// Get the file from the form data
-	file, err := c.FormFile("file")
+	file, err := c.FormFile("Urlphoto")
 
 	// If a file was uploaded, save it and create the URL
 	if err == nil {
@@ -130,7 +139,7 @@ func CreatePengajar(c *fiber.Ctx) error {
 			"message": "NIP is required",
 		})
 	}
-	nip, err := strconv.ParseInt(nipStr, 10, 32)
+	nip, err := strconv.ParseInt(nipStr, 10, 64)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error":   true,
@@ -172,10 +181,9 @@ func CreatePengajar(c *fiber.Ctx) error {
 
 	// Return appropriate response, for example, user ID
 	return c.JSON(fiber.Map{
-		"message":   "User created successfully",
-		"toast":     "Pengajar telah berhasil ditambahkan",
-		"user_id":   pengajar.NIP,
-		"url_photo": url,
+		"id":      pengajar,
+		"message": "User created successfully",
+		"toast":   "Pengajar telah berhasil ditambahkan",
 	})
 
 }

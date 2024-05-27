@@ -13,4 +13,5 @@ type Pengajar struct {
 	Jenis_Kelamin string   `json:"Jenis_Kelamin"`
 	Urlphoto      string   `json:"Urlphoto"`
 	Rosters       []Roster `json:"rosters" gorm:"foreignKey:PengajarID"`
+	  
 }

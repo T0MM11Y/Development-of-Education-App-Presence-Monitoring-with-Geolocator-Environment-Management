@@ -15,6 +15,7 @@ func GetAllRosters(c *fiber.Ctx) error {
 	var rosters []models.Roster
 
 	db.Preload("Pengajar").Find(&rosters)
+
 	if len(rosters) == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"message": "No rosters found",
@@ -44,22 +45,49 @@ func CreateRoster(c *fiber.Ctx) error {
 	roster := new(models.Roster)
 
 	if err := c.BodyParser(roster); err != nil {
-		fmt.Println(err) // Print the error to the console
+		fmt.Println("Error parsing JSON:", err) // Tambahkan log ini
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Cannot parse JSON",
 		})
 	}
 
+	fmt.Println("Data yang diterima:", roster) // Tambahkan log ini
+
+	// Check if the Kelas record exists
+	var kelas models.Kelas
+	if err := db.First(&kelas, roster.KelasID).Error; err != nil {
+		fmt.Println("Error finding Kelas:", err) // Tambahkan log ini
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Kelas not found",
+		})
+	}
+
+	// Check if the Pengajar record exists
+	var pengajar models.Pengajar
+	if err := db.First(&pengajar, roster.PengajarID).Error; err != nil {
+		fmt.Println("Error finding Pengajar:", err) // Tambahkan log ini
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Pengajar not found",
+		})
+	}
+
 	result := db.Create(&roster)
 	if result.Error != nil {
-		fmt.Println(result.Error) // Print the error to the console
+		fmt.Println("Error creating Roster:", result.Error) // Tambahkan log ini
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Failed to create roster",
 		})
 	}
 
-	return c.JSON(roster)
+	return c.JSON(
+		fiber.Map{
+			"message": "Roster created successfully",
+
+			"roster": roster,
+		},
+	)
 }
+
 func GetRostersByKelasId(c *fiber.Ctx) error {
 	db := database.DB
 	var kelas models.Kelas
@@ -93,7 +121,12 @@ func UpdateRoster(c *fiber.Ctx) error {
 	}
 
 	db.Save(&roster)
-	return c.JSON(roster)
+	return c.JSON(
+		fiber.Map{
+			"message": "Roster updated successfully",
+			"roster":  roster,
+		},
+	)
 }
 
 func DeleteRoster(c *fiber.Ctx) error {

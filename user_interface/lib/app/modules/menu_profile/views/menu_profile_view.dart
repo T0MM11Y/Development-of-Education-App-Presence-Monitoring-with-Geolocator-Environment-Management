@@ -16,19 +16,73 @@ class MenuProfileView extends GetView<MenuProfileController> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return await Get.defaultDialog<bool>(
-              title: 'Konfirmasi',
-              middleText: 'Apakah Anda ingin keluar?',
-              textConfirm: 'Ya',
-              textCancel: 'Tidak',
-              confirmTextColor: Colors.white,
-              onConfirm: () => Get.back(result: true),
-              onCancel: () => Get.back(result: false),
+        return await Get.dialog<bool>(
+              Dialog(
+                backgroundColor: Colors.transparent,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.exit_to_app,
+                        size: 50,
+                        color: Colors.red,
+                      ),
+                      Text(
+                        'Logout',
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        'Apakah Anda yakin ingin logout?',
+                        style: TextStyle(fontSize: 18),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                            child: Text('Ya',
+                                style: TextStyle(color: Colors.white)),
+                            onPressed: () => Get.back(result: true),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                            ),
+                            child: Text('Tidak',
+                                style: TextStyle(color: Colors.white)),
+                            onPressed: () => Get.back(result: false),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              barrierDismissible: false,
             ) ??
             false; // return false if dialog is dismissed
       },
       child: Scaffold(
-       
         body: SingleChildScrollView(
           // Add SingleChildScrollView here
           child: Align(
@@ -160,25 +214,72 @@ class MenuProfileView extends GetView<MenuProfileController> {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('Logout'),
-                                content:
-                                    Text('Are you sure you want to logout?'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    child: Text('Cancel'),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
+                              return Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: Offset(0, 3),
+                                      ),
+                                    ],
                                   ),
-                                  TextButton(
-                                    child: Text('Yes'),
-                                    onPressed: () {
-                                      controller.logout();
-                                      Navigator.of(context).pop();
-                                    },
+                                  padding: EdgeInsets.all(20),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.exit_to_app,
+                                        size: 50,
+                                        color: Colors.red,
+                                      ),
+                                      Text(
+                                        'Logout',
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(height: 20),
+                                      Text(
+                                        'Are you sure you want to logout?',
+                                        style: TextStyle(fontSize: 18),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(height: 20),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.red,
+                                            ),
+                                            child: Text('Ya',
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                            onPressed: () =>
+                                                Get.back(result: true),
+                                          ),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.green,
+                                            ),
+                                            child: Text('Tidak',
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                            onPressed: () =>
+                                                Get.back(result: false),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               );
                             },
                           );
@@ -203,15 +304,76 @@ class MenuProfileView extends GetView<MenuProfileController> {
                 Get.offNamed(Routes.DASHBOARD);
                 break;
               case 1: // Absensi
-                bool? shouldAbsen = await Get.defaultDialog<bool>(
-                  title: 'Konfirmasi Absensi',
-                  middleText: 'Absensi sekarang?',
-                  textConfirm: 'Ya',
-                  textCancel: 'Tidak',
-                  confirmTextColor: Colors.white,
-                  onConfirm: () => Get.back(result: true),
-                  onCancel: () => Get.back(result: false),
-                );
+                bool? shouldAbsen = await Get.dialog<bool>(
+                      Dialog(
+                        backgroundColor: Colors.transparent,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          padding: EdgeInsets.all(20),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Konfirmasi Absensi',
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blueGrey),
+                              ),
+                              SizedBox(height: 20),
+                              Text(
+                                'Absensi sekarang?',
+                                style:
+                                    TextStyle(fontSize: 18, color: Colors.grey),
+                              ),
+                              SizedBox(height: 20),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: Colors.blue,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    child: Text('Ya'),
+                                    onPressed: () => Get.back(result: true),
+                                  ),
+                                  OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      foregroundColor: Colors.blue,
+                                      backgroundColor: Colors.white,
+                                      side: BorderSide(color: Colors.blue),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    child: Text('Tidak'),
+                                    onPressed: () => Get.back(result: false),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      barrierDismissible: false,
+                    ) ??
+                    false; // return false if dialog is dismissed
                 if (shouldAbsen == true) {
                   dashboardController.createAbsensi();
                 }

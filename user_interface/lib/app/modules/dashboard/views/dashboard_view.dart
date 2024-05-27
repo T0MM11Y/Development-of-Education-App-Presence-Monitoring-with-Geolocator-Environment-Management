@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable, unused_local_variable
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -38,14 +40,69 @@ class DashboardView extends StatelessWidget {
     String fullName = '${user['Nama_Depan']} ${user['Nama_Belakang']}';
     return WillPopScope(
       onWillPop: () async {
-        return await Get.defaultDialog<bool>(
-              title: 'Konfirmasi',
-              middleText: 'Apakah Anda ingin keluar?',
-              textConfirm: 'Ya',
-              textCancel: 'Tidak',
-              confirmTextColor: Colors.white,
-              onConfirm: () => Get.back(result: true),
-              onCancel: () => Get.back(result: false),
+        return await Get.dialog<bool>(
+              Dialog(
+                backgroundColor: Colors.transparent,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.exit_to_app,
+                        size: 50,
+                        color: Colors.red,
+                      ),
+                      Text(
+                        'Logout',
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        'Apakah Anda yakin ingin logout?',
+                        style: TextStyle(fontSize: 18),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                            child: Text('Ya',
+                                style: TextStyle(color: Colors.white)),
+                            onPressed: () => Get.back(result: true),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                            ),
+                            child: Text('Tidak',
+                                style: TextStyle(color: Colors.white)),
+                            onPressed: () => Get.back(result: false),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              barrierDismissible: false,
             ) ??
             false; // return false if dialog is dismissed
       },
@@ -57,7 +114,8 @@ class DashboardView extends StatelessWidget {
             if (snapshot.hasData) {
               DateTime now = snapshot.data!;
               String formattedDay = DateFormat('EEEE', 'id_ID').format(now);
-              String formattedTime = DateFormat('yyyy-MM-dd – hh:mm:ss a', 'id').format(now);
+              String formattedTime =
+                  DateFormat('yyyy-MM-dd – hh:mm:ss a', 'id').format(now);
               String formattedDateTime = "$formattedDay, $formattedTime";
               return Center(
                 child: Column(
@@ -173,7 +231,6 @@ class DashboardView extends StatelessWidget {
                                 color: Color.fromARGB(255, 110, 110, 110),
                               ),
                             ),
-                            
                             Padding(
                               padding: const EdgeInsets.only(
                                   top: 25.0,
@@ -280,7 +337,23 @@ class DashboardView extends StatelessWidget {
               );
             }
             return Center(
-              child: CircularProgressIndicator(),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  width:
+                      200, // adjust this value to change the width of the GIF
+                  height:
+                      200, // adjust this value to change the height of the GIF
+                  child: Image.asset(
+                    'assets/images/loading.gif',
+                    fit: BoxFit.cover, // make the GIF fill the container
+                  ),
+                ),
+              ),
             );
           },
         ),
@@ -292,15 +365,76 @@ class DashboardView extends StatelessWidget {
                 Get.offNamed(Routes.DASHBOARD);
                 break;
               case 1: // Absensi
-                bool? shouldAbsen = await Get.defaultDialog<bool>(
-                  title: 'Konfirmasi Absensi',
-                  middleText: 'Absensi sekarang?',
-                  textConfirm: 'Ya',
-                  textCancel: 'Tidak',
-                  confirmTextColor: Colors.white,
-                  onConfirm: () => Get.back(result: true),
-                  onCancel: () => Get.back(result: false),
-                );
+                bool? shouldAbsen = await Get.dialog<bool>(
+                      Dialog(
+                        backgroundColor: Colors.transparent,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          padding: EdgeInsets.all(20),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Konfirmasi Absensi',
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blueGrey),
+                              ),
+                              SizedBox(height: 20),
+                              Text(
+                                'Absensi sekarang?',
+                                style:
+                                    TextStyle(fontSize: 18, color: Colors.grey),
+                              ),
+                              SizedBox(height: 20),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: Colors.blue,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    child: Text('Ya'),
+                                    onPressed: () => Get.back(result: true),
+                                  ),
+                                  OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      foregroundColor: Colors.blue,
+                                      backgroundColor: Colors.white,
+                                      side: BorderSide(color: Colors.blue),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    child: Text('Tidak'),
+                                    onPressed: () => Get.back(result: false),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      barrierDismissible: false,
+                    ) ??
+                    false; // return false if dialog is dismissed
 
                 if (shouldAbsen == true) {
                   controller.createAbsensi();
@@ -333,9 +467,10 @@ class DashboardView extends StatelessWidget {
             Get.toNamed(
                 Routes.ALLPENGUMUMAN); // replace with your Pengumuman route
           } else if (title == 'Guru') {
-            Get.toNamed(Routes.GURU); 
+            Get.toNamed(Routes.GURU);
           } else if (title == 'TanyaJawab') {
-            Get.toNamed(Routes.TANYAJAWAB); // replace with your TanyaJawab route
+            Get.toNamed(
+                Routes.TANYAJAWAB); // replace with your TanyaJawab route
             // Add your TanyaJawab route here
           }
         },

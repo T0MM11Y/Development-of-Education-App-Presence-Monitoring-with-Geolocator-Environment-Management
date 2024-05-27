@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:user_interface/app/modules/guru/controllers/guru_controller.dart';
@@ -88,8 +90,24 @@ class GuruView extends GetView<GuruController> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
-                      child:
-                          CircularProgressIndicator()); // Show a loading spinner while waiting for fetchGuru to complete
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        width:
+                            200, // adjust this value to change the width of the GIF
+                        height:
+                            170, // adjust this value to change the height of the GIF
+                        child: Image.asset(
+                          'assets/images/loading.gif',
+                          fit: BoxFit.cover, // make the GIF fill the container
+                        ),
+                      ),
+                    ),
+                  );
                 } else if (snapshot.hasError) {
                   return Text(
                       'Error: ${snapshot.error}'); // Show an error message if fetchGuru fails
@@ -129,11 +147,23 @@ class GuruView extends GetView<GuruController> {
                                         child: ListBody(
                                           children: <Widget>[
                                             Center(
-                                              child: CircleAvatar(
-                                                radius: 50,
-                                                backgroundImage: NetworkImage(
-                                                    guru['Urlphoto']),
-                                              ),
+                                              child: (guru['Urlphoto'] ==
+                                                          null ||
+                                                      guru['Urlphoto'] == '')
+                                                  ? CircleAvatar(
+                                                      radius: 31,
+                                                      child: Text(
+                                                        '${guru['Nama_Depan'][0]}${guru['Nama_Belakang'][0]}', // Display the first character of Nama_Depan and Nama_Belakang
+                                                        style: TextStyle(
+                                                            fontSize: 20),
+                                                      ),
+                                                    )
+                                                  : CircleAvatar(
+                                                      radius: 31,
+                                                      backgroundImage:
+                                                          NetworkImage(
+                                                              guru['Urlphoto']),
+                                                    ),
                                             ),
                                             SizedBox(height: 20),
                                             Text(
@@ -234,46 +264,52 @@ class GuruView extends GetView<GuruController> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       SizedBox(
-                                        height: 60, // Add height for the image
+                                        height: 60,
                                         child: Stack(
                                           children: [
                                             Padding(
                                               padding: EdgeInsets.only(
-                                                  left: 28,
-                                                  top:
-                                                      1), // Adjust this value as needed
+                                                  left: 34, top: 2),
                                               child: Container(
                                                 height: 56,
                                                 width: 57,
                                                 decoration: BoxDecoration(
-                                                  color: colors[index %
-                                                      4], // Use the same color array that you used for the field text
+                                                  color: colors[index % 4],
                                                   shape: BoxShape.circle,
                                                 ),
                                               ),
                                             ),
                                             Center(
-                                              child: CircleAvatar(
-                                                radius: 31,
-                                                backgroundImage: NetworkImage(guru[
-                                                    'Urlphoto']), // Use the Urlphoto from the guru data
-                                              ),
+                                              child: (guru['Urlphoto'] ==
+                                                          null ||
+                                                      guru['Urlphoto'] == '')
+                                                  ? CircleAvatar(
+                                                      radius: 31,
+                                                      child: Text(
+                                                        '${guru['Nama_Depan'][0]}${guru['Nama_Belakang'][0]}', // Display the first character of Nama_Depan and Nama_Belakang
+                                                        style: TextStyle(
+                                                            fontSize: 20),
+                                                      ),
+                                                    )
+                                                  : CircleAvatar(
+                                                      radius: 31,
+                                                      backgroundImage:
+                                                          NetworkImage(
+                                                              guru['Urlphoto']),
+                                                    ),
                                             ),
                                           ],
                                         ),
                                       ),
                                       SizedBox(height: 10),
                                       Text(
-                                        '${guru['Nama_Depan']} ${guru['Nama_Belakang']}', // Use the Nama_Depan and Nama_Belakang from the guru data
-                                        textAlign:
-                                            TextAlign.center, // Center the text
-                                        style: TextStyle(fontSize: 15),
+                                        '${guru['Nama_Depan']} ${guru['Nama_Belakang']}',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontSize: 12),
                                       ),
                                       Text(
-                                        guru[
-                                            'Bidang'], // Use the Bidang from the guru data
-                                        textAlign:
-                                            TextAlign.center, // Center the text
+                                        guru['Bidang'],
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontSize: 15,
                                           color: colors[index % 4],

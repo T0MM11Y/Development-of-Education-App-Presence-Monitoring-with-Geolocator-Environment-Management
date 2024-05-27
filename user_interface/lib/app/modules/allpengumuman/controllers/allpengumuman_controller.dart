@@ -14,7 +14,7 @@ class AllpengumumanController extends GetxController {
     fetchPengumuman();
   }
 
-Future<void> getPengumumanById(String id) async {
+  Future<void> getPengumumanById(String id) async {
     final response = await getConnect.get(
       '${ConfigAPI.baseUrl}api/pengumuman/$id',
     );
@@ -26,6 +26,7 @@ Future<void> getPengumumanById(String id) async {
       throw Exception('Failed to load pengumuman');
     }
   }
+
   Future<void> fetchPengumuman() async {
     final response = await getConnect.get(
       '${ConfigAPI.baseUrl}api/pengumuman',
@@ -35,7 +36,9 @@ Future<void> getPengumumanById(String id) async {
       // Only filter the data if searchTerm is not empty
       if (searchTerm.value.isNotEmpty) {
         data = data.where((item) {
-          return item['judul'].toLowerCase().contains(searchTerm.value.toLowerCase());
+          return item['judul']
+              .toLowerCase()
+              .contains(searchTerm.value.toLowerCase());
         }).toList();
       }
       // Filter the data based on selectedFilter
@@ -43,7 +46,9 @@ Future<void> getPengumumanById(String id) async {
       if (selectedFilter.value == 'Hari ini') {
         data = data.where((item) {
           DateTime createdAt = DateTime.parse(item['Created_At']);
-          return createdAt.day == now.day && createdAt.month == now.month && createdAt.year == now.year;
+          return createdAt.day == now.day &&
+              createdAt.month == now.month &&
+              createdAt.year == now.year;
         }).toList();
       } else if (selectedFilter.value == 'Minggu ini') {
         DateTime aWeekAgo = now.subtract(Duration(days: 7));
@@ -64,7 +69,8 @@ Future<void> getPengumumanById(String id) async {
       }
       for (var item in data) {
         if (item['urlphoto'].startsWith('http://localhost:5000/')) {
-          item['urlphoto'] = item['urlphoto'].replaceFirst('http://localhost:5000/', ConfigAPI.baseUrl);
+          item['urlphoto'] = item['urlphoto']
+              .replaceFirst('http://localhost:5000/', ConfigAPI.baseUrl);
         }
         if (item['isi'].length > 100) {
           item['isi'] = item['isi'].substring(0, 100) + '...';
@@ -74,6 +80,6 @@ Future<void> getPengumumanById(String id) async {
       update();
     } else {
       throw Exception('Failed to load pengumuman');
-    } 
+    }
   }
 }

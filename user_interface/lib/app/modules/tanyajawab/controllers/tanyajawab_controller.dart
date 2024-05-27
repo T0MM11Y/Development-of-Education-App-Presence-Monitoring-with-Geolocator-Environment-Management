@@ -30,34 +30,37 @@ class TanyajawabController extends GetxController {
       fetchTanyaJawab();
     }
   }
-Future<void> askQuestion(String question) async {
-  final box = GetStorage();
-  final userInfo = box.read('user'); 
-  final userId = userInfo['ID'];
 
-  final lastQuestionTime = box.read('lastQuestionTime');
-  if (lastQuestionTime != null &&
-      DateTime.now().difference(DateTime.parse(lastQuestionTime)).inHours < 2) {
-    throw Exception('Anda hanya bisa mengirim pertanyaan setiap 2 jam sekali');
+  Future<void> askQuestion(String question) async {
+    final box = GetStorage();
+    final userInfo = box.read('user');
+    final userId = userInfo['ID'];
+
+    final lastQuestionTime = box.read('lastQuestionTime');
+    if (lastQuestionTime != null &&
+        DateTime.now().difference(DateTime.parse(lastQuestionTime)).inHours <
+            2) {
+      throw Exception(
+          'Anda hanya bisa mengirim pertanyaan setiap 2 jam sekali');
+    }
+
+    final response = await getConnect.post(
+      '${ConfigAPI.baseUrl}api/tanyajawab',
+      {
+        'user_id': userId,
+        'pertanyaan': question,
+      },
+    );
+
+    if (response.status.code! >= 200 && response.status.code! < 300) {
+      Get.snackbar('Berhasil', 'Pertanyaan berhasil dikirim');
+      box.write('lastQuestionTime', DateTime.now().toIso8601String());
+      fetchTanyaJawab();
+    } else {
+      Get.snackbar('Gagal', 'Gagal mengirim pertanyaan');
+      throw Exception('Failed to ask question');
+    }
   }
-
-  final response = await getConnect.post(
-    '${ConfigAPI.baseUrl}api/tanyajawab',
-    {
-      'user_id': userId,
-      'pertanyaan': question,
-    },
-  );
-
-  if (response.status.code! >= 200 && response.status.code! < 300) {
-    Get.snackbar('Berhasil', 'Pertanyaan berhasil dikirim');
-    box.write('lastQuestionTime', DateTime.now().toIso8601String());
-    fetchTanyaJawab();
-  } else {
-    Get.snackbar('Gagal', 'Gagal mengirim pertanyaan');
-    throw Exception('Failed to ask question');
-  }
-}
 
   Future<void> fetchTanyaJawab() async {
     final box = GetStorage();
@@ -112,6 +115,8 @@ Future<void> askQuestion(String question) async {
                 tanggalTanya.year == now.year;
           } else if (filterValue.value == 'Tahun ini') {
             return tanggalTanya.year == now.year;
+          } else if (filterValue.value == 'Semua') {
+            return true;
           } else {
             throw Exception('Failed to load tanyajawab');
           }
