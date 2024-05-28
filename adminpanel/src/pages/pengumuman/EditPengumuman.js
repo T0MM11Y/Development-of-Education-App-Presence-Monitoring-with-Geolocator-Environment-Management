@@ -149,7 +149,12 @@ function EditPengumuman() {
                       <div className="row mb-3">
                         <div className="col-sm-10 offset-sm-2">
                           <img
-                            src={imageURL || "/no-image-available.png"}
+                            src={
+                              imageURL
+                                ? BASE_URL +
+                                  imageURL.replace("http://localhost:5000/", "")
+                                : "/no-image-available.png"
+                            }
                             alt="Uploaded"
                             style={{
                               width: "10em",
